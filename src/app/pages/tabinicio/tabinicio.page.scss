@@ -1,0 +1,34 @@
+
+// ion-content {
+//     // --background: rgb(255,255,255);
+//     // --color: var(--ion-color-light);
+// }
+
+// ion-toolbar, ion-row {
+//     // --background: rgb(66, 203, 200);
+//     // color: rgb( 255,255,255);
+// }
+
+// ion-item {
+//     font-style: italic;
+//     // --background: rgb(66, 203, 200);
+//     // color: rgb( 255,255,255);
+// }
+
+ion-card {
+    --background: rgb( 255,255,255);
+}
+
+.navbar-img {
+    height: 25px;
+    float: left;
+    margin-left: 7px;
+}
+
+.imagenProd {
+    height: 320px;
+}
+
+ion-row {
+    font-size: 75%; 
+}

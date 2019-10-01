@@ -1,5 +1,7 @@
 {
   "name": "zsventas",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }

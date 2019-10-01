@@ -8,14 +8,27 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import { HttpClientModule } from '@angular/common/http';
+import { IonicStorageModule } from '@ionic/storage';
+import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
+
+import { NetworkengineService } from './services/networkengine.service';
+import { BaselocalService } from './services/baselocal.service';
 
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule],
+  imports: [BrowserModule,
+            HttpClientModule,
+            IonicStorageModule.forRoot(),
+            IonicModule.forRoot(),
+            AppRoutingModule],
   providers: [
     StatusBar,
     SplashScreen,
+    NetworkengineService,
+    BaselocalService,
+    BarcodeScanner,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

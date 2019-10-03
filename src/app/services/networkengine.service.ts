@@ -34,7 +34,7 @@ export class NetworkengineService {
   traeUnSP( cSP: string, parametros?: any, pUser?: any ) {
     const accion = '/proalma';
     const url    = this.url + accion;
-    const body   = { sp: cSP, datos: parametros, user: pUser };
+    const body   = { sp: cSP, datos: parametros, user: pUser, versionNueva: true };
     return this.http.post( url, body );
   }
 

@@ -85,14 +85,12 @@ export class TabinicioPage implements OnInit {
   ionViewWillLeave() {
   }
 
-
   ngOnInit() {
     this.usuario = this.baseLocal.user;
     this.cliente = this.funciones.initCliente();
     this.config  = this.baseLocal.initConfig();
     this.config.imagenes = true;
   }
-
 
   inicializa() {
     this.cliente = this.funciones.initCliente();
@@ -338,7 +336,7 @@ export class TabinicioPage implements OnInit {
   }
 
   ConfiguracionLocal() {
-    this.router.navigate( ['/menuseteo'] );
+    this.router.navigateByUrl( '/menuseteo' );
   }
 
   masOpciones() {

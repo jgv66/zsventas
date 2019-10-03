@@ -71,8 +71,7 @@
 
             <!-- <ion-card-header *ngIf=" config.imagenes " > -->
             <ion-card-header class="ion-no-padding">
-                <ion-img src="http://www.zsmotor.cl/img/Producto/{{ producto.codigo }}/{{ producto.codigo }}.jpg" onerror=" this.src='assets/imgs/no-img.png' " (ionError)="loadDefaultImg($event)"></ion-img>
-                <!-- <img src="//www.zsmotor.cl/img/Producto/{{ producto.codigo }}/{{ producto.codigo }}.jpg" onerror=" this.src='assets/imgs/no-img2.png' "/>                 -->
+                <img src="//www.zsmotor.cl/img/Producto/{{ producto.codigo }}/{{ producto.codigo }}.jpg" onerror=" this.src='assets/imgs/no-img.png' " />                
             </ion-card-header>
         
             <ion-card-content class="ion-no-padding">
@@ -206,7 +205,7 @@
     </div> 
     -->
     
-    <ion-infinite-scroll threshold='200px' (ionInfinite)="masDatos( $event )" *ngIf=" lScrollInfinito == true ">
+    <ion-infinite-scroll threshold='300px' (ionInfinite)="masDatos( $event )" *ngIf=" lScrollInfinito == true ">
         <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Buscando más datos..."></ion-infinite-scroll-content>
     </ion-infinite-scroll>
 

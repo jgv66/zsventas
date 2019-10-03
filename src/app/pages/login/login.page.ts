@@ -86,7 +86,8 @@ export class LoginPage implements OnInit {
         rs.LISTACLIENTE = '';
         this.funciones.muestraySale( 'Hola ' + rs.NOKOFU + ', ' + this.funciones.textoSaludo(), 1.5 );
         this.baseLocal.user = rs;
-        this.router.navigate(['/tabs']);
+        this.router.navigate(['/tabs/inicio']);
+        // this.router.navigateByUrl('/tabs/inicio');
     }
   }
 

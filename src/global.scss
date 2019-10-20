@@ -25,6 +25,10 @@
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
 
+// ion-content {
+//   --background: #fff url('assets/imgs/auto-006.jpg') no-repeat center center / cover;
+// }
+
 .navbar-img {
     height: 25px;
     float: left;
@@ -39,6 +43,7 @@
     display: block;
     height: 250px;
     margin: 0.5rem auto 3rem;
+    margin-top: 50px;
 }
 
 .logo-kinetik {

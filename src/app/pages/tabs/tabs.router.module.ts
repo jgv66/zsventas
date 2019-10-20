@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-
 import { TabsPage } from './tabs.page';
 
 const routes: Routes = [
@@ -8,18 +7,23 @@ const routes: Routes = [
     path: '',
     component: TabsPage,
     children: [
-      { path: 'inicio' ,   children: [ { path: '', loadChildren: '../../pages/tabinicio/tabinicio.module#TabinicioPageModule'    }] },
-      { path: 'filtros',   children: [ { path: '', loadChildren: '../../pages/tabfiltros/tabfiltros.module#TabfiltrosPageModule' }] },
-      { path: 'salida',    children: [ { path: '', loadChildren: '../../pages/tabsalida/tabsalida.module#TabsalidaPageModule'    }] },
+      { path: 'inicio' ,   children: [ { path: '', loadChildren: () => import('../tabinicio/tabinicio.module').then(m => m.TabinicioPageModule ) }] },
+      { path: 'carrito',   children: [ { path: '', loadChildren: () => import('../tabcarrito/tabcarrito.module').then(m => m.TabcarritoPageModule) }] },
+      { path: 'salida',    children: [ { path: '', loadChildren: () => import('../tabsalida/tabsalida.module').then(m => m.TabsalidaPageModule)    }] },
       { path: '', redirectTo: '/tabs/(inicio:inicio)', pathMatch: 'full' },
     ]
   },
   { path: '',
-    redirectTo: '/tabs/inicio',
+    redirectTo: '/tabs/(inicio:inicio)',
     pathMatch: 'full'
   },
-  { path: 'menuseteo', children: [ { path: '', loadChildren: '../../pages/menuseteo/menuseteo.module#MenuseteoPageModule'    }] },
-
+  { path: 'menuseteo',          children: [ { path: '', loadChildren: () => import('../menuseteo/menuseteo.module')           .then(m => m.MenuseteoPageModule      ) }] },
+  { path: 'ctacteclientes',     children: [ { path: '', loadChildren: () => import('../ctacteclientes/ctacteclientes.module') .then(m => m.CtacteclientesPageModule ) }] },
+  { path: 'documento/:id',      children: [ { path: '', loadChildren: () => import('../documento/documento.module')           .then(m => m.DocumentoPageModule      ) }] },
+  { path: 'ultimosdocs/:td',    children: [ { path: '', loadChildren: () => import('../ultimosdocs/ultimosdocs.module')       .then(m => m.UltimosdocsPageModule    ) }] },
+  { path: 'crearclientes',      children: [ { path: '', loadChildren: () => import('../crearclientes/crearclientes.module')   .then(m => m.CrearclientesPageModule  ) }] },
+  { path: 'ultmovs/:dataP',     children: [ { path: '', loadChildren: () => import('../ultimosmovs/ultimosmovs.module')       .then(m => m.UltimosmovsPageModule    ) }] },
+  { path: 'sugerencias/:dataP', children: [ { path: '', loadChildren: () => import('../sugerencias/sugerencias.module')       .then(m => m.SugerenciasPageModule    ) }] },
 ];
 
 @NgModule({

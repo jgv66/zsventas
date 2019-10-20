@@ -4,7 +4,7 @@
     <div class="flash-card-front">
         <ion-row>
             <ion-col size="4">
-                <img src="http://www.zsmotor.cl/img/Producto/{{ producto.codigo }}/{{ producto.codigo }}.jpg" onerror=" this.src='assets/imgs/no-img2.png' "/>
+                <img src="//www.zsmotor.cl/img/Producto/{{ producto.codigo }}/{{ producto.codigo }}.jpg" onerror=" this.src='assets/imgs/no-img2.png' "/>
             </ion-col>
             <ion-col size="7">
                 <p class="masgrande"><b>{{ producto.codigo }}</b></p>
@@ -58,7 +58,7 @@
         </ion-chip>
 
         <ion-chip *ngIf=" producto.descuentomax > 0 ">
-            <ion-label color="star"><b>-{{ producto.descuentomax | number:'1.0-2' }}% => ${{ producto.dsctovalor | number:'1.0-0' }}</b></ion-label>
+            <ion-label color="primary"><b>-{{ producto.descuentomax | number:'1.0-2' }}% => ${{ producto.dsctovalor | number:'1.0-0' }}</b></ion-label>
         </ion-chip>
 
         <ion-chip *ngIf=" producto.descuentomax > 0 ">

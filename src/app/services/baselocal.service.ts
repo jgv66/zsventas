@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Usuario } from '../models/modelos.modelo';
+import { Usuario, Cliente } from '../models/modelos.modelo';
 import { Storage } from '@ionic/storage';
 
 @Injectable({
@@ -7,10 +7,12 @@ import { Storage } from '@ionic/storage';
 })
 export class BaselocalService {
 
- user: Usuario;
+  user: Usuario;
+  cliente: Cliente;
+  listaComunas = []; /* si se pide una vez no se vuelve a buscar */
+  config: any;
 
- empresa: number;
- config: any;
+  empresa: number;
 
   constructor( private storage: Storage) {
     console.log('<<< BaseLocalProvider >>>');
@@ -26,7 +28,43 @@ export class BaselocalService {
               LISTAMODALIDAD: null,
               LISTACLIENTE: null,
               SUCURSAL: null,
-              EMPRESA: null };
+              EMPRESA: null,
+              usuario: '',
+              nombre: '',
+              modalidad: '',
+              KOSU: '',
+              sucursal: '',
+              bodega: '',
+              listamodalidad: '',
+              nombrelista: '',
+              empresa: '',
+              razonsocial: '',
+              NOKOBO: '',
+              nombresuc: '',
+              nombrebod: '',
+              krpt: false,
+              puedecrearcli: false,
+              puedemodifdscto: false,
+              kconcecionario: false,
+              puedemoddesc: false,
+              puedeverprov: false,
+              puedevercosto: false };
+  }
+
+  initCliente() {
+    this.cliente = {codigo: '',
+                    sucursal: '',
+                    razonsocial: '',
+                    direccion: '',
+                    ciudad: '',
+                    comuna: '',
+                    vendedor: '',
+                    nombrevendedor: '',
+                    listaprecios: '',
+                    nombrelista: '',
+                    email: '',
+                    LISTACLIENTE: ''};
+    return this.cliente;
   }
 
   initConfig() {
@@ -87,7 +125,6 @@ export class BaselocalService {
     this.user = data;
     this.storage.set( 'ktp_ultimo_usuario',  this.user );
   }
-
   obtenUltimoUsuario() {
     return this.storage.get('ktp_ultimo_usuario')
       .then( pUsuario => {
@@ -105,7 +142,6 @@ export class BaselocalService {
     this.config = data;
     this.storage.set( 'ktp_ultimo_config',  this.config );
   }
-
   obtenUltimoConfig() {
     return this.storage.get('ktp_ultimo_config')
       .then( pConfig => {

@@ -1,0 +1,37 @@
+<ion-header no-border> 
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="salir()"><ion-icon slot="icon-only" name="arrow-back"></ion-icon></ion-button>
+    </ion-buttons>
+    <img src="./assets/imgs/logo-zs.png" alt="" class="navbar-img">        
+    <ion-title>Buscar Clientes</ion-title>
+  </ion-toolbar>
+  <ion-searchbar animated (ionChange)="buscarClientes( $event )" [debounce]="450"></ion-searchbar>
+</ion-header>
+
+<ion-progress-bar *ngIf=" buscando " type="indeterminate"></ion-progress-bar>
+
+<ion-content>
+
+  <ion-list>
+
+    <ion-item *ngFor="let cliente of clientes" (click)="salirConData( cliente )">
+        <ion-label class="ion-text-wrap">
+          <ion-text color="primary">
+            <h3>{{ cliente.codigo }} - {{ cliente.razonsocial }}</h3>
+          </ion-text>
+          <ion-text color="secondary">
+            <p>{{ cliente.direccion }} - {{ cliente.comuna }} - {{ cliente.ciudad }}</p>
+          </ion-text>
+          <ion-text color="secondary" *ngIf=" cliente.vendedor.trim() !== '' " ><p>({{cliente.vendedor}}) {{ cliente.nombrevendedor }}</p></ion-text>
+          <ion-text color="secondary" *ngIf=" cliente.vendedor.trim() === '' " ><p>Vendedor no asignado</p></ion-text>
+
+          <ion-text color="secondary" *ngIf=" cliente.listaprecios.trim() !== '' " ><p>({{cliente.listaprecios}}) {{ cliente.nombrelista }}</p></ion-text>
+          <ion-text color="secondary" *ngIf=" cliente.listaprecios.trim() === '' " ><p>Lista sin asignar</p></ion-text>
+
+        </ion-label>
+    </ion-item>
+
+  </ion-list>
+
+</ion-content>

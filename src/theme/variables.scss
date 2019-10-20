@@ -1,8 +1,13 @@
 // Ionic Variables and Theming. For more info, please see:
 // http://ionicframework.com/docs/theming/
 
+@font-face{ font-family: "OpenSans"; src: url('../assets/fonts/OpenSans.woff2'); }
+
 /** Ionic CSS Variables **/
 :root {
+
+  --ion-font-family: 'OpenSans';
+
   /** primary **/
   --ion-color-primary: #3880ff;
   --ion-color-primary-rgb: 56, 128, 255;
@@ -74,4 +79,19 @@
   --ion-color-light-contrast-rgb: 0, 0, 0;
   --ion-color-light-shade: #d7d8da;
   --ion-color-light-tint: #f5f6f9;
+
+  /** kinetik fondozs **/
+  --ion-color-fondozs: rgb(246, 247, 250);
+
 }
+
+.ion-color-fondozs {
+  --ion-color-base: var(--ion-color-fondozs) !important;
+  --ion-color-base-rgb: var(--ion-color-fondozs-rgb) !important;
+  --ion-color-contrast: var(--ion-color-fondozs-contrast) !important;
+  --ion-color-contrast-rgb: var(--ion-color-fondozs-contrast-rgb) !important;
+  --ion-color-shade: var(--ion-color-fondozs-shade) !important;
+  --ion-color-tint: var(--ion-color-fondozs-tint) !important;
+}
+
+ 

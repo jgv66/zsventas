@@ -1,12 +1,20 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FuncionesService } from '../../services/funciones.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-tabs',
   templateUrl: 'tabs.page.html',
   styleUrls: ['tabs.page.scss']
 })
-export class TabsPage {
+export class TabsPage implements OnInit {
 
-  constructor() {}
+  count: Observable<number>;
+
+  constructor( private funciones: FuncionesService) {}
+
+  ngOnInit() {
+      this.count = this.funciones.CartZise;
+  }
 
 }

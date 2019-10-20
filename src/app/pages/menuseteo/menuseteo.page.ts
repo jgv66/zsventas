@@ -1,46 +1,44 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { Cliente } from '../../models/modelos.modelo';
-import { ActivatedRoute, Router } from '@angular/router';
 import { BaselocalService } from '../../services/baselocal.service';
 import { FuncionesService } from '../../services/funciones.service';
+import { MovdoccliComponent } from '../../components/movdoccli/movdoccli.component';
+import { PopoverController, ModalController, AlertController } from '@ionic/angular';
+import { BuscarclientesPage } from '../buscarclientes/buscarclientes.page';
+import { NetworkengineService } from '../../services/networkengine.service';
 
 @Component({
   selector: 'app-menuseteo',
   templateUrl: './menuseteo.page.html',
   styleUrls: ['./menuseteo.page.scss'],
 })
-export class MenuseteoPage implements OnInit {
+export class MenuseteoPage {
 
   cliente: Cliente;
   barraTabs;  // variable para ocultar barra de tabs
   usuario;
   config;
+  buscando = false;
 
   constructor( private router: Router,
+               private modalCtrl: ModalController,
+               private popoverCtrl: PopoverController,
+               private alertCtrl: AlertController,
                private funciones: FuncionesService,
-               private baseLocal: BaselocalService ) {
+               public baseLocal: BaselocalService,
+               private netWork: NetworkengineService ) {
+      //
       this.usuario = this.baseLocal.user;
-      if ( !this.cliente ) {
-        this.cliente = this.funciones.initCliente();
-      }
-      if ( !this.config  ) {
-        this.config  = this.baseLocal.initConfig();
-      }
+      this.cliente = this.baseLocal.cliente;
+      this.config  = this.baseLocal.config;
       //
   }
 
-  ngOnInit() {}
-
-  ionViewDidLoad() {
-  }
   ionViewWillEnter() {
-    this.funciones.obtenUltimoCliente().then( data => this.cliente = data ) ;
-    this.baseLocal.obtenUltimoConfig().then(  data => this.config = data  ) ;
     this.barraTabs  = this.funciones.hideTabs();
-    // console.log(this.usuario);
   }
   ionViewWillLeave() {
-    // console.log(this.usuario);
     this.baseLocal.guardaUltimoConfig( this.config );
     this.funciones.showTabs( this.barraTabs );
   }
@@ -49,29 +47,167 @@ export class MenuseteoPage implements OnInit {
     this.router.navigate(['/tabs']);
   }
 
-  buscarOtroCliente() {
-    // this.navCtrl.push( BuscarClientesPage, { callback: this.retornaDataCliente, usuario: this.usuario });
+  async buscarOtroCliente() {
+    const modal = await this.modalCtrl.create({
+      component: BuscarclientesPage,
+    });
+    await modal.present();
+
+    const { data } = await modal.onDidDismiss();
+    if ( data ) {
+      this.cliente = data.dato;
+      this.baseLocal.cliente = data.dato;
+      //
+      // console.log(data);
+      // console.log(this.usuario);
+      if ( data.listaprecios !== this.usuario.LISTAMODALIDAD ) {
+        this.usuario.LISTACLIENTE = data.listaprecios;
+        this.baseLocal.user       = this.usuario;
+
+      }
+    }
   }
 
-  retornaDataCliente = ( data ) => {
-    return new Promise( (resolve, reject) => {
-          this.cliente = data;
-          // console.log(data);
-          this.funciones.guardaUltimoCliente( data );
-          if ( data.listaprecios !== this.usuario.LISTAMODALIDAD ) {
-            this.usuario.LISTACLIENTE = data.listaprecios;
-          }
-          resolve();
-       });
+  crearClientes() {
+    if ( !this.baseLocal.user.puedecrearcli ) {
+      this.funciones.msgAlert('ATENCION', 'Ud. no posee permisos para esta acción');
+    } else {
+      this.router.navigate(['/tabs/crearclientes']);
+    }
   }
 
   consultarImpagos( cliente ) {
-      // console.log('consultarImpagos()',cliente,this.usuario);
-      if ( cliente === null || cliente === undefined || cliente.codigo === '' ) {
-        this.funciones.muestraySale('ATENCION : Código de cliente no puede estar vacío', 2);
-      } else {
-        // this.navCtrl.push( TabmensajePage, { cliente: cliente, usuario: this.usuario } );
-      }
+    if ( cliente === null || cliente === undefined || cliente.codigo === '' ) {
+      this.funciones.muestraySale('ATENCION : Código de cliente no puede estar vacío', 2);
+    } else {
+      this.router.navigate(['/tabs/ctacteclientes']);
+    }
+  }
+
+  async ultimosDocs( event ) {
+    const popover = await this.popoverCtrl.create({
+      component: MovdoccliComponent,
+      event,
+      mode: 'ios',
+      translucent: false
+    });
+    await popover.present();
+
+    const { data } = await popover.onDidDismiss();
+    if ( data ) {
+      const tido = ( (data.opcion.texto === 'Ultimas 15 NVV') ? 'NVV' : 'FCV' );
+      this.router.navigate(['/tabs/ultimosdocs/' + tido ]);
+    }
+  }
+
+  cambiarBodega() {
+    this.buscando = true;
+    this.netWork.traeUnSP( 'ksp_BodegaMias',
+                          { empresa: this.baseLocal.user.EMPRESA },
+                          { codigo: this.baseLocal.user.KOFU,
+                            nombre: this.baseLocal.user.NOKOFU } )
+        .subscribe( bodegas => { this.revisaEoFBM( bodegas ); },
+                    err     => { this.buscando = false;
+                                 this.funciones.msgAlert( 'ATENCION', err );  }
+                  );
+  }
+  revisaEoFBM( bodegas ) {
+    this.buscando = false;
+    if ( bodegas === undefined || bodegas.lenght === 0 ) {
+      this.funciones.msgAlert('ATENCION', 'Usted no tiene permiso para revisar todas las bodegas. Intente con otros datos.');
+    } else {
+      this.seleccionarBodega( bodegas );
+    }
+  }
+  async seleccionarBodega( bodegas ) {
+    if ( bodegas.length ) {
+        //
+        const nBodegas = [];
+        bodegas.forEach( element => {
+          nBodegas.push( { type: 'radio', label: element.bodega + ' - ' + element.nombrebodega.trim(), value: element } );
+        });
+        //
+        const alertBod = await this.alertCtrl.create({
+          header: 'Bodegas',
+          message: 'Disponibles según sus permisos',
+          inputs: nBodegas,
+          buttons: [
+            {
+              text: 'Cancelar',
+              role: 'cancel',
+              cssClass: 'secondary',
+              handler: (blah) => {}
+            },
+            {
+              text: 'Ok',
+              handler: (data) => { this.usuario.BODEGA    = data.bodega;
+                                   this.usuario.nombrebod = data.nombrebodega;
+                                   this.usuario.KOSU      = data.sucursal;
+                                   this.usuario.nombresuc = data.nombresucursal;
+                                   this.baseLocal.user   = this.usuario; }
+            }
+          ]
+        });
+        await alertBod.present();
+        //
+    } else {
+        this.funciones.msgAlert('ATENCION', 'Producto sin stock o sin asignación a bodegas o sin permiso para revisar todas las bodegas. Intente con otros datos.' );
+    }
+  }
+  cambiarLista() {
+    this.buscando = true;
+    this.netWork.traeUnSP( 'ksp_ListasMias',
+                           { empresa: this.baseLocal.user.EMPRESA },
+                           { codigo:  this.baseLocal.user.KOFU,
+                             nombre:  this.baseLocal.user.NOKOFU } )
+        .subscribe( listas => { this.revisaEoFLP( listas ); },
+                    err    => { this.buscando = false;
+                                this.funciones.msgAlert( 'ATENCION', err );  }
+                  );
+  }
+  revisaEoFLP( listas ) {
+    this.buscando = false;
+    if ( listas === undefined || listas.length === 0 ) {
+      this.funciones.msgAlert('ATENCION', 'Usted no tiene permiso para revisar todas las listas. Intente con otros datos.');
+    } else {
+      this.seleccionarLista( listas );
+    }
+  }
+  async seleccionarLista( listas ) {
+    if ( listas.length ) {
+        //
+        const nListas = [];
+        listas.forEach( element => {
+          nListas.push( { type: 'radio', label: element.listaprecio + '/' + element.tipolista + ' - ' + element.nombrelista.trim(), value: element } );
+        });
+        //
+        const alertLis = await this.alertCtrl.create({
+          header: 'Listas de Precio',
+          message: 'Disponibles según sus permisos',
+          inputs: nListas,
+          buttons: [
+            {
+              text: 'Cancelar',
+              role: 'cancel',
+              cssClass: 'secondary',
+              handler: (blah) => {}
+            },
+            {
+              text: 'Ok',
+              handler: (data) => { this.usuario.LISTAMODALIDAD = data.listaprecio;
+                                   this.usuario.listamodalidad = data.listaprecio;
+                                   this.usuario.nombrelista    = data.nombrelista;
+                                   this.usuario.NOKOLT         = data.nombrelista;
+                                   this.usuario.nokolt         = data.nombrelista;
+                                   this.baseLocal.user         = this.usuario; }
+            }
+          ]
+        });
+        await alertLis.present();
+        //
+    } else {
+        this.funciones.msgAlert('ATENCION', 'Sin permiso para revisar todas las listas de precio. Intente con otros datos.' );
+    }
   }
 
 }

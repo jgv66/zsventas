@@ -14,6 +14,7 @@ import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 
 import { NetworkengineService } from './services/networkengine.service';
 import { BaselocalService } from './services/baselocal.service';
+import { PipesModule } from './pipes/pipes.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -22,6 +23,7 @@ import { BaselocalService } from './services/baselocal.service';
             HttpClientModule,
             IonicStorageModule.forRoot(),
             IonicModule.forRoot(),
+            PipesModule,
             AppRoutingModule],
   providers: [
     StatusBar,

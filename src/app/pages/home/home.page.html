@@ -1,19 +1,19 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="dark">
     <ion-title>
-      Toma de Pedidos
+      KTP: Toma de Pedidos (v1.2)
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding" style="margin-left: 15px; margin-right: 15px;">
+<ion-content class="ion-padding" style="margin-left: 15px; margin-right: 15px;" >
   <img src="assets/imgs/logo-001.png" alt="" class="logo-001" (click)="entrar()">
 
-  <p style="font-size: 80%">Toma de pedidos en línea, con lectura de códigos de barra (code-39, code-128, QR, etc).</p>
+  <p style="font-size: 90%; margin-left: 25px; margin-right: 20px;">Toma de pedidos, con lectura de códigos de barra (code-39, code-128, QR, etc). Conexion automática al ERP Random. Actualización inmediata en línea.</p>
 
   <img src="assets/imgs/logo-kinetik.jpg" alt="" class="logo-kinetik" (click)="entrar()">
 
-  <p style="font-size: 70%; text-align: center;" class="sistema2">Pulse cualquiera de los logos para acceder al sistema.</p>
+  <p style="font-size: 75%; text-align: center;" class="sistema2">Pulse cualquiera de los logos para acceder al sistema.</p>
 
   <button type="button" class="ad2hs-prompt" *ngIf="showButton" (click)="addToHomeScreen()">Instalar aplicación Web</button>
   <div class="ios-prompt" *ngIf="showIosInstall" (click)="showIosInstall = false;">

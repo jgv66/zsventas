@@ -15,12 +15,13 @@ export class LoginPage implements OnInit {
   clave: string;
   autoArriba: any;
   autoAbajo: any;
+  buscando = false;
 
   constructor(private router: Router,
               private baseLocal: BaselocalService,
               private funciones: FuncionesService,
               private netWork: NetworkengineService) {
-    console.log('<<< LoginPage >>>');
+    // console.log('<<< LoginPage >>>');
     this.rutocorreo  = '';
     this.clave       = '';
     // aleatorios para cambiar imagenes
@@ -64,19 +65,18 @@ export class LoginPage implements OnInit {
     if ( this.rutocorreo === '' || this.clave === '' ) {
       this.funciones.msgAlert('Código vacío', 'Debe digitar usuario y clave para ingresar.');
     } else {
-    // console.log( '<<< logearme() >>>', rutocorreo, clave );
-    this.funciones.cargaEspera();
+    this.buscando = true;
     this.netWork.traeUnSP('ksp_buscarUsuario',
                           { rutocorreo: this.rutocorreo, clave: this.clave },
                           { codigo: this.rutocorreo , nombre: this.rutocorreo } )
-        .subscribe( data => { this.funciones.descargaEspera(); this.revisaExitooFracaso( data ); },
-                    err  => { this.funciones.descargaEspera(); this.funciones.msgAlert( 'ATENCION' , 'Ocurrió un error -> ' + err ); }
+        .subscribe( data => { this.revisaExitooFracaso( data ); },
+                    err  => { this.funciones.msgAlert( 'ATENCION' , 'Ocurrió un error -> ' + err ); }
                   );
     }
   }
 
   private revisaExitooFracaso( data ) {
-    // console.log( data[0] );
+    this.buscando = false;
     const rs = data[0];
     if ( rs.length === 0 ) {
         this.funciones.msgAlert('ATENCION', 'Los datos ingresados no coinciden con usuarios registrados. ' +
@@ -84,12 +84,11 @@ export class LoginPage implements OnInit {
     } else {
         this.rescataConfiguracion();
         rs.LISTACLIENTE = '';
-        this.funciones.muestraySale( 'Hola ' + rs.NOKOFU + ', ' + this.funciones.textoSaludo(), 1.5 );
+        this.funciones.muestraySale( 'Hola ' + rs.NOKOFU + ', ' + this.funciones.textoSaludo(), 0.7 );
+        this.baseLocal.guardaUltimoUsuario( rs );
         this.baseLocal.user = rs;
         this.router.navigate(['/tabs/inicio']);
-        // this.router.navigateByUrl('/tabs/inicio');
     }
   }
-
 
 }

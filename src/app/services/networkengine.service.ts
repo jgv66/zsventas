@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ToastController, AlertController, LoadingController } from '@ionic/angular';
-import { Storage } from '@ionic/storage';
-
 
 @Injectable({
   providedIn: 'root'
@@ -35,6 +32,13 @@ export class NetworkengineService {
     const accion = '/proalma';
     const url    = this.url + accion;
     const body   = { sp: cSP, datos: parametros, user: pUser, versionNueva: true };
+    return this.http.post( url, body );
+  }
+
+  consultaEstandar( cSP: string, parametros?: any, pUser?: any ) {
+    const accion = '/' + cSP;
+    const url    = this.url + accion;
+    const body   = { datos: parametros, user: pUser, versionNueva: true };
     return this.http.post( url, body );
   }
 

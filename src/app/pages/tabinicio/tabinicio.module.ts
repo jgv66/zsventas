@@ -4,8 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
-import { TabinicioPage } from './tabinicio.page';
 
+import { TabinicioPage } from './tabinicio.page';
 import { ComponentsModule } from 'src/app/components/components.module';
 import { TrespuntosComponent } from '../../components/trespuntos/trespuntos.component';
 

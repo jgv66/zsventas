@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
+import { BaselocalService } from '../../services/baselocal.service';
 
 @Component({
   selector: 'app-trespuntos',
@@ -8,20 +9,20 @@ import { PopoverController } from '@ionic/angular';
 })
 export class TrespuntosComponent implements OnInit {
 
-  sugerencias = [ { texto: 'Caro' },
-                  { texto: 'Barato' },
-                  { texto: 'Malo' },
-                  { texto: 'Quiebre Stock' },
+  sugerencias = [ { texto: 'Ultimas Ventas'   },
+                  { texto: 'Ultimas Compras'  },
+                  { texto: 'Sugerencias'      },
                   { texto: 'NVI para reponer' } ];
 
-  constructor( private popoverCtrl: PopoverController ) { }
+  constructor( private popoverCtrl: PopoverController,
+               public  baseLocal: BaselocalService ) { }
 
   ngOnInit() {}
 
   onClick( pos: number ) {
-    console.log(pos);
     this.popoverCtrl.dismiss({
       opcion: this.sugerencias[pos]
     });
   }
+
 }

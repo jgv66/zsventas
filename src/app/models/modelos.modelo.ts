@@ -1,15 +1,34 @@
 export interface Usuario {
     KOFU: string;   // codigo de usuario
+    usuario: string;
     NOKOFU: string;
+    nombre: string;
     RTFU: string;
     EMAIL: string;
     MODALIDAD: string;
+    modalidad: string;
+    KOSU: string;
+    sucursal: string;
     BODEGA: string;
+    bodega: string;
     LISTAMODALIDAD: string;
+    listamodalidad: string;
+    nombrelista: string;
     LISTACLIENTE: string;
     SUCURSAL: string;
     EMPRESA: string;
-    NOKOBO?: string;
+    empresa: string;
+    razonsocial: string;
+    NOKOBO: string;
+    nombresuc: string;
+    nombrebod: string;
+    puedecrearcli: boolean;
+    puedemodifdscto: boolean;
+    krpt: boolean;
+    kconcecionario: boolean;
+    puedemoddesc: boolean;
+    puedeverprov: boolean;
+    puedevercosto: boolean;
 }
 
 export interface Cliente {
@@ -24,6 +43,7 @@ export interface Cliente {
   nombrevendedor: string;
   listaprecios: string;  // char(3)
   nombrelista: string;
+  LISTACLIENTE: string;
 }
 
 export interface KEnca {

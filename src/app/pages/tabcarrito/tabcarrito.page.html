@@ -7,7 +7,7 @@
 
 <ion-content class="ion-padding">
   
-  <ion-button *ngIf=" sumaCarrito() > 0 " expand="block" color="primary">Total del Pedido: ${{ sumaCarrito() | number:0 }}</ion-button>
+  <ion-button *ngIf=" sumaCarrito() > 0 " expand="block" color="primary">Total del Pedido: ${{ sumaCarrito() | number:"1.0-0" }}</ion-button>
   
   <ion-list *ngIf=" sumaCarrito() > 0 ">
     <ion-item-sliding  *ngFor="let producto of funciones.miCarrito">
@@ -50,7 +50,7 @@
                   <p>Precio : </p>
               </ion-col>
               <ion-col size="3" class="ion-text-right">
-                  <b><p>${{ producto.precio | number:0 }}</p></b>
+                  <b><p>${{ producto.precio | number:"1.0-0" }}</p></b>
               </ion-col>
               <ion-col size="0.5" class="ion-text-center">
                   <p>x</p>
@@ -62,7 +62,7 @@
                   <p>=</p>
               </ion-col>
               <ion-col size="3" class="ion-text-left">
-                  <b><p>$ {{ producto.precio * producto.cantidad | number:0 }}</p></b>
+                  <b><p>$ {{ producto.precio * producto.cantidad | number:"1.0-0" }}</p></b>
               </ion-col>
           </ion-row>
           <!-- precio con desc -->
@@ -71,7 +71,7 @@
                   <p>Mayorista : </p>
               </ion-col>
               <ion-col size="3" class="ion-text-right">
-                  <b><p>${{ producto.preciomayor | number:0 }}</p></b>
+                  <b><p>${{ producto.preciomayor | number:"1.0-0" }}</p></b>
               </ion-col>
               <ion-col size="0.5" class="ion-text-center">
                   <p>x</p>
@@ -83,7 +83,7 @@
                   <p>=</p>
               </ion-col>
               <ion-col size="3" class="ion-text-center">
-                  <b><p>$ {{ producto.preciomayor * producto.cantidad | number:0 }}</p></b>
+                  <b><p>$ {{ producto.preciomayor * producto.cantidad | number:"1.0-0" }}</p></b>
               </ion-col>
           </ion-row>    
         </ion-grid>            

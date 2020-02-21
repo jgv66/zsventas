@@ -103,7 +103,7 @@
                             <ion-badge color="danger" (click)="cargaBodegas(producto)">Stock : {{ producto.stock_ud1 }}</ion-badge>
                         </ion-col>
                         <ion-col size="3" class="ion-text-left">
-                            <p><b>(Tot.: {{ producto.stock_total_ud1 | number:0 }})</b></p>
+                            <p><b>(Tot.: {{ producto.stock_total_ud1 | number:"1.0-0" }})</b></p>
                         </ion-col>
                     </ion-row>
                     <ion-row *ngIf=" producto.stock_ud1 <= 0 && producto.sucursal != undefined ">
@@ -114,7 +114,7 @@
                             <ion-badge color="danger" (click)="cargaBodegas(producto)">Sin stock</ion-badge>
                         </ion-col>
                         <ion-col size="3" class="ion-text-left">
-                            <p><b>(Tot.: {{ producto.stock_total_ud1 | number:0 }})</b></p>
+                            <p><b>(Tot.: {{ producto.stock_total_ud1 | number:"1.0-0" }})</b></p>
                         </ion-col>
                     </ion-row>
                     <ion-row *ngIf=" producto.sucursal == undefined ">
@@ -125,7 +125,7 @@
                             <ion-badge color="danger" (click)="cargaBodegas(producto)">No/Asig</ion-badge>
                         </ion-col>
                         <ion-col size="3" class="ion-text-left">
-                            <p><b>(Tot.: {{ producto.stock_total_ud1 | number:0 }})</b></p>
+                            <p><b>(Tot.: {{ producto.stock_total_ud1 | number:"1.0-0" }})</b></p>
                         </ion-col>
                     </ion-row>
                     <!-- precio -->
@@ -134,7 +134,7 @@
                             <p>Precio {{ producto.tipolista }}: </p>
                         </ion-col>
                         <ion-col size="5">
-                            <ion-badge color="danger" (click)="cargaListas(producto)">${{ producto.precio | number:0 }}</ion-badge>
+                            <ion-badge color="danger" (click)="cargaListas(producto)">${{ producto.precio | number:"1.0-0" }}</ion-badge>
                         </ion-col>
                         <ion-col size="3" class="ion-text-left">
                             <p>(<b>{{ producto.metodolista }}/{{ producto.listaprecio }}</b>)</p>
@@ -145,7 +145,7 @@
                             <p><s>Precio {{ producto.tipolista }}: </s></p>
                         </ion-col>
                         <ion-col size="5">
-                            <p><s><b>${{ producto.precio | number:0 }}</b></s></p>
+                            <p><s><b>${{ producto.precio | number:"1.0-0" }}</b></s></p>
                         </ion-col>
                         <ion-col size="3" class="ion-text-left">
                             <p>(<b>{{ producto.metodolista }}/{{ producto.listaprecio }}</b>)</p>
@@ -157,7 +157,7 @@
                             <p>Descuento : </p>
                         </ion-col>
                         <ion-col size="5">
-                            <p><b>${{ producto.dsctovalor | number:0 }}</b></p>
+                            <p><b>${{ producto.dsctovalor | number:"1.0-0" }}</b></p>
                         </ion-col>
                         <ion-col size="3" class="ion-text-left">
                             <ion-badge color="danger" (click)="cambiaDescuento(producto)">{{ producto.descuentomax }}%</ion-badge>                           
@@ -169,7 +169,7 @@
                             <p>Precio {{ producto.tipolista }}: </p>
                         </ion-col>
                         <ion-col  class="ion-text-left" size="5">
-                            <ion-badge color="danger" item-end (click)="cargaListas(producto)">${{ producto.preciomayor | number:0 }}</ion-badge>
+                            <ion-badge color="danger" item-end (click)="cargaListas(producto)">${{ producto.preciomayor | number:"1.0-0" }}</ion-badge>
                         </ion-col>
                     </ion-row>    
                 

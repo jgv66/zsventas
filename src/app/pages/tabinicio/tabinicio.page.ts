@@ -1,11 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonContent } from '@ionic/angular';
-import { FuncionesService } from 'src/app/services/funciones.service';
 import { AlertController, IonInfiniteScroll, PopoverController } from '@ionic/angular';
+import { Router } from '@angular/router';
+
+import { BarcodeScanner, BarcodeScannerOptions } from '@ionic-native/barcode-scanner/ngx';
+
+import { FuncionesService } from 'src/app/services/funciones.service';
 import { BaselocalService } from '../../services/baselocal.service';
 import { NetworkengineService } from '../../services/networkengine.service';
-import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
-import { Router } from '@angular/router';
 import { TrespuntosComponent } from '../../components/trespuntos/trespuntos.component';
 
 @Component({
@@ -153,10 +155,10 @@ export class TabinicioPage implements OnInit {
                                listaprecio:   (( this.baseLocal.user.LISTACLIENTE && this.baseLocal.user.LISTACLIENTE !== this.baseLocal.user.LISTAMODALIDAD ))
                                               ? this.baseLocal.user.LISTACLIENTE
                                               : this.baseLocal.user.LISTAMODALIDAD,
-                               soloconstock:  this.baseLocal.config.soloconstock,
-                               ordenar:       this.baseLocal.config.ordenar,
+                               soloconstock:  ( this.baseLocal.config.soloconstock ? true : false ),
+                               ordenar:       ( this.baseLocal.config.ordenar ? this.baseLocal.config.ordenar : '' ) ,
                                familias:      pCodFamilias,
-                               soloverimport: this.baseLocal.config.soloverimport,
+                               soloverimport: ( this.baseLocal.config.soloverimport ? this.baseLocal.config.soloverimport : false ),
                                empresa:       this.baseLocal.user.EMPRESA,
                                usuario:       this.baseLocal.user.KOFU })
           .subscribe( data => { this.buscando = false;
@@ -192,18 +194,6 @@ export class TabinicioPage implements OnInit {
     this.aBuscarProductos( this.pProd, this.pDesc, this.pFami, 0, infiniteScroll );
   }
 
-  async scanBarcode() {
-    try {
-      await this.barcode.scan()
-                .then( barcodeData => {
-                      this.codproducto = barcodeData.text.trim();
-                      this.descripcion = '';
-                      this.aBuscarProductos( this.codproducto, '', '', 1 );
-                }, (err) => {
-                    // An error occurred
-                });
-    } catch (error) { console.error(error); }
-  }
   CeroBlanco( valor ) {
     if ( valor === 0 ) {
         return '';
@@ -315,7 +305,7 @@ export class TabinicioPage implements OnInit {
   cambiaListaProductos( data, producto, caso ) {
     let i = 0;
     /* deberia mejorarla con un filter... */
-    if ( caso === 1 ) { 
+    if ( caso === 1 ) {
       this.listaProductos.forEach( element => {
         if ( this.listaProductos[i].codigo === producto.codigo ) {
             producto.stock_ud1    = data.stock_ud1;
@@ -461,8 +451,12 @@ export class TabinicioPage implements OnInit {
           break;
         //
         case 'Ultimas Compras':
-          dataParam = JSON.stringify({tipo: 'C', codigo: codigoProducto });
-          this.router.navigate(['/tabs/ultmovs', dataParam]);
+          if ( !this.usuario.puedevercosto ) {
+            this.funciones.msgAlert('ATENCION', 'Ud. no posee autorización paras ver esta informacion.' );
+          } else {
+            dataParam = JSON.stringify({tipo: 'C', codigo: codigoProducto });
+            this.router.navigate(['/tabs/ultmovs', dataParam]);
+          }
           break;
         //
         case 'Sugerencias':
@@ -505,4 +499,46 @@ export class TabinicioPage implements OnInit {
   //     }
   // }
 
+  // async scanBarcode() {
+  //   try {
+  //     await this.barcode.scan()
+  //               .then( barcodeData => {
+  //                     this.codproducto = barcodeData.text.trim();
+  //                     this.descripcion = '';
+  //                     this.aBuscarProductos( this.codproducto, '', '', 1 );
+  //               }, (err) => {
+  //                   // An error occurred
+  //               });
+  //   } catch (error) { console.error(error); }
+  // }
+
+  scanBarcode() {
+    const options:
+          BarcodeScannerOptions = { preferFrontCamera:     true,
+                                    showFlipCameraButton:  true,
+                                    showTorchButton:       true,
+                                    torchOn:               false,
+                                    prompt:                'Encierre el código en el area de camara',
+                                    resultDisplayDuration: 500,
+                                    formats:               'QR_CODE,PDF_417 ',
+                                    orientation:           'landscape',
+                                  };
+    this.barcode.scan(options)
+      .then(barcodeData => {
+        console.log('Barcode data', barcodeData);
+        // this.scannedData = barcodeData;
+      })
+      .catch(err => {
+        console.log('Error', err);
+      });
+  }
+
+  // goToCreateCode() {
+  //   this.barcode.encode(this.barcode.Encode.TEXT_TYPE, this.encodeData)
+  //     .then((encodedData) => {
+  //           console.log(encodedData);
+  //           // this.encodedData = encodedData;
+  //     }, (err) => { console.log('Error occured : ' + err);
+  //     });
+  // }
 }

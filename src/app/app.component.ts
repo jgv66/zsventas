@@ -19,9 +19,12 @@ export class AppComponent {
   }
 
   initializeApp() {
-    this.platform.ready().then(() => {
+    this.platform.ready().then( () => {
       this.statusBar.styleDefault();
-      this.splashScreen.hide();
+      // navigator.splashscreen.hide();
+      setTimeout( () => {
+        this.splashScreen.hide();
+        }, 100);
     });
   }
 }

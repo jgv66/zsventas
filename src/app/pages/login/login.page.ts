@@ -56,7 +56,7 @@ export class LoginPage implements OnInit {
   rescataConfiguracion() {
     // console.log( '<<< rescataConfiguracion() >>>' );
     this.netWork.rescataSeteoCliente()
-        .subscribe( (data: any) => { this.baseLocal.actualizarConfig( data.configp ); },
+        .subscribe( (data: any) => this.baseLocal.actualizarConfig( data.configp ),
                     (err: any)  => { this.funciones.msgAlert( 'ATENCION' , 'Ocurrió un error -> ' + err ); }
                   );
   }
@@ -74,8 +74,7 @@ export class LoginPage implements OnInit {
                   );
     }
   }
-
-  private revisaExitooFracaso( data ) {
+  revisaExitooFracaso( data ) {
     this.buscando = false;
     const rs = data[0];
     if ( rs.length === 0 ) {
@@ -87,6 +86,7 @@ export class LoginPage implements OnInit {
         this.funciones.muestraySale( 'Hola ' + rs.NOKOFU + ', ' + this.funciones.textoSaludo(), 0.7 );
         this.baseLocal.guardaUltimoUsuario( rs );
         this.baseLocal.user = rs;
+        console.log(rs);
         this.router.navigate(['/tabs/inicio']);
     }
   }

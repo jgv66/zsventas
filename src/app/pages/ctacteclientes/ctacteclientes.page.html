@@ -29,11 +29,11 @@
         <h2>{{ documento.tipo }}:{{ documento.numero }} </h2>
         <p style="font-size: 85%">Emisión:<b>{{ documento.emision }}</b></p>
         <p style="font-size: 85%">Vencimiento:<b>{{ documento.fultvenc }}</b></p>
-        <p style="font-size: 85%">DIAS:<b>{{ documento.dias | number:0 }}</b></p>
+        <p style="font-size: 85%">DIAS:<b>{{ documento.dias | number:"1.0-0" }}</b></p>
       </ion-label>
       <ion-label slot="end" class="ion-text-right" color="danger">
-          <p style="font-size: 105%">Monto:<b>${{ documento.monto | number:0 }}</b></p>
-          <p style="font-size: 105%">Saldo:<b>${{ documento.saldo | number:0 }}</b></p>
+          <p style="font-size: 105%">Monto:<b>${{ documento.monto | number:"1.0-0" }}</b></p>
+          <p style="font-size: 105%">Saldo:<b>${{ documento.saldo | number:"1.0-0" }}</b></p>
       </ion-label>
     </ion-item>
   </ion-list>

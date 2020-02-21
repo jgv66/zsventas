@@ -6,8 +6,10 @@ import { HttpClient } from '@angular/common/http';
 })
 export class NetworkengineService {
 
-  url = 'https://api.kinetik.cl/zspwa';   /* servidor linode cliente*/
-  puerto = '443';                         /* puerto: ZSMOTOR */
+  // url = 'https://api.kinetik.cl/zspwa';   /* servidor linode cliente*/
+  // puerto = '443';                         /* puerto: ZSMOTOR */
+
+  url = 'https://zsmotorapps.cl/appventas';
 
   constructor( private http: HttpClient ) {
     console.log('<<< NetworkengineProvider >>>');
@@ -32,6 +34,7 @@ export class NetworkengineService {
     const accion = '/proalma';
     const url    = this.url + accion;
     const body   = { sp: cSP, datos: parametros, user: pUser, versionNueva: true };
+    // console.log(url, body);
     return this.http.post( url, body );
   }
 

@@ -1,76 +1,76 @@
 <ion-header>
     <ion-toolbar>
         <ion-buttons slot="start">
-          <ion-back-button text=' '></ion-back-button>
+            <ion-back-button text=' '></ion-back-button>
         </ion-buttons>
-      <img src="./assets/imgs/logo-zs.png" alt="" class="navbar-img">        
-      <ion-title>Sugerencias al Artículo</ion-title>
+        <img src="./assets/imgs/logo-zs.png" alt="" class="navbar-img">
+        <ion-title>Sugerencias al Artículo</ion-title>
     </ion-toolbar>
-  </ion-header>
+</ion-header>
 
 <ion-content class="ion-padding">
 
-  <ion-card class="ion-padding" style="margin-top: 5px;">
-    <p class="ion-text-justify">Sus comentarios y sugerencias respecto del producto involucrado, nos sirven para mejorar su venta, exhibición y mercadeo.</p>
-    <p class="ion-text-justify">Siéntase libre de expresarnos todas sus observaciones. Muchas gracias.</p>
-  </ion-card>
-    
-  <ion-list>
+    <ion-card class="ion-padding" style="margin-top: 5px;
+                                          margin-left: 5px;
+                                          margin-right: 5px;
+                                          padding-left: 10px;
+                                          padding-right: 10px;
+                                          padding-top: 5px;
+                                          padding-bottom: 5px;
+                                          margin-bottom: 10px;">
+        <p class="ion-text-justify">Sus comentarios y sugerencias respecto del producto involucrado, nos sirven para mejorar su venta, exhibición y mercadeo.</p>
+        <p class="ion-text-justify">Siéntase libre de expresarnos todas sus observaciones. Muchas gracias.</p>
+    </ion-card>
 
-    <ion-item-divider><ion-label class="ion-text-center">Calidad del producto</ion-label></ion-item-divider>
-    <ion-item>
-      <ion-label>El producto es de buena calidad</ion-label>
-      <ion-toggle value="prodbueno" [(ngModel)]="prodbueno" slot="end"></ion-toggle>
-    </ion-item>
-    <ion-item>
-      <ion-label>El producto es de regular calidad</ion-label>
-      <ion-toggle value="prodregular" [(ngModel)]="prodregular" slot="end"></ion-toggle>
-    </ion-item>
-    <ion-item>
-      <ion-label>El producto es de mala calidad</ion-label>
-      <ion-toggle value="prodmalo" [(ngModel)]="prodmalo" slot="end"></ion-toggle>
-    </ion-item>
-    <ion-item-divider><ion-label class="ion-text-center">Precio del producto</ion-label></ion-item-divider>
-    <ion-item>
-      <ion-label>El producto es muy barato</ion-label>
-      <ion-toggle value="preciomuybarato" [(ngModel)]="preciomuybarato" slot="end"></ion-toggle>
-    </ion-item>
-     <ion-item>
-      <ion-label>El producto es de precio correcto</ion-label>
-      <ion-toggle value="preciocorrecto" [(ngModel)]="preciocorrecto" slot="end"></ion-toggle>
-    </ion-item>
-    <ion-item>
-      <ion-label>El producto es muy caro</ion-label>
-      <ion-toggle value="preciomuycaro" [(ngModel)]="preciomuycaro" slot="end"></ion-toggle>
-    </ion-item>
-    <ion-item-divider><ion-label class="ion-text-center">Condición de Stock del producto</ion-label></ion-item-divider>
-    <ion-item>
-      <ion-label>El producto siempre tiene stock</ion-label>
-      <ion-toggle value="prodconstock" [(ngModel)]="prodconstock" slot="end"></ion-toggle>
-    </ion-item>
-    <ion-item>
-      <ion-label>El producto tiene stock irregular</ion-label>
-      <ion-toggle value="prodstockirreg" [(ngModel)]="prodstockirreg" slot="end"></ion-toggle>
-    </ion-item>
-    <ion-item>
-      <ion-label>El producto siempre tiene quiebre</ion-label>
-      <ion-toggle value="prodconquiebre" [(ngModel)]="prodconquiebre" slot="end"></ion-toggle>
-    </ion-item>
-    <ion-item-divider><ion-label class="ion-text-center">Comentarios </ion-label></ion-item-divider>
-    <ion-item>
-      <ion-textarea name="observaciones" 
-                    [(ngModel)]="observaciones" 
-                    clearOnEdit="true" 
-                    rows="6" 
-                    placeholder="Ingrese sus notas aquí...">
-      </ion-textarea>
-    </ion-item>
-  </ion-list>
-  
-  <ion-progress-bar *ngIf=" enviando " type="indeterminate"></ion-progress-bar>
+    <ion-list>
 
-  <ion-button size="small" expand="block" (click)="enviar()"><ion-icon slot="start" name="send"></ion-icon>
-    Enviar mis sugerencias
-  </ion-button>
+        <ion-item-divider>
+            <ion-label class="ion-text-center">Calidad del producto</ion-label>
+        </ion-item-divider>
+        <ion-item>
+            <ion-label>El producto es de buena calidad</ion-label>
+            <ion-toggle value="prodbueno" [(ngModel)]="prodbueno" slot="end"></ion-toggle>
+        </ion-item>
+        <ion-item>
+            <ion-label>El producto es de mala calidad</ion-label>
+            <ion-toggle value="prodmalo" [(ngModel)]="prodmalo" slot="end"></ion-toggle>
+        </ion-item>
+        <ion-item-divider>
+            <ion-label class="ion-text-center">Precio del producto</ion-label>
+        </ion-item-divider>
+        <ion-item>
+            <ion-label>El producto es muy barato</ion-label>
+            <ion-toggle value="preciomuybarato" [(ngModel)]="preciomuybarato" slot="end"></ion-toggle>
+        </ion-item>
+        <ion-item>
+            <ion-label>El producto es muy caro</ion-label>
+            <ion-toggle value="preciomuycaro" [(ngModel)]="preciomuycaro" slot="end"></ion-toggle>
+        </ion-item>
+        <ion-item-divider>
+            <ion-label class="ion-text-center">Condición de Stock del producto</ion-label>
+        </ion-item-divider>
+        <ion-item>
+            <ion-label>El producto siempre tiene stock</ion-label>
+            <ion-toggle value="prodconstock" [(ngModel)]="prodconstock" slot="end"></ion-toggle>
+        </ion-item>
+        <ion-item>
+            <ion-label>El producto siempre tiene quiebre</ion-label>
+            <ion-toggle value="prodconquiebre" [(ngModel)]="prodconquiebre" slot="end"></ion-toggle>
+        </ion-item>
+        <ion-item-divider>
+            <ion-label class="ion-text-center">Comentarios </ion-label>
+        </ion-item-divider>
+        <ion-item>
+            <ion-textarea name="observaciones" [(ngModel)]="observaciones" clearOnEdit="true" rows="6" placeholder="Ingrese sus notas aquí...">
+            </ion-textarea>
+        </ion-item>
+    </ion-list>
+
+    <ion-progress-bar *ngIf=" enviando " type="indeterminate"></ion-progress-bar>
+
+    <ion-button size="small" expand="block" (click)="enviar()">
+        <ion-icon slot="start" name="send"></ion-icon>
+        Enviar mis sugerencias
+    </ion-button>
 
 </ion-content>

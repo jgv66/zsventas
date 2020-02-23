@@ -9,7 +9,7 @@ export class NetworkengineService {
   // url = 'https://api.kinetik.cl/zspwa';   /* servidor linode cliente*/
   // puerto = '443';                         /* puerto: ZSMOTOR */
 
-  url = 'https://zsmotorapps.cl/appventas';
+  url = 'https://zsmotorapps.cl/appventas'; /* zsventas en puerto 3020   https://zsmotorapps.cl/appventas */
 
   constructor( private http: HttpClient ) {
     console.log('<<< NetworkengineProvider >>>');
@@ -53,7 +53,7 @@ export class NetworkengineService {
   }
 
   grabarDocumentos( pCarro, pModalidad, cTipodoc, cTextoObs, cTextoOcc )  {
-    console.log('grabadocumentos()->', pCarro);
+    // console.log('grabadocumentos()->', pCarro);
     const accion = '/grabadocumentos';
     const url    = this.url  + accion;
     const body   = { carro: pCarro, modalidad: pModalidad, tipodoc: cTipodoc, cObs: cTextoObs, cOcc: cTextoOcc };

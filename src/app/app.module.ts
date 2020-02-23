@@ -8,10 +8,10 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 
 import { HttpClientModule } from '@angular/common/http';
 import { IonicStorageModule } from '@ionic/storage';
+import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 
 import { NetworkengineService } from './services/networkengine.service';
 import { BaselocalService } from './services/baselocal.service';
@@ -34,7 +34,7 @@ import { environment } from '../environments/environment';
     SplashScreen,
     NetworkengineService,
     BaselocalService,
-    BarcodeScanner,
+    SocialSharing,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

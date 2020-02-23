@@ -29,6 +29,7 @@ export interface Usuario {
     puedemoddesc: boolean;
     puedeverprov: boolean;
     puedevercosto: boolean;
+    puedecrearnvi: boolean;
 }
 
 export interface Cliente {

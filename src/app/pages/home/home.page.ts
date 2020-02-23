@@ -47,7 +47,7 @@ export class HomePage {
 
   // Detects if device is on iOS
   isIos() {
-    const userAgent = localStorage.getItem('userAgent');// window.navigator.userAgent.toLowerCase();
+    const userAgent = localStorage.getItem('userAgent'); // window.navigator.userAgent.toLowerCase();
     console.log('userAgent: ', userAgent);
     return /iphone|ipad|ipod/.test( userAgent );
   }

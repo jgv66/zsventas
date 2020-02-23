@@ -95,7 +95,7 @@ export class MenuseteoPage {
 
     const { data } = await popover.onDidDismiss();
     if ( data ) {
-      const tido = ( (data.opcion.texto === 'Ultimas 15 NVV') ? 'NVV' : 'FCV' );
+      const tido = this.funciones.derecha( data.opcion.texto, 3 ); // === 'Ultimas 15 NVV') ? 'NVV' : 'FCV' );
       this.router.navigate(['/tabs/ultimosdocs/' + tido ]);
     }
   }

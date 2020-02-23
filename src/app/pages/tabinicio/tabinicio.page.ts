@@ -3,12 +3,13 @@ import { IonContent } from '@ionic/angular';
 import { AlertController, IonInfiniteScroll, PopoverController } from '@ionic/angular';
 import { Router } from '@angular/router';
 
-import { BarcodeScanner, BarcodeScannerOptions } from '@ionic-native/barcode-scanner/ngx';
-
 import { FuncionesService } from 'src/app/services/funciones.service';
 import { BaselocalService } from '../../services/baselocal.service';
 import { NetworkengineService } from '../../services/networkengine.service';
 import { TrespuntosComponent } from '../../components/trespuntos/trespuntos.component';
+
+// const { Camera } = Plugins;
+// const isAvailable = Capacitor.isPluginAvailable('Camera');
 
 @Component({
   selector: 'app-tabinicio',
@@ -62,8 +63,7 @@ export class TabinicioPage implements OnInit {
                public  funciones: FuncionesService,
                private alertCtrl: AlertController,
                private router: Router,
-               private popoverCtrl: PopoverController,
-               private barcode: BarcodeScanner ) {
+               private popoverCtrl: PopoverController ) {
     this.filtroFamilias = false;
     this.codproducto   = '';
     this.descripcion   = '';
@@ -106,10 +106,6 @@ export class TabinicioPage implements OnInit {
         .then( data => this.config = data );
     this.config = this.baseLocal.config;
   }
-
-  // verImagen() {
-  //   this.config.imagenes = !this.config.imagenes;
-  // }
 
   // movimientos arriba y abajo
   // logScrollStart()    { console.log( 'logScrollStart : When Scroll Starts'); this.ScrollToTop();    }
@@ -258,7 +254,7 @@ export class TabinicioPage implements OnInit {
   cargaBodegas( producto ) {
     this.funciones.cargaEspera();
     this.netWork.traeUnSP( 'ksp_BodegaProducto',
-                          { codproducto: producto.codigo, usuario: this.usuario, empresa: '01' },
+                          { codproducto: producto.codigo, usuario: this.usuario, empresa: '01', cualquierbodega: 0 },
                           {codigo: this.usuario.KOFU, nombre: this.usuario.NOKOFU } )
         .subscribe( data => { this.funciones.descargaEspera(); this.revisaEoFBP( producto, data ); },
                     err  => { this.funciones.descargaEspera(); this.funciones.msgAlert( 'ATENCION', err );  }
@@ -431,7 +427,8 @@ export class TabinicioPage implements OnInit {
     }
   }
 
-  async opcionPuntos( event, codigoProducto ) {
+  async opcionPuntos( event, producto ) {
+      //
       const popover = await this.popoverCtrl.create({
         component: TrespuntosComponent,
         event,
@@ -439,33 +436,43 @@ export class TabinicioPage implements OnInit {
         translucent: false
       });
       await popover.present();
-
+      //
       const { data } = await popover.onDidDismiss();
       let dataParam = '';
-      // console.log('data', data.opcion.texto);
+      // console.log('data', data.opcion.texto, this.usuario.puedevercosto );
       switch (data.opcion.texto) {
         //
         case 'Ultimas Ventas':
-          dataParam = JSON.stringify({tipo: 'V', codigo: codigoProducto });
+          dataParam = JSON.stringify({tipo: 'V', codigo: producto.codigo });
           this.router.navigate(['/tabs/ultmovs', dataParam]);
           break;
         //
         case 'Ultimas Compras':
-          if ( !this.usuario.puedevercosto ) {
-            this.funciones.msgAlert('ATENCION', 'Ud. no posee autorización paras ver esta informacion.' );
-          } else {
-            dataParam = JSON.stringify({tipo: 'C', codigo: codigoProducto });
+          if ( this.baseLocal.user.puedevercosto === true ) {
+            dataParam = JSON.stringify({tipo: 'C', codigo: producto.codigo });
             this.router.navigate(['/tabs/ultmovs', dataParam]);
+          } else {
+            this.funciones.msgAlert('ATENCION', 'Ud. no posee autorización para ver esta información.' );
           }
           break;
         //
         case 'Sugerencias':
-          dataParam = JSON.stringify({ codigo: codigoProducto });
+          dataParam = JSON.stringify({ codigo: producto.codigo });
           this.router.navigate(['/tabs/sugerencias', dataParam]);
           break;
         //
         case 'NVI para reponer':
-          console.log('NVI para reponer');
+          if ( this.baseLocal.user.puedecrearnvi === true ) {
+            dataParam = JSON.stringify({ producto, usuario: this.baseLocal.user });
+            this.router.navigate(['/tabs/crearnvi', dataParam]);
+          } else {
+            this.funciones.msgAlert('ATENCION', 'Ud. no posee autorización para crear este documento.' );
+          }
+          break;
+        //
+        case 'Compartir':
+          dataParam = JSON.stringify({ producto, usuario: this.baseLocal.user });
+          this.router.navigate(['/tabs/socialsh', dataParam]);
           break;
         //
         default:
@@ -499,46 +506,6 @@ export class TabinicioPage implements OnInit {
   //     }
   // }
 
-  // async scanBarcode() {
-  //   try {
-  //     await this.barcode.scan()
-  //               .then( barcodeData => {
-  //                     this.codproducto = barcodeData.text.trim();
-  //                     this.descripcion = '';
-  //                     this.aBuscarProductos( this.codproducto, '', '', 1 );
-  //               }, (err) => {
-  //                   // An error occurred
-  //               });
-  //   } catch (error) { console.error(error); }
-  // }
+  scanBarcode() {}
 
-  scanBarcode() {
-    const options:
-          BarcodeScannerOptions = { preferFrontCamera:     true,
-                                    showFlipCameraButton:  true,
-                                    showTorchButton:       true,
-                                    torchOn:               false,
-                                    prompt:                'Encierre el código en el area de camara',
-                                    resultDisplayDuration: 500,
-                                    formats:               'QR_CODE,PDF_417 ',
-                                    orientation:           'landscape',
-                                  };
-    this.barcode.scan(options)
-      .then(barcodeData => {
-        console.log('Barcode data', barcodeData);
-        // this.scannedData = barcodeData;
-      })
-      .catch(err => {
-        console.log('Error', err);
-      });
-  }
-
-  // goToCreateCode() {
-  //   this.barcode.encode(this.barcode.Encode.TEXT_TYPE, this.encodeData)
-  //     .then((encodedData) => {
-  //           console.log(encodedData);
-  //           // this.encodedData = encodedData;
-  //     }, (err) => { console.log('Error occured : ' + err);
-  //     });
-  // }
 }

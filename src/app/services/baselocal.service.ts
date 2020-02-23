@@ -48,7 +48,8 @@ export class BaselocalService {
               kconcecionario: false,
               puedemoddesc: false,
               puedeverprov: false,
-              puedevercosto: false };
+              puedevercosto: false,
+              puedecrearnvi: false };
   }
 
   initCliente() {

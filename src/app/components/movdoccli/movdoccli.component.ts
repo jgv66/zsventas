@@ -8,8 +8,10 @@ import { PopoverController } from '@ionic/angular';
 })
 export class MovdoccliComponent {
 
-  sugerencias = [ { texto: 'Ultimas 15 NVV' },
-                  { texto: 'Ultimas 15 FCV' } ];
+  sugerencias = [ { texto: 'Ultimas 15 COV' },
+                  { texto: 'Ultimas 15 NVV' },
+                  { texto: 'Ultimas 15 FCV' },
+                  { texto: 'Ultimas 15 BLV' } ];
 
   constructor( private popoverCtrl: PopoverController ) { }
 

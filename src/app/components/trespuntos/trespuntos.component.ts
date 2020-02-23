@@ -9,10 +9,11 @@ import { BaselocalService } from '../../services/baselocal.service';
 })
 export class TrespuntosComponent implements OnInit {
 
-  sugerencias = [ { texto: 'Ultimas Ventas'   },
-                  { texto: 'Ultimas Compras'  },
-                  { texto: 'Sugerencias'      },
-                  { texto: 'NVI para reponer' } ];
+  sugerencias = [ { texto: 'Últimas Ventas',   icon: 'ios-cloud-upload' },
+                  { texto: 'Últimas Compras',  icon: 'ios-cloud-download' },
+                  { texto: 'NVI para reponer', icon: 'md-sync' },
+                  { texto: 'Sugerencias',      icon: 'md-bulb'  }/*,
+                  { texto: 'Compartir',        icon: 'md-share' }*/ ];
 
   constructor( private popoverCtrl: PopoverController,
                public  baseLocal: BaselocalService ) { }

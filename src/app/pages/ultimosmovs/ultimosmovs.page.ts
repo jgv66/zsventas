@@ -16,8 +16,8 @@ export class UltimosmovsPage implements OnInit {
   buscando = false;
   sistema: any;
 
-  constructor( private netWork: NetworkengineService,
-               public baseLocal: BaselocalService,
+  constructor( public baseLocal: BaselocalService,
+               private netWork: NetworkengineService,
                private funciones: FuncionesService,
                private router: Router,
                private parametros: ActivatedRoute ) {
@@ -31,12 +31,10 @@ export class UltimosmovsPage implements OnInit {
                            { codigo:  this.sistema.codigo,
                              empresa: this.baseLocal.user.EMPRESA,
                              sistema: this.sistema.tipo,
-                             cliente: ( this.sistema.cliente ? this.sistema.cliente : null )
-                           },
+                             cliente: ( this.sistema.cliente ? this.sistema.cliente : null ) },
                            { codigo: this.baseLocal.user.KOFU,
-                             nombre: this.baseLocal.user.NOKOFU
-                           })
-        .subscribe( data => { this.revisa( data );           },
+                             nombre: this.baseLocal.user.NOKOFU })
+        .subscribe( data => { this.revisa( data ); },
                     err  => { this.buscando = false;
                               this.funciones.msgAlert( 'ATENCION', err ); });
   }

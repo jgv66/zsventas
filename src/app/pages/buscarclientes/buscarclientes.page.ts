@@ -36,7 +36,8 @@ export class BuscarclientesPage {
       this.netWork.traeUnSP( 'ksp_buscarDeNuevoClientes',
                             { dato:    pDato,
                               codusr:  this.baseLocal.user.KOFU,
-                              empresa: this.baseLocal.user.EMPRESA } )
+                              empresa: this.baseLocal.user.EMPRESA,
+                              solouno: false } )
           .subscribe( data => { this.buscando = false; this.revisaRespuesta( data ); },
                       err  => { this.buscando = false; this.funciones.msgAlert( 'ATENCION', err );  }
                     );

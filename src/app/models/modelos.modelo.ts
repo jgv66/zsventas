@@ -22,6 +22,7 @@ export interface Usuario {
     NOKOBO: string;
     nombresuc: string;
     nombrebod: string;
+    esuncliente: boolean;
     puedecrearcli: boolean;
     puedemodifdscto: boolean;
     krpt: boolean;

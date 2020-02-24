@@ -18,7 +18,7 @@ export class LoginPage implements OnInit {
   buscando = false;
 
   constructor(private router: Router,
-              private baseLocal: BaselocalService,
+              public baseLocal: BaselocalService,
               private funciones: FuncionesService,
               private netWork: NetworkengineService) {
     // console.log('<<< LoginPage >>>');
@@ -52,18 +52,9 @@ export class LoginPage implements OnInit {
     this.router.navigate(['/home']);
   }
 
-  // importante, rescata la configuracion
-  rescataConfiguracion() {
-    // console.log( '<<< rescataConfiguracion() >>>' );
-    this.netWork.rescataSeteoCliente()
-        .subscribe( (data: any) => this.baseLocal.actualizarConfig( data.configp ),
-                    (err: any)  => { this.funciones.msgAlert( 'ATENCION' , 'Ocurrió un error -> ' + err ); }
-                  );
-  }
-
   logearme() {
     if ( this.rutocorreo === '' || this.clave === '' ) {
-      this.funciones.msgAlert('Código vacío', 'Debe digitar usuario y clave para ingresar.');
+      this.funciones.msgAlert('ATENCION', 'Debe indicar usuario y clave para ingresar.');
     } else {
     this.buscando = true;
     this.netWork.traeUnSP('ksp_buscarUsuario',
@@ -78,20 +69,26 @@ export class LoginPage implements OnInit {
     this.buscando = false;
     const rs = data[0];
     if ( rs.length === 0 ) {
-        this.funciones.msgAlert('ATENCION', 'Los datos ingresados no coinciden con usuarios registrados. Corrija y reintente.');
+        this.funciones.msgAlert('ATENCION', 'Los datos ingresados no coinciden con usuarios registrados. ' +
+                                'Corrija o póngase en contacto con su administrador.');
     } else {
-        console.log(rs);
+        // console.log(rs);
         this.rescataConfiguracion();
-        //
-        if ( rs.esvendedor === true ) {
-          rs.LISTACLIENTE = '';
-        }
-        //
+        rs.LISTACLIENTE = '';
         this.funciones.muestraySale( 'Hola ' + rs.NOKOFU.trim() + ', ' + this.funciones.textoSaludo(), 0.7 );
         this.baseLocal.guardaUltimoUsuario( rs );
         this.baseLocal.user = rs;
+        // console.log(rs);
         this.router.navigate(['/tabs/inicio']);
     }
+  }
+
+  // importante, rescata la configuracion
+  rescataConfiguracion() {
+    this.netWork.rescataSeteoCliente()
+        .subscribe( (data: any) => this.baseLocal.actualizarConfig( data.configp ),
+                    (err: any)  => { this.funciones.msgAlert( 'ATENCION' , 'Ocurrió un error -> ' + err ); }
+                  );
   }
 
 }

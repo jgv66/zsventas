@@ -15,9 +15,9 @@ export class UltimosdocsPage implements OnInit {
   documentos = [];
   td;
 
-  constructor( private router: Router,
+  constructor( public baseLocal: BaselocalService,
+               private router: Router,
                private parametros: ActivatedRoute,
-               private baseLocal: BaselocalService,
                private netWork: NetworkengineService,
                private funciones: FuncionesService ) {
       this.td = this.parametros.snapshot.paramMap.get('td');
@@ -38,7 +38,7 @@ export class UltimosdocsPage implements OnInit {
     this.buscando = false;
     const rs = data;
     if ( data === undefined || data.length === 0 ) {
-      this.funciones.muestraySale('ATENCION : Cliente no presenta documentos impagos', 2 );
+      this.funciones.muestraySale('ATENCION : Cliente no presenta documentos', 2 );
     } else {
       this.documentos.push( ...data );
     }

@@ -21,12 +21,12 @@ export class MenuseteoPage {
   config;
   buscando = false;
 
-  constructor( private router: Router,
+  constructor( public baseLocal: BaselocalService,
+               private router: Router,
                private modalCtrl: ModalController,
                private popoverCtrl: PopoverController,
                private alertCtrl: AlertController,
                private funciones: FuncionesService,
-               public baseLocal: BaselocalService,
                private netWork: NetworkengineService ) {
       //
       this.usuario = this.baseLocal.user;
@@ -36,7 +36,7 @@ export class MenuseteoPage {
   }
 
   ionViewWillEnter() {
-    this.barraTabs  = this.funciones.hideTabs();
+    this.barraTabs = this.funciones.hideTabs();
   }
   ionViewWillLeave() {
     this.baseLocal.guardaUltimoConfig( this.config );
@@ -58,12 +58,9 @@ export class MenuseteoPage {
       this.cliente = data.dato;
       this.baseLocal.cliente = data.dato;
       //
-      // console.log(data);
-      // console.log(this.usuario);
       if ( data.listaprecios !== this.usuario.LISTAMODALIDAD ) {
         this.usuario.LISTACLIENTE = data.listaprecios;
         this.baseLocal.user       = this.usuario;
-
       }
     }
   }

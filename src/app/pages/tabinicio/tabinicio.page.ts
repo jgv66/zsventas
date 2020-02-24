@@ -68,10 +68,10 @@ export class TabinicioPage implements OnInit {
     this.codproducto   = '';
     this.descripcion   = '';
     this.codSuperFam   = '';
-    this.usuario       = this.baseLocal.user;
-    this.inicializa();
-    this.cliente       = this.baseLocal.initCliente();
     this.firstcall     = true;
+    this.cliente = this.baseLocal.initCliente();
+    this.baseLocal.obtenUltimoConfig().then( data => this.config = data );
+    this.inicializa();
   }
 
   ngOnInit() {
@@ -79,9 +79,27 @@ export class TabinicioPage implements OnInit {
       this.router.navigateByUrl('/login');
     }
     this.usuario = this.baseLocal.user;
-    this.cliente = this.baseLocal.initCliente();
     this.config  = this.baseLocal.initConfig();
     this.funciones.initCarro();
+    // console.log('oninit', this.usuario, this.baseLocal.user);
+    if ( this.baseLocal.user.esuncliente === true ) {
+        this.usuario.LISTACLIENTE = '';
+        // cliente debe seleccionarse aqui...
+        this.netWork.traeUnSP( 'ksp_buscarDeNuevoClientes',
+                              { dato:    this.usuario.codigoentidad,
+                                codusr:  this.usuario.KOFU,
+                                empresa: this.usuario.EMPRESA,
+                                solouno: true } )
+            .subscribe( (cli: any) => {
+                // console.log(cli[0]);
+                this.baseLocal.cliente = cli[0];
+                this.cliente = cli[0];
+            });
+        this.config.imagenes      = true;
+        this.config.soloconstock  = false;
+        this.config.ocultardscto  = false;
+        this.config.soloverimport = false;
+    }
   }
   ionViewDidLoad() {
     // console.log('ionViewDidLoad 22222222');
@@ -92,7 +110,7 @@ export class TabinicioPage implements OnInit {
     // console.log(this.baseLocal.cliente);
   }
   ionViewWillEnter() {
-    // console.log('ionViewWillEnter 11111');
+    console.log('ionViewWillEnter');
     this.cliente = this.baseLocal.cliente;
     this.config  = this.baseLocal.config;
   }
@@ -101,10 +119,8 @@ export class TabinicioPage implements OnInit {
   }
 
   inicializa() {
-    this.cliente = this.baseLocal.initCliente();
-    this.baseLocal.obtenUltimoConfig()
-        .then( data => this.config = data );
-    this.config = this.baseLocal.config;
+    console.log('inicializa');
+    
   }
 
   // movimientos arriba y abajo
@@ -254,8 +270,8 @@ export class TabinicioPage implements OnInit {
   cargaBodegas( producto ) {
     this.funciones.cargaEspera();
     this.netWork.traeUnSP( 'ksp_BodegaProducto',
-                          { codproducto: producto.codigo, usuario: this.usuario, empresa: '01', cualquierbodega: 0 },
-                          {codigo: this.usuario.KOFU, nombre: this.usuario.NOKOFU } )
+                          { codproducto: producto.codigo, usuario: this.usuario.usuario, empresa: '01', cualquierbodega: 0 },
+                          {codigo: this.usuario.usuario, nombre: this.usuario.nombre } )
         .subscribe( data => { this.funciones.descargaEspera(); this.revisaEoFBP( producto, data ); },
                     err  => { this.funciones.descargaEspera(); this.funciones.msgAlert( 'ATENCION', err );  }
                   );
@@ -420,6 +436,7 @@ export class TabinicioPage implements OnInit {
       const alert = await this.alertCtrl.create({
         header: 'Importaciones : ' + codproducto,
         inputs: impconst,
+        mode: 'ios',
         buttons:  [ { text: 'Ok', handler: (data: any) => {} } ]} );
       await alert.present();
     } else {
@@ -442,12 +459,12 @@ export class TabinicioPage implements OnInit {
       // console.log('data', data.opcion.texto, this.usuario.puedevercosto );
       switch (data.opcion.texto) {
         //
-        case 'Ultimas Ventas':
+        case 'Últimas Ventas':
           dataParam = JSON.stringify({tipo: 'V', codigo: producto.codigo });
           this.router.navigate(['/tabs/ultmovs', dataParam]);
           break;
         //
-        case 'Ultimas Compras':
+        case 'Últimas Compras':
           if ( this.baseLocal.user.puedevercosto === true ) {
             dataParam = JSON.stringify({tipo: 'C', codigo: producto.codigo });
             this.router.navigate(['/tabs/ultmovs', dataParam]);

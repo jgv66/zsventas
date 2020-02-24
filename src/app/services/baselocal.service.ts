@@ -11,7 +11,6 @@ export class BaselocalService {
   cliente: Cliente;
   listaComunas = []; /* si se pide una vez no se vuelve a buscar */
   config: any;
-
   empresa: number;
 
   constructor( private storage: Storage) {
@@ -43,6 +42,7 @@ export class BaselocalService {
               nombresuc: '',
               nombrebod: '',
               krpt: false,
+              esuncliente: true,
               puedecrearcli: false,
               puedemodifdscto: false,
               kconcecionario: false,

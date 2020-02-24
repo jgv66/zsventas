@@ -8,9 +8,6 @@ import { BaselocalService } from '../../services/baselocal.service';
 import { NetworkengineService } from '../../services/networkengine.service';
 import { TrespuntosComponent } from '../../components/trespuntos/trespuntos.component';
 
-// const { Camera } = Plugins;
-// const isAvailable = Capacitor.isPluginAvailable('Camera');
-
 @Component({
   selector: 'app-tabinicio',
   templateUrl: './tabinicio.page.html',
@@ -120,7 +117,6 @@ export class TabinicioPage implements OnInit {
 
   inicializa() {
     console.log('inicializa');
-    
   }
 
   // movimientos arriba y abajo
@@ -523,6 +519,8 @@ export class TabinicioPage implements OnInit {
   //     }
   // }
 
-  scanBarcode() {}
+  scanBarcode() {
+    this.funciones.msgAlert('ATENCION', 'Lectura de códigos de barra en construcción.' );
+  }
 
 }

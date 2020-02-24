@@ -4,7 +4,7 @@
 <ion-header>
     <ion-toolbar>
         <img src="assets/imgs/logo-zs.png" alt="" class="navbar-img">
-        <ion-title>Catálogo ZS</ion-title>
+        <ion-title>App ZS Motor</ion-title>
         <ion-buttons slot="end">
             <ion-button (click)="ConfiguracionLocal()">
                 <ion-icon slot="icon-only" name="menu"></ion-icon>
@@ -47,7 +47,8 @@
                 <ion-col>
                     <ion-item>
                         <ion-label class="ion-text-left" style="width: 120px; max-width: 120px;">Super Familias</ion-label>
-                        <ion-select style="width: 180px; max-width: 180px;" [(ngModel)]='codSuperFam' interface="alert" multiple="true" placeholder="Opciones...">
+                        <ion-select style="width: 180px; max-width: 18
+                        0px;" [(ngModel)]='codSuperFam' interface="alert" multiple="true" placeholder="Opciones...">
                             <ion-select-option *ngFor="let sf of listaFamilias" [value]="sf.cod">{{ sf.descrip }}</ion-select-option>
                         </ion-select>
                     </ion-item>
@@ -55,7 +56,7 @@
             </ion-row>
             <ion-row>
                 <ion-col size="3">
-                    <ion-button size="small" expand="block" color="dark" (click)="scanBarcode()">
+                    <ion-button size="small" expand="block" color="danger" (click)="scanBarcode()">
                         <ion-icon slot="icon-only" name="barcode"></ion-icon>
                     </ion-button>
                 </ion-col>

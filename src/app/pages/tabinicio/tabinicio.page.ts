@@ -246,6 +246,7 @@ export class TabinicioPage implements OnInit {
       const alert = await this.alertCtrl.create({
             header: 'Precios para : ' + producto.codigo,
             inputs: listasConst,
+            mode: 'ios',
             buttons: [ {  text: 'Cancelar',
                           role: 'cancel',
                           cssClass: 'secondary',
@@ -294,6 +295,7 @@ export class TabinicioPage implements OnInit {
         const alert = await this.alertCtrl.create({
           header: 'Bodegas con stock para : ' + producto.codigo,
           inputs: bodconst,
+          mode: 'ios',
           buttons: [ {  text: 'Cancelar',
                         role: 'cancel',
                         cssClass: 'secondary',

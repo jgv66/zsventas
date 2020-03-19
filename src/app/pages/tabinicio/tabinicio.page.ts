@@ -75,6 +75,7 @@ export class TabinicioPage implements OnInit {
     if ( !this.baseLocal.user ) {
       this.router.navigateByUrl('/login');
     }
+    this.solocotizar = false;
     this.usuario = this.baseLocal.user;
     this.config  = this.baseLocal.initConfig();
     this.funciones.initCarro();
@@ -454,46 +455,61 @@ export class TabinicioPage implements OnInit {
       //
       const { data } = await popover.onDidDismiss();
       let dataParam = '';
-      // console.log('data', data.opcion.texto, this.usuario.puedevercosto );
-      switch (data.opcion.texto) {
-        //
-        case 'Últimas Ventas':
-          dataParam = JSON.stringify({tipo: 'V', codigo: producto.codigo });
-          this.router.navigate(['/tabs/ultmovs', dataParam]);
-          break;
-        //
-        case 'Últimas Compras':
-          if ( this.baseLocal.user.puedevercosto === true ) {
-            dataParam = JSON.stringify({tipo: 'C', codigo: producto.codigo });
+      if ( data ) {
+        switch (data.opcion.texto) {
+          //
+          case 'Últimas Ventas':
+            dataParam = JSON.stringify({tipo: 'V', codigo: producto.codigo });
             this.router.navigate(['/tabs/ultmovs', dataParam]);
-          } else {
-            this.funciones.msgAlert('ATENCION', 'Ud. no posee autorización para ver esta información.' );
-          }
-          break;
-        //
-        case 'Sugerencias':
-          dataParam = JSON.stringify({ codigo: producto.codigo });
-          this.router.navigate(['/tabs/sugerencias', dataParam]);
-          break;
-        //
-        case 'NVI para reponer':
-          if ( this.baseLocal.user.puedecrearnvi === true ) {
+            break;
+          //
+          case 'Últimas Compras':
+            if ( this.baseLocal.user.puedevercosto === true ) {
+              dataParam = JSON.stringify({tipo: 'C', codigo: producto.codigo });
+              this.router.navigate(['/tabs/ultmovs', dataParam]);
+            } else {
+              this.funciones.msgAlert('ATENCION', 'Ud. no posee autorización para ver esta información.' );
+            }
+            break;
+          //
+          case 'Sugerencias':
+            dataParam = JSON.stringify({ codigo: producto.codigo });
+            this.router.navigate(['/tabs/sugerencias', dataParam]);
+            break;
+          //
+          case 'NVI para reponer':
+            if ( this.baseLocal.user.puedecrearnvi === true ) {
+              dataParam = JSON.stringify({ producto, usuario: this.baseLocal.user });
+              this.router.navigate(['/tabs/crearnvi', dataParam]);
+            } else {
+              this.funciones.msgAlert('ATENCION', 'Ud. no posee autorización para crear este documento.' );
+            }
+            break;
+          //
+          case 'Compartir':
             dataParam = JSON.stringify({ producto, usuario: this.baseLocal.user });
-            this.router.navigate(['/tabs/crearnvi', dataParam]);
-          } else {
-            this.funciones.msgAlert('ATENCION', 'Ud. no posee autorización para crear este documento.' );
-          }
-          break;
-        //
-        case 'Compartir':
-          dataParam = JSON.stringify({ producto, usuario: this.baseLocal.user });
-          this.router.navigate(['/tabs/socialsh', dataParam]);
-          break;
-        //
-        default:
-          console.log('vacio');
-          break;
+            this.router.navigate(['/tabs/socialsh', dataParam]);
+            break;
+          //
+          case 'Ficha técnica':
+            dataParam = JSON.stringify({ producto, usuario: this.baseLocal.user });
+            this.router.navigate(['/tabs/fichatecnica', dataParam]);
+            break;
+          //
+          default:
+            console.log('vacio');
+            break;
+        }
       }
+  }
+
+  onoffCotizar() {
+    if ( this.baseLocal.cliente.codigo === '' ) {
+      this.baseLocal.soloCotizar = !this.baseLocal.soloCotizar;
+      this.funciones.muestraySale( (this.baseLocal.soloCotizar) ? 'Cotizar: ACTIVO' : 'Cotizar: INACTIVO', 1, 'middle', 'success' );
+    } else {
+      this.funciones.msgAlert('ATENCION', 'Esta funcionalidad solo aplica sin cliente activo.' );
+    }
   }
 
   // PresionaryCopiar( event, producto ) {

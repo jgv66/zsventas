@@ -105,11 +105,12 @@ export class FuncionesService {
     await alert.present();
   }
 
-  async muestraySale( cTexto, segundos, posicion? ) {
+  async muestraySale( cTexto, segundos, posicion?, color? ) {
     const toast = await this.toastCtrl.create({
       message: cTexto,
       duration: 1500 * segundos,
-      position: posicion || 'middle'
+      position: posicion || 'middle',
+      color: ( color ) ? color : 'danger'
     });
     toast.present();
   }
@@ -233,7 +234,7 @@ export class FuncionesService {
                                   metodolista:  producto.metodolista });
         }
         //
-        this.muestraySale( 'Item agregado a pre-venta', 0.5, 'middle' );
+        this.muestraySale( 'Item agregado a pre-venta', 0.5, 'middle', (this.baseLocal.soloCotizar !== true ) ? 'danger' : 'success' );
         this.refreshCarrito(); // next method updates the stream value
         //
     } else {
@@ -247,7 +248,7 @@ export class FuncionesService {
         stock += element.cantidad;
       }
     });
-    return ( (stock + producto.apedir ) <= producto.stock_ud1 ) ;
+    return ( this.baseLocal.soloCotizar || (stock + producto.apedir ) <= producto.stock_ud1 ) ;
   }
   existeEnCarrito( producto ) {
     const posicion = this.miCarrito.findIndex( item => item.codigo === producto.codigo  && item.bodega === producto.bodega );

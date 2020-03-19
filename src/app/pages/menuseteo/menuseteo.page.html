@@ -125,9 +125,9 @@
         </ion-list>
     </ion-card>
 
-    <ion-card style="top: -15px; margin-top: 10px; margin-bottom: 10px;" *ngIf=" !usuario.esuncliente ">
+    <ion-card style="top: -15px; margin-top: 10px; margin-bottom: 15px;" *ngIf=" !usuario.esuncliente ">
         <ion-list lines="none">
-            <h5 class="ion-text-center"><b>Mis filtros de productos</b></h5>
+            <h5 class="ion-text-center"><b>Filtros y personalización</b></h5>
             <ion-item no-lines>
                 <ion-label>Ver imágenes</ion-label>
                 <ion-toggle name="config.imagenes" [(ngModel)]="config.imagenes"></ion-toggle>
@@ -149,7 +149,7 @@
 
     <ion-card style="top: -15px; margin-top: 10px; margin-bottom: 10px;" *ngIf=" !usuario.esuncliente ">
         <ion-list lines="none">
-            <h5 class="ion-text-center"><b>Mi configuración de Modalidad</b></h5>
+            <h5 class="ion-text-center"><b>Modalidad</b></h5>
             <ion-grid style="font-size: 90%;">
                 <ion-row>
                     <ion-col size="3.3" class="ion-text-right">
@@ -218,7 +218,7 @@
 
     <ion-card style="top: -15px; margin-top: 10px; margin-bottom: 10px;">
         <ion-list lines="none">
-            <h5 class="ion-text-center"><b>Mi forma de ordenar listas</b></h5>
+            <h5 class="ion-text-center"><b>Orden al visualizar</b></h5>
             <ion-radio-group name="config.ordenar" [(ngModel)]="config.ordenar">
                 <ion-item>
                     <ion-label>Precio menor a mayor</ion-label>

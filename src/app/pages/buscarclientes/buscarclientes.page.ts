@@ -58,6 +58,12 @@ export class BuscarclientesPage {
   }
 
   salirConData( cliente ) {
+    //
+    this.baseLocal.soloCotizar = false;
+    this.funciones.miCarrito = [];
+    this.funciones.initCarro();
+    this.funciones.refreshCarrito();
+    //
     this.modalCtrl.dismiss( {
       dato: cliente
     } );

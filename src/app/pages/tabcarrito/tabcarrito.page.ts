@@ -109,7 +109,7 @@ export class TabcarritoPage {
   enviarCorreo() {
     if ( this.cTo !== '' ) {
       this.enviando = true;
-      this.netWork.soloEnviarCorreo( this.funciones.miCarrito, this.cTo, this.cCc, this.textoObs )
+      this.netWork.soloEnviarCorreo( this.funciones.miCarrito, this.cTo, this.cCc, this.textoObs, this.baseLocal.soloCotizar )
           .subscribe( data => { this.enviando = false;
                                 this.revisaCorreo( data );
                               },

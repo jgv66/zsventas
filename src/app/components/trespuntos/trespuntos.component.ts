@@ -12,7 +12,8 @@ export class TrespuntosComponent implements OnInit {
   sugerencias = [ { texto: 'Últimas Ventas',   icon: 'ios-cloud-upload' },
                   { texto: 'Últimas Compras',  icon: 'ios-cloud-download' },
                   { texto: 'NVI para reponer', icon: 'md-sync' },
-                  { texto: 'Sugerencias',      icon: 'md-bulb'  }/*,
+                  { texto: 'Sugerencias',      icon: 'md-bulb'  },
+                  { texto: 'Ficha técnica',    icon: 'attach' }/*,  -- information-circle
                   { texto: 'Compartir',        icon: 'md-share' }*/ ];
 
   constructor( private popoverCtrl: PopoverController,

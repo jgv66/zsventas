@@ -12,6 +12,7 @@ export class BaselocalService {
   listaComunas = []; /* si se pide una vez no se vuelve a buscar */
   config: any;
   empresa: number;
+  soloCotizar = false;
 
   constructor( private storage: Storage) {
     console.log('<<< BaseLocalProvider >>>');

@@ -15,18 +15,11 @@ export class NetworkengineService {
     console.log('<<< NetworkengineProvider >>>');
   }
 
-  soloEnviarCorreo( pCarro, cTo, cCc, cTextoObs )  {
+  soloEnviarCorreo( pCarro, cTo, cCc, cTextoObs, soloCotizar? )  {
     console.log('soloEnviarCorreo()->', pCarro);
     const accion = '/soloEnviarCorreo';
     const url    = this.url  + accion;
-    const body   = { carro: pCarro, cTo, cCc, cObs: cTextoObs };
-    return this.http.post( url, body );
-  }
-
-  sendMail( rutocorreo: string ) {
-    const accion = '/sendmail';
-    const url    = this.url  + accion;
-    const body   = { rutocorreo };
+    const body   = { carro: pCarro, cTo, cCc, cObs: cTextoObs, cotizar: soloCotizar };
     return this.http.post( url, body );
   }
 

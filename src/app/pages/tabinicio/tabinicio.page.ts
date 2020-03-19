@@ -75,7 +75,7 @@ export class TabinicioPage implements OnInit {
     if ( !this.baseLocal.user ) {
       this.router.navigateByUrl('/login');
     }
-    this.solocotizar = false;
+    this.baseLocal.soloCotizar = false;
     this.usuario = this.baseLocal.user;
     this.config  = this.baseLocal.initConfig();
     this.funciones.initCarro();

@@ -116,7 +116,7 @@ export class TabcarritoPage {
           this.funciones.initCarro();
           this.funciones.refreshCarrito(); // next method updates the stream value
           //
-          this.router.navigate(['/inicio']);
+          this.router.navigate(['/tabs/inicio']);
           //
         } else {
           console.log( 'Error en grabación ', data );
@@ -147,7 +147,7 @@ export class TabcarritoPage {
       if ( data.resultado === 'ok' ) {
           this.funciones.msgAlert('Correo enviado', 'El correo fue enviado exitosamente.');
           this.funciones.initCarro();
-          this.router.navigate(['/tabs']);
+          this.router.navigate(['/tabs/inicio']);
       } else {
         this.funciones.msgAlert('Correo con problemas', 'El correo aparentemente no fue enviado. Reintente luego.');
       }

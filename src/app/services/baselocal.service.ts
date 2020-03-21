@@ -70,7 +70,9 @@ export class BaselocalService {
   }
 
   initConfig() {
-    return { soloconstock:          false,
+    return { descripcionamplia:     false,
+             codigotecnico:         false,
+             soloconstock:          false,
              usarlistacli:          false,
              ordenar:               '',
              imagenes:              false,

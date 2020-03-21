@@ -505,6 +505,9 @@ export class TabinicioPage implements OnInit {
 
   onoffCotizar() {
     if ( this.baseLocal.cliente.codigo === '' ) {
+      if ( this.baseLocal.soloCotizar && !this.funciones.aunVacioElCarrito() ) {
+        this.funciones.initCarro();
+      }
       this.baseLocal.soloCotizar = !this.baseLocal.soloCotizar;
       this.funciones.muestraySale( (this.baseLocal.soloCotizar) ? 'Cotizar: ACTIVO' : 'Cotizar: INACTIVO', 1, 'middle', 'success' );
     } else {

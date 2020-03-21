@@ -6,6 +6,9 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { TabcarritoPage } from './tabcarrito.page';
+import { BuscarvendedorPage } from '../buscarvendedor/buscarvendedor.page';
+import { ComponentsModule } from '../../components/components.module';
+import { BuscarvendedorPageModule } from '../buscarvendedor/buscarvendedor.module';
 
 const routes: Routes = [
   {
@@ -15,11 +18,14 @@ const routes: Routes = [
 ];
 
 @NgModule({
+  entryComponents: [ BuscarvendedorPage ],
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    ComponentsModule,
+    BuscarvendedorPageModule
   ],
   declarations: [TabcarritoPage]
 })

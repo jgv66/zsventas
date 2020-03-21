@@ -9,46 +9,54 @@
 
     <ion-button *ngIf=" sumaCarrito() > 0 " expand="block" [color]=" baseLocal.soloCotizar === true ? 'success' : 'primary' ">Total del Pedido: ${{ sumaCarrito() | number:"1.0-0" }}</ion-button>
 
-    <ion-list *ngIf=" sumaCarrito() > 0 ">
+    <ion-list *ngIf=" sumaCarrito() > 0 " #lista>
+
         <ion-item-sliding *ngFor="let producto of funciones.miCarrito">
+
             <!-- menu cantidad e info -->
             <ion-item-options side="start" class="item1">
                 <ion-item-option color="primary" (click)="cambiarCantidad(producto)">
-                    <ion-icon name="color-wand"></ion-icon>Cantidad</ion-item-option>
+                    <ion-icon name="refresh-circle" size="large"></ion-icon>
+                </ion-item-option>
                 <ion-item-option color="secondary" (click)="infoProducto(producto)">
-                    <ion-icon name="information-circle"></ion-icon>Info</ion-item-option>
+                    <ion-icon name="information-circle" size="large"></ion-icon>
+                </ion-item-option>
+                <ion-item-option color="warning" (click)="cambiarKofu(producto)">
+                    <ion-icon name="person-add" size="large"></ion-icon>
+                </ion-item-option>
             </ion-item-options>
-            <!-- menu de borrar -->
             <ion-item-options side="end" class="item1">
                 <ion-item-option color="danger" (click)="quitarDelCarro( producto )">
-                    <ion-icon name="trash"></ion-icon>Borrar</ion-item-option>
+                    <ion-icon name="trash" size="large"></ion-icon>
+                </ion-item-option>
             </ion-item-options>
 
             <ion-item class="item1">
                 <ion-grid class="grid1">
                     <!-- prod + bod -->
-                    <ion-row style=" height: 25px;">
-                        <ion-col size="3" class="ion-text-right">
+                    <ion-row style="height:30px;">
+                        <ion-col size="2.5" class="ion-text-right">
                             <p>Código : </p>
                         </ion-col>
-                        <ion-col size="5.5" class="ion-text-left">
+                        <ion-col size="4" class="ion-text-left">
                             <p><b>{{ producto.codigo }}</b></p>
                         </ion-col>
-                        <ion-col size="3" class="ion-text-left">
+                        <ion-col size="2.5" class="ion-text-left">
                             <p>Bod : <b>{{ producto.bodega }}</b></p>
+                        </ion-col>
+                        <ion-col size="2.5" class="ion-text-left" *ngIf=" producto.vendedor !== baseLocal.user.KOFU ">
+                            <!-- <ion-label color="danger" class="ion-text-center">Ven.: <b>{{ producto.vendedor }}</b></ion-label> -->
+                            <p><b class="rojo">Ven : {{ producto.vendedor }}</b></p>
                         </ion-col>
                     </ion-row>
                     <!-- descrip -->
-                    <ion-row style=" height: 25px;">
-                        <!-- <ion-col size="3" class="ion-text-right">
-                            <p>Descrip. : </p>
-                        </ion-col> -->
+                    <ion-row style="height:30px;">
                         <ion-col size="12" class="ion-text-wrap">
                             <p><b>{{ producto.descrip }}</b></p>
                         </ion-col>
                     </ion-row>
                     <!-- precio sin desc -->
-                    <ion-row *ngIf=" producto.descuentomax <= 0 " style=" height: 25px;">
+                    <ion-row *ngIf=" producto.descuentomax <= 0 " style="height:30px;">
                         <ion-col size="3" class="ion-text-right">
                             <p>Precio : </p>
                         </ion-col>
@@ -69,7 +77,7 @@
                         </ion-col>
                     </ion-row>
                     <!-- precio con desc -->
-                    <ion-row *ngIf=" producto.descuentomax > 0" style=" height: 25px;">
+                    <ion-row *ngIf=" producto.descuentomax > 0" style="height:30px;">
                         <ion-col size="3" class="ion-text-right">
                             <p>Mayorista : </p>
                         </ion-col>
@@ -114,19 +122,19 @@
                 <ion-list lines="none">
                     <h5 style="margin-left: 10px;"><b>Opciones de grabación</b></h5>
                     <ion-radio-group name="queHacerConCarrito" [(ngModel)]="queHacerConCarrito">
-                        <ion-item *ngIf=" !baseLocal.soloCotizar ">
+                        <ion-item *ngIf=" !baseLocal.soloCotizar && !baseLocal.user.esuncliente ">
                             <ion-label>Grabar una pre-venta</ion-label>
                             <ion-radio value="Grabar una Pre-Venta"></ion-radio>
                         </ion-item>
-                        <ion-item *ngIf=" !baseLocal.soloCotizar ">
+                        <ion-item *ngIf=" !baseLocal.soloCotizar || baseLocal.user.esuncliente ">
                             <ion-label>Grabar una cotización</ion-label>
                             <ion-radio value="Grabar una cotización"></ion-radio>
                         </ion-item>
-                        <ion-item *ngIf=" !baseLocal.soloCotizar ">
+                        <ion-item *ngIf=" !baseLocal.soloCotizar && !baseLocal.user.esuncliente ">
                             <ion-label>Grabar NVV definitiva</ion-label>
                             <ion-radio value="Grabar NVV definitiva"></ion-radio>
                         </ion-item>
-                        <ion-item>
+                        <ion-item *ngIf=" ( !baseLocal.soloCotizar && !baseLocal.user.esuncliente ) || baseLocal.soloCotizar ">
                             <ion-label>Solo enviar un correo</ion-label>
                             <ion-radio value="Solo enviar un correo"></ion-radio>
                         </ion-item>

@@ -24,6 +24,7 @@ export class FuncionesService {
   nPos = 0;
   miCarrito: Array<{  empresa: string,
                       vendedor: string,
+                      nombrevend?: string,
                       bodega: string,
                       sucursal: string,
                       cliente: string,
@@ -127,7 +128,7 @@ export class FuncionesService {
   }
 
   initCarro() {
-    this.miCarrito = [{ empresa: '', vendedor: '', bodega: '', sucursal: '',
+    this.miCarrito = [{ empresa: '', vendedor: '', nombrevend: '', bodega: '', sucursal: '',
                         cliente: '', suc_cliente: '',
                         codigo: '', descrip: '', cantidad: 0, stock_ud1: 0, precio: 0, preciomayor: 0, descuentomax: 0,
                         listapre: '', metodolista: '' }];
@@ -177,7 +178,7 @@ export class FuncionesService {
         },
         { text: 'Cambiar !',
           handler: data => { producto.apedir = parseInt(data.cantidad, 0 ) || 1 ;
-                             if ( producto.apedir > producto.stock_ud1  ) {
+                             if ( producto.apedir > producto.stock_ud1 &&  this.baseLocal.soloCotizar === false ) {
                                this.msgAlert('ATENCION', 'Stock insuficiente para esta operación. Intente con otra cantidad.');
                              } else {
                                this.modificaCarrito( producto );

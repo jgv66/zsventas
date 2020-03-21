@@ -103,22 +103,28 @@
                                     </ion-button>
                                 </ion-col>
                             </ion-row>
-
-                            <ion-row style='max-height: 30px;'>
+                            <ion-row style='max-height: 30px;' *ngIf=" config.codigotecnico ">
                                 <ion-col class="ion-text-right" size="4">
-                                    <p>Técnico :</p>
+                                    <p>Cod.Técnico :</p>
                                 </ion-col>
                                 <ion-col class="ion-text-left" size="6">
                                     <p><b>{{ producto.codtecnico }}</b></p>
                                 </ion-col>
                             </ion-row>
-
                             <ion-row>
                                 <ion-col class="ion-text-right" size="4">
                                     <p>Descripción :</p>
                                 </ion-col>
                                 <ion-col class="ion-text-left">
                                     <p><b>{{ producto.descripcion }}</b></p>
+                                </ion-col>
+                            </ion-row>
+                            <ion-row *ngIf=" config.descripcionamplia ">
+                                <ion-col class="ion-text-right" size="4">
+                                    <p>Ampliada :</p>
+                                </ion-col>
+                                <ion-col class="ion-text-left">
+                                    <p><b>{{ producto.ampliada }}</b></p>
                                 </ion-col>
                             </ion-row>
                             <!-- bodega -->

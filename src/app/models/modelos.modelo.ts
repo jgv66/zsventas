@@ -96,6 +96,8 @@ export interface KDeta {
 }
 
 export interface Configuracion {
+  descripcionamplia: boolean;
+  codigotecnico: boolean;
   soloconstock: boolean;
   usarlistacli: boolean;
   ordenar: string;

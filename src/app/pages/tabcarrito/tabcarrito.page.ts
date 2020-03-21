@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FuncionesService } from '../../services/funciones.service';
 import { BaselocalService } from '../../services/baselocal.service';
 import { Router } from '@angular/router';
-import { AlertController } from '@ionic/angular';
+import { AlertController, ModalController, IonList } from '@ionic/angular';
 import { NetworkengineService } from '../../services/networkengine.service';
+import { BuscarvendedorPage } from '../buscarvendedor/buscarvendedor.page';
 
 @Component({
   selector: 'app-tabcarrito',
@@ -11,6 +12,8 @@ import { NetworkengineService } from '../../services/networkengine.service';
   styleUrls: ['./tabcarrito.page.scss'],
 })
 export class TabcarritoPage {
+
+  @ViewChild('lista', { static: false }) lista: IonList;
 
   enviando = false;
   queHacerConCarrito = 'Acción a realizar?';
@@ -23,6 +26,7 @@ export class TabcarritoPage {
                public baseLocal: BaselocalService,
                private netWork: NetworkengineService,
                private alertCtrl: AlertController,
+               private modalCtrl: ModalController,
                private router: Router ) { }
 
   sumaCarrito() {
@@ -51,6 +55,7 @@ export class TabcarritoPage {
 
   cambiarCantidad( producto ) {
     this.funciones.modificaCantidad( producto );
+    this.lista.closeSlidingItems();
   }
 
   infoProducto( producto ) {
@@ -58,6 +63,22 @@ export class TabcarritoPage {
                                        codigo: producto.codigo,
                                        cliente: this.baseLocal.cliente.codigo });
     this.router.navigate(['/tabs/ultmovs', dataParam]);
+    this.lista.closeSlidingItems();
+  }
+
+  async cambiarKofu( producto, event ) {
+    const modal = await this.modalCtrl.create({
+      component: BuscarvendedorPage,
+      componentProps: { kofu: producto.vendedor }
+    });
+    await modal.present();
+
+    const { data } = await modal.onDidDismiss();
+    if ( data ) {
+      producto.vendedor = data.dato.kofu;
+      producto.nombrevend = data.dato.nombre;
+    }
+    this.lista.closeSlidingItems();
   }
 
   accionDelCarrito() {
@@ -95,7 +116,7 @@ export class TabcarritoPage {
           this.funciones.initCarro();
           this.funciones.refreshCarrito(); // next method updates the stream value
           //
-          this.router.navigate(['/tabs']);
+          this.router.navigate(['/inicio']);
           //
         } else {
           console.log( 'Error en grabación ', data );

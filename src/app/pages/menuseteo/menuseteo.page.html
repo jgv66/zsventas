@@ -133,16 +133,24 @@
                 <ion-toggle name="config.imagenes" [(ngModel)]="config.imagenes"></ion-toggle>
             </ion-item>
             <ion-item no-lines>
-                <ion-label>Solo con stock</ion-label>
+                <ion-label>Ver descripción ampliada</ion-label>
+                <ion-toggle name="config.descripcionamplia" [(ngModel)]="config.descripcionamplia"></ion-toggle>
+            </ion-item>
+            <ion-item no-lines>
+                <ion-label>Ver código técnico</ion-label>
+                <ion-toggle name="config.codigotecnico" [(ngModel)]="config.codigotecnico"></ion-toggle>
+            </ion-item>
+            <ion-item no-lines>
+                <ion-label>Solo ver productos con stock</ion-label>
                 <ion-toggle name="config.soloconstock" [(ngModel)]="config.soloconstock"></ion-toggle>
+            </ion-item>
+            <ion-item no-lines>
+                <ion-label>Solo productos con importación</ion-label>
+                <ion-toggle name="config.soloverimport" [(ngModel)]="config.soloverimport"></ion-toggle>
             </ion-item>
             <ion-item no-lines>
                 <ion-label>Ocultar descuentos</ion-label>
                 <ion-toggle name="config.ocultardscto" [(ngModel)]="config.ocultardscto"></ion-toggle>
-            </ion-item>
-            <ion-item no-lines>
-                <ion-label>Solo con importación</ion-label>
-                <ion-toggle name="config.soloverimport" [(ngModel)]="config.soloverimport"></ion-toggle>
             </ion-item>
         </ion-list>
     </ion-card>

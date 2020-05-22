@@ -66,7 +66,7 @@ export class TabcarritoPage {
     this.lista.closeSlidingItems();
   }
 
-  async cambiarKofu( producto, event ) {
+  async cambiarKofu( producto ) {
     const modal = await this.modalCtrl.create({
       component: BuscarvendedorPage,
       componentProps: { kofu: producto.vendedor }

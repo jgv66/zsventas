@@ -68,19 +68,18 @@ export class TabinicioPage implements OnInit {
     this.firstcall     = true;
     this.cliente = this.baseLocal.initCliente();
     this.baseLocal.obtenUltimoConfig().then( data => this.config = data );
-    this.inicializa();
   }
 
   ngOnInit() {
     if ( !this.baseLocal.user ) {
       this.router.navigateByUrl('/login');
     }
-    this.baseLocal.soloCotizar = false;
     this.usuario = this.baseLocal.user;
+    this.baseLocal.soloCotizar = false;
     this.config  = this.baseLocal.initConfig();
     this.funciones.initCarro();
     // console.log('oninit', this.usuario, this.baseLocal.user);
-    if ( this.baseLocal.user.esuncliente === true ) {
+    if ( this.usuario.esuncliente === true ) {
         this.usuario.LISTACLIENTE = '';
         // cliente debe seleccionarse aqui...
         this.netWork.traeUnSP( 'ksp_buscarDeNuevoClientes',
@@ -116,17 +115,15 @@ export class TabinicioPage implements OnInit {
     // console.log('ionViewWillLeave 444444');
   }
 
-  inicializa() {
-    console.log('inicializa');
-  }
-
   // movimientos arriba y abajo
   // logScrollStart()    { console.log( 'logScrollStart : When Scroll Starts'); this.ScrollToTop();    }
   // logScrolling()      { console.log('logScrolling : When Scrolling');       }
   // logScrollEnd()      { console.log('logScrollEnd : When Scroll Ends');      this.ScrollToBottom(); }
   // ScrollToBottom()    { this.content.scrollToBottom(1500);    }
   // ScrollToPoint(X,Y)  { this.content.scrollToPoint(X,Y,1500); }
-  ScrollToTop()       { this.content.scrollToTop(1500);       }
+  ScrollToTop() { 
+    this.content.scrollToTop(1500);
+  }
 
   loadDefaultImg( event ) {
     event.target.src = 'assets/imgs/no-img.png';
@@ -383,7 +380,11 @@ export class TabinicioPage implements OnInit {
   }
 
   async cambiaDescuento( producto ) {
-    if ( !this.usuario.puedemodifdscto ) {
+    let conAutonomia = false;
+    if ( this.usuario.t6A_tipo === '1' ) {
+      conAutonomia = true;
+    }
+    if ( !this.usuario.puedemodifdscto && !conAutonomia ) {
       this.funciones.muestraySale('Ud. no posee permiso para hacer esta modificación.', 2 );
     } else {
       const dmax   = producto.descuentomax;
@@ -395,7 +396,16 @@ export class TabinicioPage implements OnInit {
           { text: 'Salir',     handler: () => {} },
           { text: 'Cambiar !', handler: data => {
             if ( data.dmax < 0 || data.dmax > 100 ) {
-              this.funciones.msgAlert('ATENCION', 'Descuento digitado está incorrecto. Intente con otro valor.');
+              this.funciones.msgAlert('', 'Descuento digitado está incorrecto. Intente con otro valor.');
+            } else if ( conAutonomia === true ) {
+              const desmax = ( this.usuario.t6A_valor / 100 ) * dmax;
+              if ( desmax < data.dmax ) {
+                this.funciones.msgAlert('', 'Descuento digitado supera su autonomía. Corrija y reintente.');
+              } else {
+                producto.descuentomax = data.dmax;
+                producto.preciomayor  = Math.round((producto.precio - ( producto.precio * data.dmax / 100)));
+                producto.dsctovalor   = producto.precio - producto.preciomayor;
+                }
             } else {
               producto.descuentomax = data.dmax;
               producto.preciomayor  = Math.round((producto.precio - ( producto.precio * data.dmax / 100)));
@@ -455,6 +465,7 @@ export class TabinicioPage implements OnInit {
       //
       const { data } = await popover.onDidDismiss();
       let dataParam = '';
+      //
       if ( data ) {
         switch (data.opcion.texto) {
           //

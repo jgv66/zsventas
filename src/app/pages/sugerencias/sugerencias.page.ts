@@ -3,7 +3,7 @@ import { AlertController } from '@ionic/angular';
 import { FuncionesService } from '../../services/funciones.service';
 import { BaselocalService } from '../../services/baselocal.service';
 import { NetworkengineService } from '../../services/networkengine.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-sugerencias',
@@ -29,11 +29,16 @@ export class SugerenciasPage implements OnInit {
                public baseLocal: BaselocalService,
                private netWork: NetworkengineService,
                private alertCtrl: AlertController,
+               private router: Router,
                private parametros: ActivatedRoute) {
       this.sistema = JSON.parse( this.parametros.snapshot.paramMap.get('dataP') );
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    if ( !this.baseLocal.user ) {
+      this.router.navigateByUrl('/login');
+    }
+  }
 
   limpiar() {
     this.prodbueno        = false;
@@ -50,9 +55,9 @@ export class SugerenciasPage implements OnInit {
 
   async enviar() {
     const alert = await this.alertCtrl.create({
-      header: 'ATENCION',
+      // header: 'ATENCION',
       subHeader: 'Confirme Envío',
-      message: 'Este mensaje será enviado a Casa Matriz con sus sugerencias y observaciones para el producto : ' + this.sistema.codigo,
+      message: 'Este mensaje será enviado a Casa Matriz con las sugerencias y observaciones para el producto : ' + this.sistema.codigo,
       buttons: [
         {
           text: 'Cancelar',
@@ -88,17 +93,17 @@ export class SugerenciasPage implements OnInit {
                                     { codigo: this.baseLocal.user.KOFU,
                                       nombre: this.baseLocal.user.NOKOFU } )
         .subscribe( data => { this.revisa( data );           },
-                    err  => { this.funciones.msgAlert( 'ATENCION', err ); });
+                    err  => { this.funciones.msgAlert( '', err ); });
   }
   revisa( data ) {
     this.enviando = false;
     if ( data === undefined ) {
-      this.funciones.muestraySale('ATENCION : Sugerencia presenta problemas al intentar grabación', 2 );
+      this.funciones.muestraySale(' : Sugerencia presenta problemas al intentar grabación', 2 );
     } else {
       if ( data[0].resultado === 'ok' ) {
         this.limpiar();
       }
-      this.funciones.msgAlert( 'ATENCION', data[0].mensaje );
+      this.funciones.msgAlert( '', data[0].mensaje );
     }
   }
 

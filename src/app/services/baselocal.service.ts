@@ -43,6 +43,8 @@ export class BaselocalService {
               nombresuc: '',
               nombrebod: '',
               krpt: false,
+              t6A_tipo: '',
+              t6A_valor: 0,
               esuncliente: true,
               puedecrearcli: false,
               puedemodifdscto: false,

@@ -26,6 +26,8 @@ export interface Usuario {
     puedecrearcli: boolean;
     puedemodifdscto: boolean;
     krpt: boolean;
+    t6A_tipo: string;
+    t6A_valor: number;
     kconcecionario: boolean;
     puedemoddesc: boolean;
     puedeverprov: boolean;

@@ -99,7 +99,8 @@ export class FuncionesService {
 
   async msgAlert( titulo, texto ) {
     const alert = await this.alertCtrl.create({
-      header: titulo,
+      // header: titulo,
+      mode: 'md',
       message: texto,
       buttons: ['OK']
     });

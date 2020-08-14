@@ -64,6 +64,7 @@ export class BuscarclientesPage {
     this.funciones.initCarro();
     this.funciones.refreshCarrito();
     //
+    // console.log(cliente);
     this.modalCtrl.dismiss( {
       dato: cliente
     } );

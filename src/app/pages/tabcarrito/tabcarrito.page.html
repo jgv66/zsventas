@@ -30,35 +30,27 @@
                     <ion-icon name="trash" size="large"></ion-icon>
                 </ion-item-option>
             </ion-item-options>
-
             <ion-item class="item1">
                 <ion-grid class="grid1">
                     <!-- prod + bod -->
-                    <ion-row style="height:30px;">
-                        <ion-col size="2.5" class="ion-text-right">
-                            <p>Código : </p>
+                    <ion-row style="height:25px;">
+                        <ion-col size="1.8" class="ion-text-right">
+                            <p>SKU : </p>
                         </ion-col>
-                        <ion-col size="4" class="ion-text-left">
+                        <ion-col size="4.8" class="ion-text-left">
                             <p><b>{{ producto.codigo }}</b></p>
                         </ion-col>
-                        <ion-col size="2.5" class="ion-text-left">
+                        <ion-col size="3.5" class="ion-text-left">
                             <p>Bod : <b>{{ producto.bodega }}</b></p>
                         </ion-col>
-                        <ion-col size="2.5" class="ion-text-left" *ngIf=" producto.vendedor !== baseLocal.user.KOFU ">
-                            <!-- <ion-label color="danger" class="ion-text-center">Ven.: <b>{{ producto.vendedor }}</b></ion-label> -->
-                            <p><b class="rojo">Ven : {{ producto.vendedor }}</b></p>
-                        </ion-col>
-                    </ion-row>
-                    <!-- descrip -->
-                    <ion-row style="height:30px;">
-                        <ion-col size="12" class="ion-text-wrap">
-                            <p><b>{{ producto.descrip }}</b></p>
+                        <ion-col size="1.9" class="ion-text-left" *ngIf=" producto.vendedor !== baseLocal.user.KOFU ">
+                            <p><b class="rojo">( {{ producto.vendedor }} )</b></p>
                         </ion-col>
                     </ion-row>
                     <!-- precio sin desc -->
-                    <ion-row *ngIf=" producto.descuentomax <= 0 " style="height:30px;">
-                        <ion-col size="3" class="ion-text-right">
-                            <p>Precio : </p>
+                    <ion-row *ngIf=" producto.descuentomax <= 0 " style="height:25px;">
+                        <ion-col size="1.8" class="ion-text-right">
+                            <p>Pre.: </p>
                         </ion-col>
                         <ion-col size="3" class="ion-text-right">
                             <b><p>${{ producto.precio | number:"1.0-0" }}</p></b>
@@ -77,9 +69,9 @@
                         </ion-col>
                     </ion-row>
                     <!-- precio con desc -->
-                    <ion-row *ngIf=" producto.descuentomax > 0" style="height:30px;">
-                        <ion-col size="3" class="ion-text-right">
-                            <p>Mayorista : </p>
+                    <ion-row *ngIf=" producto.descuentomax > 0" style="height:25px;">
+                        <ion-col size="1.8" class="ion-text-right">
+                            <p>May.: </p>
                         </ion-col>
                         <ion-col size="3" class="ion-text-right">
                             <b><p>${{ producto.preciomayor | number:"1.0-0" }}</p></b>
@@ -95,6 +87,15 @@
                         </ion-col>
                         <ion-col size="3" class="ion-text-center">
                             <b><p>$ {{ producto.preciomayor * producto.cantidad | number:"1.0-0" }}</p></b>
+                        </ion-col>
+                    </ion-row>
+                    <!-- descrip -->
+                    <ion-row style="height:25px;padding-left: 5px; margin-bottom: 25px;">
+                        <ion-col size="1.8" class="ion-text-right">
+                            <p>Des.: </p>
+                        </ion-col>
+                        <ion-col size="10" class="ion-text-wrap">
+                            <p><b>{{ producto.descrip }}</b></p>
                         </ion-col>
                     </ion-row>
                 </ion-grid>

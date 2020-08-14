@@ -33,12 +33,14 @@ export interface Usuario {
     puedeverprov: boolean;
     puedevercosto: boolean;
     puedecrearnvi: boolean;
+    puedemodifcli: boolean;
 }
 
 export interface Cliente {
   codigo: string;
   sucursal: string;
   email: string;
+  telefonos: string;
   razonsocial: string;
   direccion: string;
   comuna: string;

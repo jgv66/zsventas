@@ -13,7 +13,6 @@
     <ion-card>
         <ion-list lines="none">
             <h5 class="ion-text-center"><b>Cliente activo</b></h5>
-
             <h4 *ngIf=" baseLocal.cliente.codigo === '' " class="ion-text-center">(aun no definido)</h4>
 
             <ion-grid fixed *ngIf=" baseLocal.cliente.codigo !== '' ">
@@ -21,16 +20,13 @@
                     <ion-col size="3.3" class="ion-text-right">
                         <ion-label>Código:</ion-label>
                     </ion-col>
-                    <ion-col size="8.7">
+                    <ion-col size="3">
                         <ion-label><b>{{ cliente?.codigo }}</b></ion-label>
                     </ion-col>
-                </ion-row>
-
-                <ion-row *ngIf=" cliente?.sucursal.trim() !== '' " class="fs75">
-                    <ion-col size="3.3" class="ion-text-right">
+                    <ion-col size="2.5" class="ion-text-right" *ngIf=" cliente.sucursal.trim() !== '' ">
                         <ion-label>Sucursal:</ion-label>
                     </ion-col>
-                    <ion-col size="8.7">
+                    <ion-col>
                         <ion-label><b>{{ cliente?.sucursal }}</b></ion-label>
                     </ion-col>
                 </ion-row>
@@ -89,11 +85,28 @@
                     </ion-col>
                 </ion-row>
 
+                <ion-row *ngIf=" cliente?.email !== '' " class="fs75">
+                    <ion-col size="3.3" class="ion-text-right">
+                        <ion-label>Email:</ion-label>
+                    </ion-col>
+                    <ion-col size="8.7">
+                        <ion-label><b> {{ cliente?.email }}</b></ion-label>
+                    </ion-col>
+                </ion-row>
+
+                <ion-row *ngIf=" cliente?.telefonos !== '' " class="fs75">
+                    <ion-col size="3.3" class="ion-text-right">
+                        <ion-label>Teléfonos:</ion-label>
+                    </ion-col>
+                    <ion-col size="8.7">
+                        <ion-label><a href="tel:{{ cliente.telefonos }}"><b> {{ cliente?.telefonos }}</b></a></ion-label>
+                    </ion-col>
+                </ion-row>
+
             </ion-grid>
 
             <ion-grid fixed>
                 <ion-row>
-
                     <ion-col [size]="( baseLocal.cliente.codigo !== '' ) ? 4.5 : 7.5" *ngIf=" !usuario.esuncliente ">
                         <ion-button expand="block" size="small" (click)="buscarOtroCliente()">
                             <ion-icon slot="start" name="color-wand"></ion-icon>
@@ -101,27 +114,50 @@
                         </ion-button>
                     </ion-col>
 
-                    <ion-col *ngIf=" baseLocal.cliente.codigo === '' && !usuario.esuncliente " size="4.5">
+                    <ion-col size="4.5" *ngIf=" baseLocal.cliente.codigo === '' && !usuario.esuncliente ">
                         <ion-button expand="block" size="small" (click)="crearClientes()">
                             <ion-icon slot="start" name="add"></ion-icon>
                             Crear cliente
                         </ion-button>
                     </ion-col>
 
-                    <ion-col [size]=" usuario.esuncliente ? 7.5 : 5" *ngIf=" baseLocal.cliente.codigo !== '' ">
-                        <ion-button expand="block" size="small" (click)="consultarImpagos( cliente )">
-                            <ion-icon slot="start" name="card"></ion-icon>Pendientes</ion-button>
+                    <ion-col [size]=" usuario.esuncliente ? 7.5 : 3" *ngIf=" baseLocal.cliente.codigo !== '' " style="padding-left: 1px; padding-right: 1px;">
+                        <ion-button expand="block" size="small" (click)="consultarImpagos( cliente )"> Pendientes </ion-button>
                     </ion-col>
 
-                    <ion-col [size]=" usuario.esuncliente ? 4.5 : 2.5" *ngIf=" baseLocal.cliente.codigo !== '' ">
+                    <ion-col [size]=" usuario.esuncliente ? 4.5 : 2" *ngIf=" baseLocal.cliente.codigo !== '' ">
                         <ion-button expand="block" size="small" (click)="ultimosDocs( $event )">
                             <ion-icon slot="icon-only" name="pulse"></ion-icon>
+                        </ion-button>
+                    </ion-col>
+
+                    <ion-col [size]="2" *ngIf=" baseLocal.cliente.codigo !== '' && !usuario.esuncliente " style="padding-left: 1px; padding-right: 1px;">
+                        <ion-button expand="block" size="small" (click)="modifCliente()">
+                            <ion-icon slot="icon-only" name="at"></ion-icon>
                         </ion-button>
                     </ion-col>
 
                 </ion-row>
             </ion-grid>
 
+        </ion-list>
+    </ion-card>
+
+    <ion-card style="top: -15px; margin-top: 10px; margin-bottom: 15px;" *ngIf=" usuario.esuncliente ">
+        <ion-list lines="none">
+            <h5 class="ion-text-center"><b>Filtros y personalización</b></h5>
+            <ion-item no-lines>
+                <ion-label>Ver imágenes</ion-label>
+                <ion-toggle name="config.imagenes" [(ngModel)]="config.imagenes"></ion-toggle>
+            </ion-item>
+            <ion-item no-lines>
+                <ion-label>Ver descripción ampliada</ion-label>
+                <ion-toggle name="config.descripcionamplia" [(ngModel)]="config.descripcionamplia"></ion-toggle>
+            </ion-item>
+            <ion-item no-lines>
+                <ion-label>Ver código técnico</ion-label>
+                <ion-toggle name="config.codigotecnico" [(ngModel)]="config.codigotecnico"></ion-toggle>
+            </ion-item>
         </ion-list>
     </ion-card>
 

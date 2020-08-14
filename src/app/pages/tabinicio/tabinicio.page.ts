@@ -91,6 +91,7 @@ export class TabinicioPage implements OnInit {
                 // console.log(cli[0]);
                 this.baseLocal.cliente = cli[0];
                 this.cliente = cli[0];
+                this.usuario.LISTACLIENTE = cli[0].listaprecios;
             });
         this.config.imagenes      = true;
         this.config.soloconstock  = false;

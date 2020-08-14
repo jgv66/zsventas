@@ -334,6 +334,12 @@ app.post('/grabadocumentos',
                                         x1 = data[0].correo;
                                         rsocial = data[0].rs;
                                         //
+                                        i = 0;
+                                        monto = 0;
+                                        neto = 0;
+                                        iva = 0;
+                                        bruto = 0;
+                                        //
                                         correos.componeBody(sql, rs.recordset[0].id)
                                             .then(data => {
                                                 data.recordset.forEach(element => {
@@ -786,7 +792,16 @@ app.post('/ksp_crearClientes',
                 res.json(data); /* data viene en formato correcto */
             });
     });
-
+app.post('/ksp_modifClientes',
+    function(req, res) {
+        //
+        console.log(req.body);
+        servicios.modifCliente(sql, req.body.datos)
+            .then(function(data) {
+                console.log("/ksp_crearClientes ", data);
+                res.json(data); /* data viene en formato correcto */
+            });
+    });
 // select * from MAEEN where KOEN = '*cliente-web*'
 app.post('/ksp_enviarSugerencias',
     function(req, res) {

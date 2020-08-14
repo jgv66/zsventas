@@ -31,9 +31,9 @@ module.exports = {
         });
         // opciones del correo
         var mailOptions = {
-            from: { name: "ZS-Motor 👻", address: sender },
+            from: { name: "ZS-Motor", address: sender },
             to: cTo,
-            cc: cCc, // [{ name: "ZS-Motor 👻", address: 'jogv66@gmail.com'}, 'pedroalfonsofrancisco@gmail.com' ],
+            cc: cCc, // [{ name: "ZS-Motor", address: 'jogv66@gmail.com'}, 'pedroalfonsofrancisco@gmail.com' ],
             subject: cSu,
             html: htmlBody
         };
@@ -153,14 +153,16 @@ module.exports = {
                         <table>
                             <tr>
                                 <td class="content footer" align="center">
-                                    <p>Desarrollado por Kinetik - Soluciones Móviles</p>
+                                    <p><a href="https://www.kinetik.cl">Desarrollado por Kinetik - Soluciones Móviles</a></p>
                                 </td>
                             </tr>
                         </table>
                     </td>
                 </tr>
             </table>
-
+            <a href="https://www.webpay.cl/portalpagodirecto/pages/institucion.jsf?idEstablecimiento=42591039" align="center">
+                <img alt="webpay" src="https://www.webpay.cl/portalpagodirecto/img/webpay.jpg" width="250px" height="93px"/>
+            </a>
             </body>
 
             </html>`;

@@ -16,7 +16,7 @@
 
     <ion-card style="margin: 10px;">
         <ion-grid>
-            <ion-row *ngIf=" baseLocal.cliente.codigo !== '' ">
+            <ion-row *ngIf=" baseLocal.cliente.codigo !== '' " style="max-height: 35px;">
                 <ion-col>
                     <ion-item lines='none'>
                         <ion-label color="primary" style="font-size: 85%;">Cliente {{ baseLocal.cliente?.razonsocial }}</ion-label>

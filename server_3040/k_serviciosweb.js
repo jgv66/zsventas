@@ -97,6 +97,17 @@ module.exports = {
             });
     },
     //
+    modifCliente: function(sql, body) {
+        //
+        var query = "exec ksp_modifClientes '" + body.codigo + "','" + body.sucursal + "','" + body.email + "','" + body.nrocelu + "' ; ";
+        console.log(query);
+        var request = new sql.Request();
+        return request.query(query)
+            .then(function(results) {
+                return results.recordset;
+            });
+    },
+    //
     buscaFicha: function(sql, body) {
         //
         var query = "exec ksp_buscarFicha '" + body.codigo + "' ; ";

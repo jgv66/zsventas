@@ -10,6 +10,8 @@ import { ComponentsModule } from '../../components/components.module';
 import { MovdoccliComponent } from '../../components/movdoccli/movdoccli.component';
 import { BuscarclientesPage } from '../buscarclientes/buscarclientes.page';
 import { BuscarclientesPageModule } from '../buscarclientes/buscarclientes.module';
+import { ModifclientesPage } from '../modifclientes/modifclientes.page';
+import { ModifclientesPageModule } from '../modifclientes/modifclientes.module';
 
 const routes: Routes = [
   {
@@ -19,14 +21,15 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  entryComponents: [ MovdoccliComponent, BuscarclientesPage ],
+  entryComponents: [ MovdoccliComponent, BuscarclientesPage, ModifclientesPage ],
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
     RouterModule.forChild(routes),
     ComponentsModule,
-    BuscarclientesPageModule
+    BuscarclientesPageModule,
+    ModifclientesPageModule
   ],
   declarations: [MenuseteoPage]
 })

@@ -11,7 +11,8 @@ export class MovdoccliComponent {
   sugerencias = [ { texto: 'Ultimas 15 COV' },
                   { texto: 'Ultimas 15 NVV' },
                   { texto: 'Ultimas 15 FCV' },
-                  { texto: 'Ultimas 15 BLV' } ];
+                  { texto: 'Ultimas 15 BLV' },
+                  { texto: 'Ultimas 15 NCV' } ];
 
   constructor( private popoverCtrl: PopoverController ) { }
 

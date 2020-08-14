@@ -7,6 +7,7 @@ import { MovdoccliComponent } from '../../components/movdoccli/movdoccli.compone
 import { PopoverController, ModalController, AlertController } from '@ionic/angular';
 import { BuscarclientesPage } from '../buscarclientes/buscarclientes.page';
 import { NetworkengineService } from '../../services/networkengine.service';
+import { ModifclientesPage } from '../modifclientes/modifclientes.page';
 
 @Component({
   selector: 'app-menuseteo',
@@ -65,6 +66,22 @@ export class MenuseteoPage {
     }
   }
 
+  async modifCliente() {
+    const modal = await this.modalCtrl.create({
+      component: ModifclientesPage,
+    });
+    await modal.present();
+
+    const { data } = await modal.onDidDismiss();
+    if ( data ) {
+      this.cliente.email = data.email;
+      this.cliente.telefonos = data.nrocelu;
+      //
+      this.baseLocal.cliente.email = data.email;
+      this.baseLocal.cliente.telefonos = data.nrocelu;
+    }
+  }
+
   crearClientes() {
     if ( !this.baseLocal.user.puedecrearcli ) {
       this.funciones.msgAlert('ATENCION', 'Ud. no posee permisos para esta acción');
@@ -75,7 +92,7 @@ export class MenuseteoPage {
 
   consultarImpagos( cliente ) {
     if ( cliente === null || cliente === undefined || cliente.codigo === '' ) {
-      this.funciones.muestraySale('ATENCION : Código de cliente no puede estar vacío', 2);
+      this.funciones.muestraySale('ATENCION : Código de cliente no puede estar vacío', 1);
     } else {
       this.router.navigate(['/tabs/ctacteclientes']);
     }

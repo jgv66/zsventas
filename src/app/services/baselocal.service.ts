@@ -45,20 +45,22 @@ export class BaselocalService {
               krpt: false,
               t6A_tipo: '',
               t6A_valor: 0,
-              esuncliente: true,
+              esuncliente: false,
               puedecrearcli: false,
               puedemodifdscto: false,
               kconcecionario: false,
               puedemoddesc: false,
               puedeverprov: false,
               puedevercosto: false,
-              puedecrearnvi: false };
+              puedecrearnvi: false,
+              puedemodifcli: false };
   }
 
   initCliente() {
     this.cliente = {codigo: '',
                     sucursal: '',
                     razonsocial: '',
+                    telefonos: '',
                     direccion: '',
                     ciudad: '',
                     comuna: '',

@@ -87,6 +87,7 @@ export class FuncionesService {
   }
 
   showTabs( estilo ) {
+    // tslint:disable-next-line: no-angle-bracket-type-assertion tslint:disable-next-line: whitespace
     const elem = <HTMLElement>document.querySelector('.tabbar');
     if (elem != null) {
       elem.style.display = estilo;
@@ -118,7 +119,7 @@ export class FuncionesService {
   }
 
   inicializaTodo() {
-    this.usuario    = this.baseLocal.initUsuario();
+    this.usuario = this.baseLocal.initUsuario();
     if ( this.usuario ) {
       this.usuario.LISTACLIENTE = '';
     }

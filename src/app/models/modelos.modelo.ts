@@ -50,6 +50,10 @@ export interface Cliente {
   listaprecios: string;  // char(3)
   nombrelista: string;
   LISTACLIENTE: string;
+  marca: string;
+  modelo: string;
+  color: string;
+  anno: string;
 }
 
 export interface KEnca {

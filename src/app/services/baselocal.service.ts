@@ -69,7 +69,11 @@ export class BaselocalService {
                     listaprecios: '',
                     nombrelista: '',
                     email: '',
-                    LISTACLIENTE: ''};
+                    LISTACLIENTE: '',
+                    marca: '',
+                    modelo: '',
+                    color: '',
+                    anno: ''};
     return this.cliente;
   }
 

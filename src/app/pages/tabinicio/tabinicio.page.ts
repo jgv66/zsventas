@@ -122,7 +122,7 @@ export class TabinicioPage implements OnInit {
   // logScrollEnd()      { console.log('logScrollEnd : When Scroll Ends');      this.ScrollToBottom(); }
   // ScrollToBottom()    { this.content.scrollToBottom(1500);    }
   // ScrollToPoint(X,Y)  { this.content.scrollToPoint(X,Y,1500); }
-  ScrollToTop() { 
+  ScrollToTop() {
     this.content.scrollToTop(1500);
   }
 
@@ -385,6 +385,7 @@ export class TabinicioPage implements OnInit {
     if ( this.usuario.t6A_tipo === '1' ) {
       conAutonomia = true;
     }
+    // console.log(this.usuario);
     if ( !this.usuario.puedemodifdscto && !conAutonomia ) {
       this.funciones.muestraySale('Ud. no posee permiso para hacer esta modificación.', 2 );
     } else {
@@ -458,6 +459,7 @@ export class TabinicioPage implements OnInit {
       //
       const popover = await this.popoverCtrl.create({
         component: TrespuntosComponent,
+        componentProps: { escliente: false },
         event,
         mode: 'ios',
         translucent: false
@@ -553,7 +555,7 @@ export class TabinicioPage implements OnInit {
   // }
 
   scanBarcode() {
-    this.funciones.msgAlert('ATENCION', 'Lectura de códigos de barra en construcción.' );
+    this.funciones.msgAlert('ATENCION', 'Lectura de códigos de barra momentáneamente en construcción.' );
   }
 
 }

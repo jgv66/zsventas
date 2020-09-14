@@ -12,6 +12,9 @@ import { BuscarclientesPage } from '../buscarclientes/buscarclientes.page';
 import { BuscarclientesPageModule } from '../buscarclientes/buscarclientes.module';
 import { ModifclientesPage } from '../modifclientes/modifclientes.page';
 import { ModifclientesPageModule } from '../modifclientes/modifclientes.module';
+import { TrespuntosComponent } from '../../components/trespuntos/trespuntos.component';
+import { PatentesPageModule } from '../patentes/patentes.module';
+import { PatentesPage } from '../patentes/patentes.page';
 
 const routes: Routes = [
   {
@@ -21,7 +24,11 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  entryComponents: [ MovdoccliComponent, BuscarclientesPage, ModifclientesPage ],
+  entryComponents: [ MovdoccliComponent,
+                     BuscarclientesPage,
+                     ModifclientesPage,
+                     TrespuntosComponent,
+                     PatentesPage ],
   imports: [
     CommonModule,
     FormsModule,
@@ -29,7 +36,8 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     ComponentsModule,
     BuscarclientesPageModule,
-    ModifclientesPageModule
+    ModifclientesPageModule,
+    PatentesPageModule
   ],
   declarations: [MenuseteoPage]
 })

@@ -1,13 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Cliente } from '../../models/modelos.modelo';
 import { BaselocalService } from '../../services/baselocal.service';
 import { FuncionesService } from '../../services/funciones.service';
 import { MovdoccliComponent } from '../../components/movdoccli/movdoccli.component';
-import { PopoverController, ModalController, AlertController } from '@ionic/angular';
+import { PopoverController, ModalController, AlertController, IonCardContent } from '@ionic/angular';
 import { BuscarclientesPage } from '../buscarclientes/buscarclientes.page';
 import { NetworkengineService } from '../../services/networkengine.service';
 import { ModifclientesPage } from '../modifclientes/modifclientes.page';
+import { TrespuntosComponent } from '../../components/trespuntos/trespuntos.component';
+import { PatentesPage } from '../patentes/patentes.page';
 
 @Component({
   selector: 'app-menuseteo',
@@ -21,6 +23,15 @@ export class MenuseteoPage {
   usuario;
   config;
   buscando = false;
+
+  // collapsed = true;
+  collapsedFiltro = true;
+  collapsedConfig = true;
+  collapsedOrden  = true;
+
+  @ViewChild( 'filtros', {static: false} ) filt: IonCardContent;
+  @ViewChild( 'config',  {static: false} ) conf: IonCardContent;
+  @ViewChild( 'orden',   {static: false} ) orde: IonCardContent;
 
   constructor( public baseLocal: BaselocalService,
                private router: Router,
@@ -63,22 +74,6 @@ export class MenuseteoPage {
         this.usuario.LISTACLIENTE = data.listaprecios;
         this.baseLocal.user       = this.usuario;
       }
-    }
-  }
-
-  async modifCliente() {
-    const modal = await this.modalCtrl.create({
-      component: ModifclientesPage,
-    });
-    await modal.present();
-
-    const { data } = await modal.onDidDismiss();
-    if ( data ) {
-      this.cliente.email = data.email;
-      this.cliente.telefonos = data.nrocelu;
-      //
-      this.baseLocal.cliente.email = data.email;
-      this.baseLocal.cliente.telefonos = data.nrocelu;
     }
   }
 
@@ -221,6 +216,80 @@ export class MenuseteoPage {
         //
     } else {
         this.funciones.msgAlert('ATENCION', 'Sin permiso para revisar todas las listas de precio. Intente con otros datos.' );
+    }
+  }
+
+  modifCliente = async () => {
+    const modal = await this.modalCtrl.create({
+      component: ModifclientesPage,
+    });
+    await modal.present();
+    //
+    const { data } = await modal.onDidDismiss();
+    if ( data ) {
+      this.cliente.email = data.email;
+      this.cliente.telefonos = data.nrocelu;
+      //
+      this.baseLocal.cliente.email = data.email;
+      this.baseLocal.cliente.telefonos = data.nrocelu;
+    }
+  }
+
+  crearPatente = async () => {
+    const modal = await this.modalCtrl.create({
+      component: PatentesPage,
+    });
+    await modal.present();
+    //
+    const { data } = await modal.onDidDismiss();
+    if ( data ) {
+      this.cliente.email = data.email;
+      this.cliente.telefonos = data.nrocelu;
+      //
+      this.baseLocal.cliente.email = data.email;
+      this.baseLocal.cliente.telefonos = data.nrocelu;
+    }
+  }
+
+  async opcionPuntos( event ) {
+    //
+    if ( this.baseLocal.cliente.codigo !== '') {
+      const popover = await this.popoverCtrl.create({
+        component: TrespuntosComponent,
+        componentProps: { escliente: true },
+        event,
+        mode: 'ios',
+        translucent: false
+      });
+      await popover.present();
+      //
+      const { data } = await popover.onDidDismiss();
+      if ( data ) {
+        switch (data.opcion.texto) {
+          //
+          case 'Actualizar datos':
+            this.modifCliente();
+            break;
+          //
+          case 'Agregar Patente':
+            this.crearPatente();
+            break;
+          //
+          default:
+            console.log('vacio');
+            break;
+        }
+      }
+    }
+  }
+
+  toggleAccordion( caso ) {
+    if ( caso === 1 ) {
+      this.collapsedFiltro = ! this.collapsedFiltro;
+    } else if ( caso === 2 ) {
+      this.collapsedConfig = ! this.collapsedConfig;
+    } else if ( caso === 3 ) {
+      this.collapsedOrden = ! this.collapsedOrden;
     }
   }
 

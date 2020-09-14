@@ -802,6 +802,17 @@ app.post('/ksp_modifClientes',
                 res.json(data); /* data viene en formato correcto */
             });
     });
+app.post('/ksp_crearSucursal',
+    function(req, res) {
+        //
+        console.log(req.body);
+        servicios.crearSucursal(sql, req.body.datos)
+            .then(function(data) {
+                console.log("/ksp_crearSucursal ", data);
+                res.json(data); /* data viene en formato correcto */
+            });
+    });
+
 // select * from MAEEN where KOEN = '*cliente-web*'
 app.post('/ksp_enviarSugerencias',
     function(req, res) {

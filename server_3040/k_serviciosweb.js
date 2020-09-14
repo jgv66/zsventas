@@ -108,6 +108,17 @@ module.exports = {
             });
     },
     //
+    crearSucursal: function(sql, body) {
+        //
+        var query = "exec ksp_CrearSucursal '" + body.codigo + "','" + body.sucursal + "','" + body.marca + "','" + body.modelo + "','" + body.color + "','" + body.anno + "' ; ";
+        console.log(query);
+        var request = new sql.Request();
+        return request.query(query)
+            .then(function(results) {
+                return results.recordset;
+            });
+    },
+    //
     buscaFicha: function(sql, body) {
         //
         var query = "exec ksp_buscarFicha '" + body.codigo + "' ; ";

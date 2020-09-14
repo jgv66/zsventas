@@ -21,7 +21,7 @@ export class ModifclientesPage implements OnInit {
                private modalCtrl: ModalController ) {}
 
   ngOnInit() {
-    // console.log(this.baseLocal.cliente);
+    console.log(this.baseLocal.cliente);
     this.email = this.baseLocal.cliente.email;
     this.nrocelu = this.baseLocal.cliente.telefonos;
   }
@@ -41,21 +41,23 @@ export class ModifclientesPage implements OnInit {
                                         nombre: this.baseLocal.user.NOKOFU } )
           .subscribe( data => { this.revisa( data );           },
                       err  => { this.funciones.msgAlert( 'ATENCION', err ); });
-    }
-    revisa( data ) {
-      this.modificando = false;
-      if ( data === undefined ) {
-        this.funciones.muestraySale('ATENCION : Cliente presenta problemas al intentar creación', 2 );
+  }
+
+  revisa( data ) {
+    this.modificando = false;
+    if ( data === undefined ) {
+      this.funciones.muestraySale('ATENCION : Cliente presenta problemas al intentar creación', 2 );
+    } else {
+      // console.log(data[0]);
+      if ( data[0].resultado === true ) {
+        //
+        this.modalCtrl.dismiss({email: this.email, nrocelu: this.nrocelu});
+        this.funciones.muestraySale('Cliente fue actualizado correctamente', 2 );
+        //
       } else {
-        // console.log(data[0]);
-        if ( data[0].resultado === true ) {
-          //
-          this.modalCtrl.dismiss({email: this.email, nrocelu: this.nrocelu});
-          this.funciones.muestraySale('Cliente fue actualizado correctamente', 2 );
-          //
-        } else {
-          this.funciones.msgAlert( 'ATENCION', data[0].mensaje );
-        }
+        this.funciones.msgAlert( 'ATENCION', data[0].mensaje );
       }
     }
+  }
+
 }

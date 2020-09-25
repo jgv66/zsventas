@@ -82,17 +82,6 @@ export class CrearclientesPage {
   }
 
   crear() {
-    console.log({ rut:       this.rut,
-                  nombre:    this.nombre,
-                  direccion: this.direccion,
-                  comuna:    this.codcomuna,
-                  ciudad:    this.codciudad,
-                  email:     this.email,
-                  nrocelu:   this.nrocelu,
-                  giro:      this.giro });
-  }
-
-  aaaacrear() {
     this.creando = true;
     this.netWork.consultaEstandar(  'ksp_crearClientes',
                                     { rut:       this.rut,

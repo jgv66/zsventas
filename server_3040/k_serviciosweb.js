@@ -138,13 +138,10 @@ module.exports = {
             body.codprod + "'," +
             body.cantidad.toString() + "," +
             body.prodbueno + "," +
-            body.prodregular + "," +
             body.prodmalo + "," +
             body.preciomuybarato + "," +
-            body.preciocorrecto + "," +
             body.preciomuycaro + "," +
             body.prodconstock + "," +
-            body.prodstockirreg + "," +
             body.prodconquiebre + " ";
         console.log(query);
         var request = new sql.Request();

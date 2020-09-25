@@ -15,13 +15,10 @@ export class SugerenciasPage implements OnInit {
   enviando = false;
   sistema: any;
   prodbueno = false;
-  prodregular = false;
   prodmalo = false;
   preciomuybarato = false;
-  preciocorrecto = false;
   preciomuycaro = false;
   prodconstock = false;
-  prodstockirreg = false;
   prodconquiebre = false;
   observaciones = '';
 
@@ -42,13 +39,10 @@ export class SugerenciasPage implements OnInit {
 
   limpiar() {
     this.prodbueno        = false;
-    this.prodregular      = false;
     this.prodmalo         = false;
     this.preciomuybarato  = false;
-    this.preciocorrecto   = false;
     this.preciomuycaro    = false;
     this.prodconstock     = false;
-    this.prodstockirreg   = false;
     this.prodconquiebre   = false;
     this.observaciones    = '';
   }
@@ -80,15 +74,13 @@ export class SugerenciasPage implements OnInit {
                                       usuario:         this.baseLocal.user.KOFU,
                                       observac:        this.observaciones,
                                       codprod:         this.sistema.codigo,
+                                      descrip:         this.sistema.descrip,
                                       cantidad:        0,
                                       prodbueno:       this.prodbueno,
-                                      prodregular:     this.prodregular,
                                       prodmalo:        this.prodmalo,
                                       preciomuybarato: this.preciomuybarato,
-                                      preciocorrecto:  this.preciocorrecto,
                                       preciomuycaro:   this.preciomuycaro,
                                       prodconstock:    this.prodconstock,
-                                      prodstockirreg:  this.prodstockirreg,
                                       prodconquiebre:  this.prodconquiebre },
                                     { codigo: this.baseLocal.user.KOFU,
                                       nombre: this.baseLocal.user.NOKOFU } )

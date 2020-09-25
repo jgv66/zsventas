@@ -41,10 +41,10 @@ var sql = require('mssql');
 var conex = sql.connect(dbconex);
 
 //---------------------- pruebas
-app.get('/hola',
+app.get('/ping',
     function(req, res) {
         //
-        console.log('llegamos....');
+        console.log('PONG');
         res.json({ resultado: "ok", datos: 'hola mundo' });
         //
     });
@@ -812,15 +812,20 @@ app.post('/ksp_crearSucursal',
                 res.json(data); /* data viene en formato correcto */
             });
     });
-
-// select * from MAEEN where KOEN = '*cliente-web*'
 app.post('/ksp_enviarSugerencias',
     function(req, res) {
         //
-        console.log(req.body);
+        // console.log(req.body);
         servicios.enviarsugerencia(sql, req.body.datos)
             .then(function(data) {
-                console.log("/ksp_enviarSugerencias ", data);
+                // console.log("/ksp_enviarSugerencias ", data);
+                if (data[0].resultado === true) {
+                    correos.sugerido(sql, req.body.datos, req.body.user)
+                        .then(htmlBody => {
+                            mailList.push({ cc: x2, to: x1 });
+                            correos.enviarCorreo(res, nodemailer, mailList, htmlBody);
+                        });
+                }
                 res.json(data); /* data viene en formato correcto */
             });
     });
@@ -835,7 +840,6 @@ app.post('/ksp_buscarSucursal',
                 res.json(data); /* data viene en formato correcto */
             });
     });
-
 app.post('/ksp_traeFichaTecnica',
     function(req, res) {
         //

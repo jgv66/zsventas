@@ -818,13 +818,10 @@ app.post('/ksp_enviarSugerencias',
         // console.log(req.body);
         servicios.enviarsugerencia(sql, req.body.datos)
             .then(function(data) {
-                // console.log("/ksp_enviarSugerencias ", data);
+                // console.log("/ksp_enviarSugerencias ", req.body.datos, req.body.user);
                 if (data[0].resultado === true) {
-                    correos.sugerido(sql, req.body.datos, req.body.user)
-                        .then(htmlBody => {
-                            mailList.push({ cc: x2, to: x1 });
-                            correos.enviarCorreo(res, nodemailer, mailList, htmlBody);
-                        });
+                    htmlBody = correos.sugerido(req.body.datos, req.body.user);
+                    correos.enviarCorreo(res, nodemailer, [{ to: 'ziad@zsmotor.cl', cc: '' }], htmlBody);
                 }
                 res.json(data); /* data viene en formato correcto */
             });

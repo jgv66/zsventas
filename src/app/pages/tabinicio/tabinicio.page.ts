@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { IonContent } from '@ionic/angular';
+import { IonContent, ModalController } from '@ionic/angular';
 import { AlertController, IonInfiniteScroll, PopoverController } from '@ionic/angular';
 import { Router } from '@angular/router';
 
@@ -7,6 +7,7 @@ import { FuncionesService } from 'src/app/services/funciones.service';
 import { BaselocalService } from '../../services/baselocal.service';
 import { NetworkengineService } from '../../services/networkengine.service';
 import { TrespuntosComponent } from '../../components/trespuntos/trespuntos.component';
+import { SugerenciasPage } from '../sugerencias/sugerencias.page';
 
 @Component({
   selector: 'app-tabinicio',
@@ -59,6 +60,7 @@ export class TabinicioPage implements OnInit {
                public baseLocal: BaselocalService,
                public  funciones: FuncionesService,
                private alertCtrl: AlertController,
+               private modalCtrl: ModalController,
                private router: Router,
                private popoverCtrl: PopoverController ) {
     this.filtroFamilias = false;

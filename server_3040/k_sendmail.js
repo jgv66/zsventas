@@ -168,7 +168,13 @@ module.exports = {
             </html>`;
     },
 
-    sugerido: function(data, usuario) {
+    sugerido: function(suger, usuario) {
+        const prodbueno = suger.prodbueno === true ? 'SI' : 'NO';
+        const prodmalo = suger.prodmalo === true ? 'SI' : 'NO';
+        const preciomuybarato = suger.preciomuybarato === true ? 'SI' : 'NO';
+        const preciomuycaro = suger.preciomuycaro === true ? 'SI' : 'NO';
+        const prodconstock = suger.prodconstock === true ? 'SI' : 'NO';
+        const prodconquiebre = suger.prodconquiebre === true ? 'SI' : 'NO';
         return `
         <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
         <html xmlns="http://www.w3.org/1999/xhtml">
@@ -226,19 +232,19 @@ module.exports = {
                             <tr>
                                 <td class="content">
         
-                                    <h3>Sugerencias al Producto</h3>
+                                    <h3>Sugerencias al Producto: ` + suger.codprod + `</h3>
 
                                     <table border="1">
-                                        ` + (usuario.nombre && usuario.nombre != '' ? '<tr><td>Usuario          </td><td align="left">' + usuario.nombre + '</td></tr>' : '') + `
-                                        ` + (data.codprod != undefined && data.codprod != '' ? '<tr><td>Código           </td><td align="left">' + data.codprod + '</td></tr>' : '') + `
-                                        ` + (data.descrip != undefined && data.descrip.trim() != '' ? '<tr><td>Descripcion      </td><td align="left">' + data.descrip + '</td></tr>' : '') + `
-                                        ` + (data.prodbueno != undefined ? '<tr><td>El producto es de buena calidad</td><td align="left">' + (data.prodbueno) ? 'SI' : 'NO' + '</td></tr>' : '') + `
-                                        ` + (data.prodmalo != undefined ? '<tr><td>El producto es de mala calidad</td><td align="left">' + (data.prodmalo) ? 'SI' : 'NO' + '</td></tr>' : '') + `
-                                        ` + (data.preciomuybarato != undefined ? '<tr><td>El producto es muy barato</td><td align="left">' + (data.preciomuybarato) ? 'SI' : 'NO' + '</td></tr>' : '') + `
-                                        ` + (data.preciomuycaro != undefined ? '<tr><td>El producto es muy caro</td><td align="left">' + (data.preciomuycaro) ? 'SI' : 'NO' + '</td></tr>' : '') + `
-                                        ` + (data.prodconstock != undefined ? '<tr><td>El producto siempre tiene stock</td><td align="left">' + (data.prodconstock) ? 'SI' : 'NO' + '</td></tr>' : '') + `
-                                        ` + (data.prodconquiebre != undefined ? '<tr><td>Recomienda comprar</td><td align="left">' + (data.prodconquiebre) ? 'SI' : 'NO' + '</td></tr>' : '') + `
-                                        ` + (data.observac != '' && data.observac != undefined ? '<tr><td>Observaciones    </td><td align="left">' + data.observac + '</td></tr>' : '') + `
+                                        ` + '<tr><td>Usuario                        </td><td align="left">' + usuario.nombre + '</td></tr>' + `
+                                        ` + '<tr><td>Descripcion                    </td><td align="left">' + suger.descrip + '</td></tr>' + `
+                                        ` + '<tr><td>Sucursal                       </td><td align="left">' + suger.sucursal + '</td></tr>' + `
+                                        ` + '<tr><td>El producto es de buena calidad</td><td align="left">' + prodbueno + '</td></tr>' + `
+                                        ` + '<tr><td>El producto es de mala calidad </td><td align="left">' + prodmalo + '</td></tr>' + `
+                                        ` + '<tr><td>El producto es muy barato      </td><td align="left">' + preciomuybarato + '</td></tr>' + `
+                                        ` + '<tr><td>El producto es muy caro        </td><td align="left">' + preciomuycaro + '</td></tr>' + `
+                                        ` + '<tr><td>El producto siempre tiene stock</td><td align="left">' + prodconstock + '</td></tr>' + `
+                                        ` + '<tr><td>Recomienda comprar             </td><td align="left">' + prodconquiebre + '</td></tr>' + `
+                                        ` + '<tr><td>Observaciones                  </td><td align="left">' + suger.observac + '</td></tr>' + `
                                     <!--  KINETIK -->
                                     </table>
                                     <br>

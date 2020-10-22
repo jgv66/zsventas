@@ -345,7 +345,11 @@ export class TabinicioPage implements OnInit {
   }
 
   agregarAlCarro( producto ) {
-    this.funciones.pideCantidad( producto );
+    if ( producto.modificable === false ) {
+      this.funciones.pideCantidad( producto );
+    } else {
+      this.funciones.pideCantidadyDescrip( producto );
+    }
   }
 
   ConfiguracionLocal() {

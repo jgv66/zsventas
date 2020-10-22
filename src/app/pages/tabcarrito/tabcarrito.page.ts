@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { FuncionesService } from '../../services/funciones.service';
 import { BaselocalService } from '../../services/baselocal.service';
 import { Router } from '@angular/router';
-import { AlertController, ModalController, IonList } from '@ionic/angular';
+import { AlertController, ModalController, IonList, IonCardContent } from '@ionic/angular';
 import { NetworkengineService } from '../../services/networkengine.service';
 import { BuscarvendedorPage } from '../buscarvendedor/buscarvendedor.page';
 
@@ -15,10 +15,18 @@ export class TabcarritoPage {
 
   @ViewChild('lista', { static: false }) lista: IonList;
 
+  collapsedOcc  = true;
+  collapsedObs  = true;
+  collapsedKM   = true;
+  collapsedSave = true;
+
+  @ViewChild( 'filtros', {static: false} ) filt: IonCardContent;
+
   enviando = false;
   queHacerConCarrito = 'Acción a realizar?';
   textoObs = '';
   textoOcc = '';
+  cantidadKM = 0;
   cTo = '';
   cCc = '';
 
@@ -28,6 +36,18 @@ export class TabcarritoPage {
                private alertCtrl: AlertController,
                private modalCtrl: ModalController,
                private router: Router ) { }
+
+  toggleAccordion( caso ) {
+    if ( caso === 1 ) {
+      this.collapsedOcc = ! this.collapsedOcc;
+    } else if ( caso === 2 ) {
+      this.collapsedObs = ! this.collapsedObs;
+    } else if ( caso === 3 ) {
+      this.collapsedKM = ! this.collapsedKM;
+    } else if ( caso === 4 ) {
+      this.collapsedSave = ! this.collapsedSave;
+    }
+  }
 
   sumaCarrito() {
     return this.funciones.sumaCarrito();
@@ -94,7 +114,7 @@ export class TabcarritoPage {
   }
   enviarCarrito( cTipoDoc ) {
     this.enviando = true;
-    this.netWork.grabarDocumentos( this.funciones.miCarrito, this.baseLocal.user.MODALIDAD, cTipoDoc, this.textoObs, this.textoOcc )
+    this.netWork.grabarDocumentos( this.funciones.miCarrito, this.baseLocal.user.MODALIDAD, cTipoDoc, this.textoObs, this.textoOcc, this.cantidadKM.toString() )
         .subscribe( data => { this.enviando = false;
                               this.revisaExitooFracaso( data ); },
                     err  => { this.enviando = false;

@@ -45,11 +45,11 @@ export class NetworkengineService {
     return this.http.post( url, body );
   }
 
-  grabarDocumentos( pCarro, pModalidad, cTipodoc, cTextoObs, cTextoOcc )  {
+  grabarDocumentos( pCarro, pModalidad, cTipodoc, cTextoObs, cTextoOcc, cKilometraje )  {
     // console.log('grabadocumentos()->', pCarro);
     const accion = '/grabadocumentos';
     const url    = this.url  + accion;
-    const body   = { carro: pCarro, modalidad: pModalidad, tipodoc: cTipodoc, cObs: cTextoObs, cOcc: cTextoOcc };
+    const body   = { carro: pCarro, modalidad: pModalidad, tipodoc: cTipodoc, cObs: cTextoObs, cOcc: cTextoOcc, nKM: cKilometraje };
     return this.http.post( url, body );
   }
 

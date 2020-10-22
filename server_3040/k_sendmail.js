@@ -160,6 +160,8 @@ module.exports = {
                     </td>
                 </tr>
             </table>
+            <p align="center"><b>Prefiera Tranferencia Electrónica: BANCO SANTANDER, CTA.CTE.NRO: 6326519-5, COMERCIAL CARDEPOT LTDA., RUT: 77.358.700-0</b></p>
+            <br>
             <a href="https://www.webpay.cl/portalpagodirecto/pages/institucion.jsf?idEstablecimiento=42591039" align="center">
                 <img alt="webpay" src="https://www.webpay.cl/portalpagodirecto/img/webpay.jpg" width="250px" height="93px"/>
             </a>

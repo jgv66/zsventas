@@ -166,6 +166,28 @@ export class FuncionesService {
     await prompt.present();
   }
 
+  async pideCantidadyDescrip( producto ) {
+    const cantidad = producto.apedir;
+    const descrip  = producto.descripcion;
+    const prompt = await this.alertCtrl.create({
+      cssClass: 'alert-ancho',
+      header:   'Stock Bodega : ' + producto.stock_ud1.toString(),
+      subHeader: 'Ingrese la cantidad a solicitar de este producto.',
+      message: 'No debe sobrepasar el stock actual ni lo pedido si ya existe en el carro. El sistema lo validará',
+      inputs: [
+        { name: 'cantidad', type: 'number', placeholder: cantidad },
+        { name: 'descrip', type: 'text',    placeholder: descrip  }
+      ],
+      buttons: [
+        { text: 'Cancelar', handler: ()   => {} },
+        { text: 'Guardar',  handler: data => {  producto.apedir      = parseInt( data.cantidad, 0 ) || 1 ;
+                                                producto.descripcion = data.descrip;
+                                                this.Add2Cart( producto ); } }
+      ]
+    });
+    await prompt.present();
+  }
+
   async modificaCantidad( producto ) {
     const cantidad = producto.cantidad;
     const prompt = await this.alertCtrl.create({
@@ -209,7 +231,7 @@ export class FuncionesService {
             this.miCarrito[0].cliente      = this.baseLocal.cliente.codigo;
             this.miCarrito[0].suc_cliente  = this.baseLocal.cliente.sucursal;
             this.miCarrito[0].codigo       = producto.codigo;
-            this.miCarrito[0].descrip      = producto.descripcion;
+            this.miCarrito[0].descrip      = producto.descripcion.slice( 0, 49 );
             this.miCarrito[0].cantidad     = producto.apedir;
             this.miCarrito[0].stock_ud1    = producto.stock_ud1;
             this.miCarrito[0].precio       = producto.precio;
@@ -227,7 +249,7 @@ export class FuncionesService {
                                   cliente:      this.baseLocal.cliente.codigo,
                                   suc_cliente:  this.baseLocal.cliente.sucursal,
                                   codigo:       producto.codigo,
-                                  descrip:      producto.descripcion,
+                                  descrip:      producto.descripcion.slice(0, 49),
                                   cantidad:     producto.apedir,
                                   stock_ud1:    producto.stock_ud1,
                                   precio:       producto.precio,

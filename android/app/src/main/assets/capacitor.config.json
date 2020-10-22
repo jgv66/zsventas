@@ -1,0 +1,26 @@
+{
+  "appId": "io.ionic.starter",
+  "appName": "zsventas",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "www",
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 0
+    }
+  },
+  "cordova": {
+    "preferences": {
+      "ScrollEnabled": "false",
+      "android-minSdkVersion": "19",
+      "BackupWebStorage": "none",
+      "SplashMaintainAspectRatio": "true",
+      "FadeSplashScreenDuration": "300",
+      "FadeSplashScreen": "true",
+      "SplashShowOnlyFirstTime": "false",
+      "SplashScreen": "screen",
+      "ShowSplashScreenSpinner": "false",
+      "SplashScreenDelay": "6000"
+    }
+  }
+}

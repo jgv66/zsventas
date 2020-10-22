@@ -104,24 +104,58 @@
 
         <!-- orden de compra -->
         <ion-card style="margin: 10px;">
-            <h5 style="margin-left: 10px;"><b>Orden de Compra Cliente</b></h5>
-            <ion-item>
-                <ion-label>Número de OCC: </ion-label>
-                <ion-input type="text" name="textoOcc" [(ngModel)]="textoOcc"></ion-input>
-            </ion-item>
+            <ion-card-header (click)="toggleAccordion(1)">
+                <ion-card-title class="ion-text-left">Orden de Compra Cliente
+                    <ion-icon style="margin-left: 50px" mode="ios" [name]=" (collapsedOcc) ? 'arrow-forward' : 'arrow-down' "></ion-icon>
+                </ion-card-title>
+            </ion-card-header>
+            <!-- <h5 style="margin-left: 10px;"><b>Orden de Compra Cliente</b></h5> -->
+            <ion-card-content [ngClass]="{ 'collapsed': collapsedOcc }" style="padding: 0px">
+                <ion-item>
+                    <ion-label>Número de OCC: </ion-label>
+                    <ion-input type="text" name="textoOcc" [(ngModel)]="textoOcc"></ion-input>
+                </ion-item>
+            </ion-card-content>
         </ion-card>
         <!-- observaciones -->
         <ion-card style="margin: 10px; margin-bottom: 15px;">
-            <h5 style="margin-left: 10px;"><b>Observaciones</b></h5>
-            <ion-item>
-                <ion-textarea type="text" name="textoObs" [(ngModel)]="textoObs" clearInput="true" rows="6"></ion-textarea>
-            </ion-item>
+            <!-- <h5 style="margin-left: 10px;"><b>Observaciones</b></h5> -->
+            <ion-card-header (click)="toggleAccordion(2)">
+                <ion-card-title class="ion-text-left">Observaciones
+                    <ion-icon style="margin-left: 50px" mode="ios" [name]=" (collapsedObs) ? 'arrow-forward' : 'arrow-down' "></ion-icon>
+                </ion-card-title>
+            </ion-card-header>
+            <ion-card-content [ngClass]="{ 'collapsed': collapsedObs }" style="padding: 0px">
+                <ion-item>
+                    <ion-textarea type="text" name="textoObs" [(ngModel)]="textoObs" clearInput="true" rows="6" placeholder="escriba aquí sus observaciones..."></ion-textarea>
+                </ion-item>
+            </ion-card-content>
+        </ion-card>
+        <!-- orden de kilometraje -->
+        <ion-card style="margin: 10px;">
+            <ion-card-header (click)="toggleAccordion(3)">
+                <ion-card-title class="ion-text-left">Kilometraje
+                    <ion-icon style="margin-left: 50px" mode="ios" [name]=" (collapsedKM) ? 'arrow-forward' : 'arrow-down' "></ion-icon>
+                </ion-card-title>
+            </ion-card-header>
+            <!-- <h5 style="margin-left: 10px;"><b>Orden de Compra Cliente</b></h5> -->
+            <ion-card-content [ngClass]="{ 'collapsed': collapsedKM }" style="padding: 0px">
+                <ion-item>
+                    <ion-label style="width:225px;max-width:225px;">Cuánto indica su marcador? </ion-label>
+                    <ion-input type="number" name="cantidadKM" [(ngModel)]="cantidadKM"></ion-input>
+                </ion-item>
+            </ion-card-content>
         </ion-card>
         <!-- que se graba? -->
-        <ion-card style="margin: 10px;">
-            <ion-grid fixed *ngIf=" sumaCarrito() > 0 ">
+        <ion-card style="margin: 10px;" *ngIf=" sumaCarrito() > 0 ">
+            <!-- <h5 style="margin-left: 10px;"><b>Opciones de grabación</b></h5> -->
+            <ion-card-header (click)="toggleAccordion(4)">
+                <ion-card-title class="ion-text-left">Opciones de grabación
+                    <ion-icon style="margin-left: 50px" mode="ios" [name]=" (collapsedSave) ? 'arrow-forward' : 'arrow-down' "></ion-icon>
+                </ion-card-title>
+            </ion-card-header>
+            <ion-card-content [ngClass]="{ 'collapsed': collapsedSave }" style="padding: 0px">
                 <ion-list lines="none">
-                    <h5 style="margin-left: 10px;"><b>Opciones de grabación</b></h5>
                     <ion-radio-group name="queHacerConCarrito" [(ngModel)]="queHacerConCarrito">
                         <ion-item *ngIf=" !baseLocal.soloCotizar && !baseLocal.user.esuncliente ">
                             <ion-label>Grabar una pre-venta</ion-label>
@@ -159,7 +193,7 @@
                         </ion-col>
                     </ion-row>
                 </ion-list>
-            </ion-grid>
+            </ion-card-content>
         </ion-card>
 
     </ion-list>

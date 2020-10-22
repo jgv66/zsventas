@@ -22,3 +22,14 @@
 .rojo {
     color: #f04141;
 }
+
+ion-card-content {
+    overflow: hidden;
+    transition: max-height 0.5s ease-out; // note that we're transitioning max-height, not height!
+    height: auto;
+    max-height: 600px; // still have to hard-code a value!
+}
+
+ion-card-content.collapsed {
+    max-height: 0;
+}

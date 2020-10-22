@@ -238,10 +238,8 @@ app.post('/grabadocumentos',
         var tipodoc = req.body.tipodoc || 'PRE'; /* PRE, NVV, COV */
         var xObs = req.body.cObs || '';
         var xOcc = req.body.cOcc || ''; // incorporada 27/07/2018, se modifica ktp_encabezado -> occ varchar(40)
+        let nKm = req.body.nKM || ''; // agregada el 21/10/2020, se modifica encabezado -> kilometraje varchar(20)
         // variables
-        var bodega_wms = '';
-        //
-        var query = '';
         var xhoy = new Date();
         var hora = xhoy.getTime();
         //
@@ -259,57 +257,96 @@ app.post('/grabadocumentos',
             iva = 0,
             bruto = 0,
             NoB = carro[0].metodolista;
-
         // 
         //console.log( carro );  
         _Activity.registra(sql, carro[0].vendedor, 'grabadocumentos', tipodoc);
         //
-        query = "declare @id     int      = 0 ; ";
-        query += "declare @nrodoc char(10) = ''; ";
-        query += "declare @Error nvarchar(250) ; ";
-        query += "begin transaction ;";
-        query += "insert into ktp_encabezado (empresa,cliente,suc_cliente,vendedor,fechaemision,";
-        query += "monto,observacion,occ,modalidad,valido,fechaentrega,horainicio,horafinal) ";
-        query += "values ('" + carro[0].empresa + "','" + carro[0].cliente + "','" + carro[0].suc_cliente + "','" + carro[0].vendedor + "',getdate(),";
-        query += "0,'" + xObs.trim() + "','" + xOcc.trim() + "','" + modalidad + "','',getdate(),'" + hora + "','" + hora + "') ;";
-        query += "set @Error = @@ERROR ; if (@Error<>0) goto TratarError ; ";
-        query += "select @id = @@IDENTITY ; ";
-        query += "set @Error = @@ERROR ; if (@Error<>0) goto TratarError ; ";
+        let query = `
+            declare @id int = 0, 
+                    @id_edo int = 0,
+                    @nrodoc char(10) = ''; 
+            --
+            declare @Error	nvarchar(250) , 
+                    @ErrMsg	nvarchar(2048); 
+            --            
+            begin try;
+                --
+                begin transaction;
+                    --
+                    insert into ktp_encabezado (empresa,cliente,suc_cliente,vendedor,
+                                                fechaemision,monto,observacion,occ,kilometraje,modalidad,valido,
+                                                fechaentrega,horainicio,horafinal) 
+                                        values ('${carro[0].empresa}','${carro[0].cliente}','${carro[0].suc_cliente}','${carro[0].vendedor}',
+                                                getdate(),0,'${xObs.trim()}','${xOcc.trim()}','${nKm.toString()}','${modalidad}','',
+                                                getdate(),'${hora}','${hora}') ;
+                    --
+                    if ( @@ERROR <> 0 ) begin
+						set  @Error = @@ERROR;
+                        set @ErrMsg = ERROR_MESSAGE();
+                        THROW @Error, @ErrMsg, 0 ;  
+                    end;
+                    set @id = IDENT_CURRENT('ktp_encabezado');
+                    --
+                    %%%%detalle%%%%
+                    --
+                    update ktp_encabezado set monto=( select sum((d.cantidad1*d.precio)-d.descuentos) 
+                                                    from ktp_detalle as d where d.id_preventa=ktp_encabezado.id_preventa )  
+                    where id_preventa=@id ;
+                    --
+                    if ( @@ERROR <> 0 ) begin
+						set  @Error = @@ERROR;
+                        set @ErrMsg = ERROR_MESSAGE();
+                        THROW @Error, @ErrMsg, 0 ;  
+                    end;
+                    --
+                    `;
         //
+        if (tipodoc == 'PRE') {
+            query += "exec ksp_grabaDocumentoPre_v1 'Pendiente', 'NVV', @id, @nrodoc output, @id_edo output ;";
+        } else if (tipodoc == 'NVV' || tipodoc == 'COV' || tipodoc == 'NVI') {
+            query += "exec ksp_grabaDocumentoDef_v1 '" + tipodoc + "', @id, @nrodoc output, @id_edo output ;";
+        }
+        //
+        query += `            
+                --
+                if ( @@ERROR <> 0 ) begin
+                    set  @Error = @@ERROR;
+                    set @ErrMsg = ERROR_MESSAGE();
+                    THROW @Error, @ErrMsg, 0 ;  
+                end;
+                --
+                commit transaction ;
+                select @nrodoc as numero, @id as id, @id_edo as id_edo ;
+                --
+            end try
+            begin catch
+                if ( @@trancount > 0 ) ROLLBACK TRANSACTION ;
+                select '' as numero, 0 as id, 0 as id_edo, @ErrMsg as errormsg ;
+            end catch;
+            `;
+        //
+        let queryd = '';
         for (i = 0; i < carro.length; i++) {
             //
-            bodega_wms = carro[i].bodega;
-            //
-            query += "insert into ktp_detalle (id_preventa,linea,sucursal,bodega,codigo,vendedor,unidad_tr,unidad1,unidad2,cantidad1,cantidad2,";
-            query += "listaprecio,metodolista,precio,";
-            query += "porcedes,descuentos,porcerec,recargos,observacion,valido)";
-            query += " values ";
-            query += "(@id," + (i + 1).toString() + ",'" + carro[i].sucursal + "','" + carro[i].bodega + "','" + carro[i].codigo + "','" + carro[i].vendedor + "',";
-            query += "1,'',''," + carro[i].cantidad.toString() + ", 0,'" + carro[i].listapre + "','" + carro[i].metodolista + "'," + carro[i].precio.toString() + ",";
-            query += carro[i].descuentomax.toString() + "," + ((carro[i].precio - carro[i].preciomayor) * carro[i].cantidad).toString() + ",0,0,'', '' ) ; ";
-            query += "set @Error = @@ERROR ; if (@Error<>0) goto TratarError ; ";
+            queryd += `
+                    insert into ktp_detalle (id_preventa,linea,sucursal,bodega,codigo,descripcion,vendedor,
+                                            unidad_tr,unidad1,unidad2,cantidad1,cantidad2,listaprecio,metodolista,
+                                            precio,porcedes,descuentos,porcerec,recargos,observacion,valido) 
+                                    values (@id,${(i + 1).toString()},'${carro[i].sucursal}','${carro[i].bodega}','${carro[i].codigo.trim()}','${carro[i].descrip.trim()}','${carro[i].vendedor}',
+                                            1,'','',${carro[i].cantidad.toString()}, 0,'${carro[i].listapre}','${carro[i].metodolista}',
+                                            ${carro[i].precio.toString()},${carro[i].descuentomax.toString()},${((carro[i].precio - carro[i].preciomayor) * carro[i].cantidad).toString()},0,0,'','' );
+                    --
+                    if ( @@ERROR <> 0 ) begin
+                        set  @Error = @@ERROR;
+                        set @ErrMsg = ERROR_MESSAGE();
+                        THROW @Error, @ErrMsg, 0 ;  
+                    end;
+                    --
+               `;
             //
         }
         //    
-        query += "update ktp_encabezado set monto=( select sum((d.cantidad1*d.precio)-d.descuentos) from ktp_detalle as d where d.id_preventa=ktp_encabezado.id_preventa ) ";
-        query += " where id_preventa=@id ;";
-        query += "set @Error = @@ERROR ; if (@Error<>0) goto TratarError ; ";
-        //
-        if (tipodoc == 'PRE') {
-            query += "exec ksp_grabaDocumentoPre_v1 'Pendiente', 'NVV', @id, @nrodoc output ;";
-        } else if (tipodoc == 'NVV' || tipodoc == 'COV' || tipodoc == 'NVI') {
-            query += "exec ksp_grabaDocumentoDef_v1 '" + tipodoc + "', @id, @nrodoc output ;";
-        }
-        //
-        query += "set @Error = @@ERROR ; if (@Error<>0) goto TratarError ; ";
-        query += "commit transaction ;";
-        query += "select @nrodoc as numero, @id as id ;";
-        query += "TratarError: ";
-        query += "if @@Error<>0 ";
-        query += "    BEGIN ";
-        query += "    ROLLBACK TRANSACTION ";
-        query += "    END ;";
-        //
+        query = query.replace('%%%%detalle%%%%', queryd);
         console.log(query);
         //
         conex
@@ -340,7 +377,7 @@ app.post('/grabadocumentos',
                                         iva = 0;
                                         bruto = 0;
                                         //
-                                        correos.componeBody(sql, rs.recordset[0].id)
+                                        correos.componeBody(sql, rs.recordset[0].id_edo)
                                             .then(data => {
                                                 data.recordset.forEach(element => {
                                                     lineas += '<tr>';
@@ -847,3 +884,56 @@ app.post('/ksp_traeFichaTecnica',
                 res.json(data); /* data viene en formato correcto */
             });
     });
+
+
+
+
+/*
+        //
+        query  = "declare @id int = 0 ; ";
+        query += "declare @id_edo int = 0; ";
+        query += "declare @nrodoc char(10) = ''; ";
+        query += "declare @Error nvarchar(250) ; ";
+        query += "begin transaction ;";
+        query += "insert into ktp_encabezado (empresa,cliente,suc_cliente,vendedor,fechaemision,";
+        query += "monto,observacion,occ,kilometraje,modalidad,valido,fechaentrega,horainicio,horafinal) ";
+        query += "values ('" + carro[0].empresa + "','" + carro[0].cliente + "','" + carro[0].suc_cliente + "','" + carro[0].vendedor + "',getdate(),";
+        query += "0,'" + xObs.trim() + "','" + xOcc.trim() + "','" + nKm.trim() + "','" + modalidad + "','',getdate(),'" + hora + "','" + hora + "') ;";
+        query += "select @id = @@IDENTITY ; ";
+        query += "set @Error = @@ERROR ; if (@Error<>0) goto TratarError ; ";
+        //
+        for (i = 0; i < carro.length; i++) {
+            //
+            bodega_wms = carro[i].bodega;
+            //
+            query += "insert into ktp_detalle (id_preventa,linea,sucursal,bodega,codigo,descripcion,vendedor,unidad_tr,unidad1,unidad2,cantidad1,cantidad2,";
+            query += "listaprecio,metodolista,precio,";
+            query += "porcedes,descuentos,porcerec,recargos,observacion,valido)";
+            query += " values ";
+            query += "(@id," + (i + 1).toString() + ",'" + carro[i].sucursal + "','" + carro[i].bodega + "','" + carro[i].codigo.trim() + "','" + carro[i].descrip.trim() + "','" + carro[i].vendedor + "',";
+            query += "1,'',''," + carro[i].cantidad.toString() + ", 0,'" + carro[i].listapre + "','" + carro[i].metodolista + "'," + carro[i].precio.toString() + ",";
+            query += carro[i].descuentomax.toString() + "," + ((carro[i].precio - carro[i].preciomayor) * carro[i].cantidad).toString() + ",0,0,'', '' ) ; ";
+            query += "set @Error = @@ERROR ; if (@Error<>0) goto TratarError ; ";
+            //
+        }
+        //    
+        query += "update ktp_encabezado set monto=( select sum((d.cantidad1*d.precio)-d.descuentos) from ktp_detalle as d where d.id_preventa=ktp_encabezado.id_preventa ) ";
+        query += " where id_preventa=@id ;";
+        query += "set @Error = @@ERROR ; if (@Error<>0) goto TratarError ; ";
+        //
+        if (tipodoc == 'PRE') {
+            query += "exec ksp_grabaDocumentoPre_v1 'Pendiente', 'NVV', @id, @nrodoc output, @id_edo output ;";
+        } else if (tipodoc == 'NVV' || tipodoc == 'COV' || tipodoc == 'NVI') {
+            query += "exec ksp_grabaDocumentoDef_v1 '" + tipodoc + "', @id, @nrodoc output, @id_edo output ;";
+        }
+        //
+        query += "set @Error = @@ERROR ; if (@Error<>0) goto TratarError ; ";
+        query += "commit transaction ;";
+        query += "select @nrodoc as numero, @id as id, @id_edo as id_edo ;";
+        query += "TratarError: ";
+        query += "if @@Error<>0 ";
+        query += "    BEGIN ";
+        query += "    ROLLBACK TRANSACTION ";
+        query += "    END ;";
+
+*/

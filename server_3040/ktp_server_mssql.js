@@ -852,10 +852,9 @@ app.post('/ksp_crearSucursal',
 app.post('/ksp_enviarSugerencias',
     function(req, res) {
         //
-        // console.log(req.body);
         servicios.enviarsugerencia(sql, req.body.datos)
             .then(function(data) {
-                // console.log("/ksp_enviarSugerencias ", req.body.datos, req.body.user);
+                console.log("/ksp_enviarSugerencias ", data);
                 if (data[0].resultado === true) {
                     htmlBody = correos.sugerido(req.body.datos, req.body.user);
                     correos.enviarCorreo(res, nodemailer, [{ to: 'ziad@zsmotor.cl', cc: '' }], htmlBody);

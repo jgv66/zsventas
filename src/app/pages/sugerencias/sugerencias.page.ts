@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController } from '@ionic/angular';
 import { FuncionesService } from '../../services/funciones.service';
 import { BaselocalService } from '../../services/baselocal.service';
 import { NetworkengineService } from '../../services/networkengine.service';
@@ -14,18 +13,15 @@ export class SugerenciasPage implements OnInit {
 
   enviando = false;
   sistema: any;
-  prodbueno = false;
-  prodmalo = false;
-  preciomuybarato = false;
-  preciomuycaro = false;
-  prodconstock = false;
-  prodconquiebre = false;
+  prodbueno = null;
+  preciomuybarato = null;
+  prodconstock = null;
+  prodconquiebre = null;
   observaciones = '';
 
   constructor( private funciones: FuncionesService,
                public baseLocal: BaselocalService,
                private netWork: NetworkengineService,
-               private alertCtrl: AlertController,
                private router: Router,
                private parametros: ActivatedRoute) {
       this.sistema = JSON.parse( this.parametros.snapshot.paramMap.get('dataP') );
@@ -35,38 +31,18 @@ export class SugerenciasPage implements OnInit {
     if ( !this.baseLocal.user ) {
       this.router.navigateByUrl('/login');
     }
+    // console.log(this.sistema);
   }
 
   limpiar() {
-    this.prodbueno        = false;
-    this.prodmalo         = false;
-    this.preciomuybarato  = false;
-    this.preciomuycaro    = false;
-    this.prodconstock     = false;
-    this.prodconquiebre   = false;
-    this.observaciones    = '';
+    this.prodbueno       = null;
+    this.preciomuybarato = null;
+    this.prodconstock    = null;
+    this.prodconquiebre  = null;
+    this.observaciones   = '';
+    this.enviando        = false;
   }
 
-  async enviar() {
-    const alert = await this.alertCtrl.create({
-      // header: 'ATENCION',
-      subHeader: 'Confirme Envío',
-      message: 'Este mensaje será enviado a Casa Matriz con las sugerencias y observaciones para el producto : ' + this.sistema.codigo,
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel',
-          cssClass: 'secondary',
-          handler: () => {}
-        },
-        {
-          text: 'Ok, enviar',
-          handler: () => { this.enviarSugerencia(); }
-        }
-      ]
-    });
-    await alert.present();
-  }
   enviarSugerencia() {
     this.enviando = true;
     this.netWork.consultaEstandar(  'ksp_enviarSugerencias',
@@ -74,14 +50,12 @@ export class SugerenciasPage implements OnInit {
                                       usuario:         this.baseLocal.user.KOFU,
                                       observac:        this.observaciones,
                                       codprod:         this.sistema.codigo,
+                                      codtecnico:      this.sistema.tecnico,
                                       descrip:         this.sistema.descrip,
-                                      cantidad:        0,
-                                      prodbueno:       this.prodbueno,
-                                      prodmalo:        this.prodmalo,
-                                      preciomuybarato: this.preciomuybarato,
-                                      preciomuycaro:   this.preciomuycaro,
-                                      prodconstock:    this.prodconstock,
-                                      prodconquiebre:  this.prodconquiebre },
+                                      prodbueno:       (this.prodbueno       === 'si') ? 1 : ((this.prodbueno       === 'no') ? 0 : null ),
+                                      preciomuybarato: (this.preciomuybarato === 'si') ? 1 : ((this.preciomuybarato === 'no') ? 0 : null ),
+                                      prodconstock:    (this.prodconstock    === 'si') ? 1 : ((this.prodconstock    === 'no') ? 0 : null ),
+                                      prodconquiebre:  (this.prodconquiebre  === 'si') ? 1 : ((this.prodconquiebre  === 'no') ? 0 : null ) },
                                     { codigo: this.baseLocal.user.KOFU,
                                       nombre: this.baseLocal.user.NOKOFU } )
         .subscribe( data => { this.revisa( data );           },

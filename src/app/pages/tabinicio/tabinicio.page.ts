@@ -493,7 +493,7 @@ export class TabinicioPage implements OnInit {
             break;
           //
           case 'Sugerencias':
-            dataParam = JSON.stringify({ codigo: producto.codigo, descrip: producto.descripcion });
+            dataParam = JSON.stringify({ codigo: producto.codigo, tecnico: producto.codtecnico, descrip: producto.descripcion });
             this.router.navigate(['/tabs/sugerencias', dataParam]);
             break;
           //

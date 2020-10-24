@@ -136,14 +136,13 @@ module.exports = {
             body.usuario + "','" +
             body.observac + "','" +
             body.codprod + "'," +
-            body.cantidad.toString() + "," +
             body.prodbueno + "," +
-            body.prodmalo + "," +
             body.preciomuybarato + "," +
-            body.preciomuycaro + "," +
             body.prodconstock + "," +
-            body.prodconquiebre + " ";
-        console.log(query);
+            body.prodconquiebre + " ;";
+        //
+        // console.log(query);
+        //
         var request = new sql.Request();
         return request.query(query)
             .then(function(results) {

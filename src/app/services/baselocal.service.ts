@@ -13,6 +13,7 @@ export class BaselocalService {
   config: any;
   empresa: number;
   soloCotizar = false;
+  lasMarcas = [];
 
   constructor( private storage: Storage) {
     console.log('<<< BaseLocalProvider >>>');

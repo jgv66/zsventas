@@ -160,7 +160,7 @@ module.exports = {
                     </td>
                 </tr>
             </table>
-            <p align="center"><b>Prefiera Tranferencia Electrónica: BANCO SANTANDER, CTA.CTE.NRO: 6326519-5, COMERCIAL CARDEPOT LTDA., RUT: 77.358.700-0</b></p>
+            <p align="center"><b>Prefiera Transferencia Electrónica: BANCO SANTANDER, CTA.CTE.NRO: 6326519-5, COMERCIAL CARDEPOT LTDA., RUT: 77.358.700-0</b></p>
             <br>
             <a href="https://www.webpay.cl/portalpagodirecto/pages/institucion.jsf?idEstablecimiento=42591039" align="center">
                 <img alt="webpay" src="https://www.webpay.cl/portalpagodirecto/img/webpay.jpg" width="250px" height="93px"/>
@@ -171,12 +171,7 @@ module.exports = {
     },
 
     sugerido: function(suger, usuario) {
-        const prodbueno = suger.prodbueno === true ? 'SI' : 'NO';
-        const prodmalo = suger.prodmalo === true ? 'SI' : 'NO';
-        const preciomuybarato = suger.preciomuybarato === true ? 'SI' : 'NO';
-        const preciomuycaro = suger.preciomuycaro === true ? 'SI' : 'NO';
-        const prodconstock = suger.prodconstock === true ? 'SI' : 'NO';
-        const prodconquiebre = suger.prodconquiebre === true ? 'SI' : 'NO';
+        //
         return `
         <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
         <html xmlns="http://www.w3.org/1999/xhtml">
@@ -237,16 +232,15 @@ module.exports = {
                                     <h3>Sugerencias al Producto: ` + suger.codprod + `</h3>
 
                                     <table border="1">
-                                        ` + '<tr><td>Usuario                        </td><td align="left">' + usuario.nombre + '</td></tr>' + `
-                                        ` + '<tr><td>Descripcion                    </td><td align="left">' + suger.descrip + '</td></tr>' + `
-                                        ` + '<tr><td>Sucursal                       </td><td align="left">' + suger.sucursal + '</td></tr>' + `
-                                        ` + '<tr><td>El producto es de buena calidad</td><td align="left">' + prodbueno + '</td></tr>' + `
-                                        ` + '<tr><td>El producto es de mala calidad </td><td align="left">' + prodmalo + '</td></tr>' + `
-                                        ` + '<tr><td>El producto es muy barato      </td><td align="left">' + preciomuybarato + '</td></tr>' + `
-                                        ` + '<tr><td>El producto es muy caro        </td><td align="left">' + preciomuycaro + '</td></tr>' + `
-                                        ` + '<tr><td>El producto siempre tiene stock</td><td align="left">' + prodconstock + '</td></tr>' + `
-                                        ` + '<tr><td>Recomienda comprar             </td><td align="left">' + prodconquiebre + '</td></tr>' + `
-                                        ` + '<tr><td>Observaciones                  </td><td align="left">' + suger.observac + '</td></tr>' + `
+                                        ` + '<tr><td>Usuario                            </td><td align="left">' + usuario.nombre + '</td></tr>' + `
+                                        ` + '<tr><td>Descripcion                        </td><td align="left">' + suger.descrip + '</td></tr>' + `
+                                        ` + '<tr><td>Código Técnico                     </td><td align="left">' + suger.codtecnico + '</td></tr>' + `
+                                        ` + '<tr><td>Sucursal                           </td><td align="left">' + suger.sucursal + '</td></tr>' + `
+                                        ` + ((suger.prodbueno !== null) ? '<tr><td>El producto es de buena calidad    </td><td align="left">' + (suger.prodbueno === 0 ? 'NO' : 'SI') + '</td></tr>' : '') + `
+                                        ` + ((suger.preciomuybarato !== null) ? '<tr><td>El precio del producto es correcto </td><td align="left">' + (suger.preciomuybarato === 0 ? 'NO' : 'SI') + '</td></tr>' : '') + `
+                                        ` + ((suger.prodconstock !== null) ? '<tr><td>El stock del producto es correcto  </td><td align="left">' + (suger.prodconstock === 0 ? 'NO' : 'SI') + '</td></tr>' : '') + `
+                                        ` + ((suger.prodconquiebre !== null) ? '<tr><td>Recomienda comprar?                </td><td align="left">' + (suger.prodconquiebre === 0 ? 'NO' : 'SI') + '</td></tr>' : '') + `
+                                        ` + '<tr><td>Observaciones                      </td><td align="left">' + suger.observac + '</td></tr>' + `
                                     <!--  KINETIK -->
                                     </table>
                                     <br>

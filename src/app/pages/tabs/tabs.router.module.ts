@@ -24,6 +24,7 @@ const routes: Routes = [
   { path: 'crearclientes',       children: [ { path: '', loadChildren: () => import('../crearclientes/crearclientes.module')   .then(m => m.CrearclientesPageModule  ) }] },
   { path: 'ultmovs/:dataP',      children: [ { path: '', loadChildren: () => import('../ultimosmovs/ultimosmovs.module')       .then(m => m.UltimosmovsPageModule    ) }] },
   { path: 'sugerencias/:dataP',  children: [ { path: '', loadChildren: () => import('../sugerencias/sugerencias.module')       .then(m => m.SugerenciasPageModule    ) }] },
+  { path: 'notif/:dataP',        children: [ { path: '', loadChildren: () => import('../notificaciones/notificaciones.module') .then(m => m.NotificacionesPageModule ) }] },
   { path: 'crearnvi/:dataP',     children: [ { path: '', loadChildren: () => import('../crearnvi/crearnvi.module')             .then(m => m.CrearnviPageModule       ) }] },
   { path: 'socialsh/:dataP',     children: [ { path: '', loadChildren: () => import('../socialsharing/socialsharing.module')   .then(m => m.SocialsharingPageModule  ) }] },
   { path: 'fichatecnica/:dataP', children: [ { path: '', loadChildren: () => import('../fichatecnica/fichatecnica.module')     .then(m => m.FichatecnicaPageModule   ) }] },

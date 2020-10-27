@@ -18,6 +18,7 @@ export class TrespuntosComponent implements OnInit {
     { texto: 'Últimas Compras',  icon: 'cloud-download' },
     { texto: 'NVI para reponer', icon: 'sync' },
     { texto: 'Sugerencias',      icon: 'bulb' },
+    { texto: 'Notificaciones',   icon: 'notifications' },
     // { texto: 'Redes Sociales',   icon: 'share' },
     { texto: 'Ficha Técnica',    icon: 'attach' },
   ];

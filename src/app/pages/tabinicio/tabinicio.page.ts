@@ -1,13 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonContent, ModalController } from '@ionic/angular';
-import { AlertController, IonInfiniteScroll, PopoverController } from '@ionic/angular';
+import { AlertController, PopoverController } from '@ionic/angular';
 import { Router } from '@angular/router';
 
 import { FuncionesService } from 'src/app/services/funciones.service';
 import { BaselocalService } from '../../services/baselocal.service';
 import { NetworkengineService } from '../../services/networkengine.service';
 import { TrespuntosComponent } from '../../components/trespuntos/trespuntos.component';
-import { SugerenciasPage } from '../sugerencias/sugerencias.page';
 
 @Component({
   selector: 'app-tabinicio',
@@ -495,6 +494,11 @@ export class TabinicioPage implements OnInit {
           case 'Sugerencias':
             dataParam = JSON.stringify({ codigo: producto.codigo, tecnico: producto.codtecnico, descrip: producto.descripcion });
             this.router.navigate(['/tabs/sugerencias', dataParam]);
+            break;
+          //
+          case 'Notificaciones':
+            dataParam = JSON.stringify({ codigo: producto.codigo, tecnico: producto.codtecnico, descrip: producto.descripcion });
+            this.router.navigate(['/tabs/notif', dataParam]);
             break;
           //
           case 'NVI para reponer':

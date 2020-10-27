@@ -149,7 +149,38 @@ module.exports = {
                 return results.recordset;
             });
     },
+    // 
+    enviarNotificacion: function(sql, body) {
+        //
+        var query = "exec ksp_crearNotificacion '" +
+            body.tipo + "','" +
+            body.sucursal + "','" +
+            body.usuario + "','" +
+            body.codprod + "','" +
+            body.nombre + "','" +
+            body.email + "'," +
+            body.cantidad.toString() + " ;";
+        //
+        console.log(query);
+        //
+        var request = new sql.Request();
+        return request.query(query)
+            .then(function(results) {
+                return results.recordset;
+            });
+    },
     //
+    rescatarNotificacion: function(sql, body) {
+        //
+        // console.log(body);
+        var query = "exec ksp_rescatarNotificacion '" + body.user.codigo + "','" + body.datos.bodega + "', '" + body.datos.tipo + "' ;";
+        console.log(query);
+        var request = new sql.Request();
+        return request.query(query)
+            .then(function(results) {
+                return results.recordset;
+            });
+    },
 
     ins_dataconce: function(sql, body) {
         var request = new sql.Request();
@@ -179,4 +210,4 @@ module.exports = {
             });
     },
     //
-}
+};

@@ -862,12 +862,34 @@ app.post('/ksp_enviarSugerencias',
                 res.json(data); /* data viene en formato correcto */
             });
     });
+app.post('/ksp_enviarNotificaciones',
+    function(req, res) {
+        //
+        servicios.enviarNotificacion(sql, req.body.datos)
+            .then(function(data) {
+                console.log("/ksp_enviarNotificaciones ", data);
+                // if (data[0].resultado === true) {
+                //     htmlBody = correos.sugerido(req.body.datos, req.body.user);
+                //     correos.enviarCorreo(res, nodemailer, [{ to: 'ziad@zsmotor.cl', cc: '' }], htmlBody);
+                // }
+                res.json(data); /* data viene en formato correcto */
+            });
+    });
+app.post('/ksp_rescatarMisNotificaciones',
+    function(req, res) {
+        //
+        servicios.rescatarNotificacion(sql, req.body)
+            .then(function(data) {
+                // }
+                res.json(data); /* data viene en formato correcto */
+            });
+    });
 
 app.post('/ksp_buscarSucursal',
     function(req, res) {
         //
         console.log(req.body);
-        servicios.buscaSucursal(sql, req.body)
+        servicios.buscaSucursal(sql, req.body.datos)
             .then(function(data) {
                 console.log("/ksp_buscarSucursal ", data);
                 res.json(data); /* data viene en formato correcto */

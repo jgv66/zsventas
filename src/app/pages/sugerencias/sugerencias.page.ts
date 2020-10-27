@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { NavController } from '@ionic/angular';
 import { FuncionesService } from '../../services/funciones.service';
 import { BaselocalService } from '../../services/baselocal.service';
 import { NetworkengineService } from '../../services/networkengine.service';
-import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-sugerencias',
@@ -23,6 +24,7 @@ export class SugerenciasPage implements OnInit {
                public baseLocal: BaselocalService,
                private netWork: NetworkengineService,
                private router: Router,
+               private navCtrl: NavController,
                private parametros: ActivatedRoute) {
       this.sistema = JSON.parse( this.parametros.snapshot.paramMap.get('dataP') );
   }
@@ -64,12 +66,12 @@ export class SugerenciasPage implements OnInit {
   revisa( data ) {
     this.enviando = false;
     if ( data === undefined ) {
-      this.funciones.muestraySale(' : Sugerencia presenta problemas al intentar grabación', 2 );
+      this.funciones.muestraySale('Sugerencia presenta problemas al intentar grabación', 2 );
     } else {
-      if ( data[0].resultado === 'ok' ) {
-        this.limpiar();
+      this.funciones.muestraySale(data[0].mensaje, 1 );
+      if ( data[0].resultado === true ) {
+        this.navCtrl.pop();
       }
-      this.funciones.msgAlert( '', data[0].mensaje );
     }
   }
 

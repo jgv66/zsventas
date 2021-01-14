@@ -108,6 +108,16 @@ export class FuncionesService {
     await alert.present();
   }
 
+  async msgAlertErr( texto ) {
+    const alert = await this.alertCtrl.create({
+      cssClass: 'alertaError',
+      mode: 'md',
+      message: texto,
+      buttons: ['OK']
+    });
+    await alert.present();
+  }
+
   async muestraySale( cTexto, segundos, posicion?, color? ) {
     const toast = await this.toastCtrl.create({
       message: cTexto,

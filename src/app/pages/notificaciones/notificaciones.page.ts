@@ -20,7 +20,9 @@ export class NotificacionesPage implements OnInit {
 
   nombre = '';
   email = '';
-  cantidad = 0;
+  fono = '';
+  observaciones = '';
+  cantidad ;
   pendientes = [];
   informados = [];
 
@@ -39,8 +41,7 @@ export class NotificacionesPage implements OnInit {
     }
     this.rescatarMisNotificaciones('P');
     this.rescatarMisNotificaciones('C');
-    this.segment.value = 'Ingreso';
-    this.segmento      = 'Ingreso';
+    this.segment.value = this.segmento;
   }
 
   segmentChanged( event ) {
@@ -74,21 +75,28 @@ export class NotificacionesPage implements OnInit {
   }
 
   enviarNotificacion() {
-    this.enviando = true;
-    this.netWork.consultaEstandar(  'ksp_enviarNotificaciones',
-                                    { sucursal:   this.baseLocal.user.KOSU,
-                                      usuario:    this.baseLocal.user.KOFU,
-                                      codprod:    this.sistema.codigo,
-                                      codtecnico: this.sistema.tecnico,
-                                      descrip:    this.sistema.descrip,
-                                      tipo:       'STOCK',
-                                      nombre:     this.nombre,
-                                      email:      this.email,
-                                      cantidad:   this.cantidad },
-                                    { codigo:     this.baseLocal.user.KOFU,
-                                      nombre:     this.baseLocal.user.NOKOFU } )
-        .subscribe( data => { this.revisa( data );           },
-                    err  => { this.funciones.msgAlert( '', err ); });
+    if ( this.email === '' || this.cantidad === 0 ) {
+      this.funciones.msgAlertErr('Debe completar los datos obligatorios');
+    } else {
+      this.enviando = true;
+      this.netWork.consultaEstandar(  'ksp_enviarNotificaciones',
+                                      { sucursal:      this.baseLocal.user.KOSU,
+                                        usuario:       this.baseLocal.user.KOFU,
+                                        codprod:       this.sistema.codigo,
+                                        codtecnico:    this.sistema.tecnico,
+                                        descrip:       this.sistema.descrip,
+                                        tipo:          'STOCK',
+                                        nombre:        this.nombre,
+                                        email:         this.email,
+                                        fono:          this.fono,
+                                        observaciones: this.observaciones,
+                                        cantidad:      this.cantidad },
+                                      { codigo:        this.baseLocal.user.KOFU,
+                                        nombre:        this.baseLocal.user.NOKOFU,
+                                        email:         this.baseLocal.user.EMAIL } )
+          .subscribe( data => { this.revisa( data );           },
+                      err  => { this.funciones.msgAlert( '', err ); });
+    }
   }
   revisa( data ) {
     console.log(data);

@@ -12,7 +12,6 @@
     <ion-list *ngIf=" sumaCarrito() > 0 " #lista>
 
         <ion-item-sliding *ngFor="let producto of funciones.miCarrito">
-
             <!-- menu cantidad e info -->
             <ion-item-options side="start" class="item1">
                 <ion-item-option color="primary" (click)="cambiarCantidad(producto)">
@@ -94,8 +93,13 @@
                         <ion-col size="1.8" class="ion-text-right">
                             <p>Des.: </p>
                         </ion-col>
-                        <ion-col size="10" class="ion-text-wrap">
+                        <ion-col size="9" class="ion-text-wrap">
                             <p><b>{{ producto.descrip }}</b></p>
+                        </ion-col>
+                        <ion-col size="1.2">
+                            <ion-button (click)="addAvisoServicio( producto )" fill="clear" style="margin-left:-15px;">
+                                <ion-icon slot="icon-only" name="notifications-outline"></ion-icon>
+                            </ion-button>
                         </ion-col>
                     </ion-row>
                 </ion-grid>
@@ -105,7 +109,7 @@
         <!-- orden de compra -->
         <ion-card style="margin: 10px;">
             <ion-card-header (click)="toggleAccordion(1)">
-                <ion-card-title class="ion-text-left">Orden de Compra Cliente
+                <ion-card-title class="ion-text-left">OC Cliente
                     <ion-icon style="margin-left: 50px" mode="ios" [name]=" (collapsedOcc) ? 'arrow-forward' : 'arrow-down' "></ion-icon>
                 </ion-card-title>
             </ion-card-header>
@@ -117,6 +121,7 @@
                 </ion-item>
             </ion-card-content>
         </ion-card>
+
         <!-- observaciones -->
         <ion-card style="margin: 10px; margin-bottom: 15px;">
             <!-- <h5 style="margin-left: 10px;"><b>Observaciones</b></h5> -->
@@ -127,30 +132,20 @@
             </ion-card-header>
             <ion-card-content [ngClass]="{ 'collapsed': collapsedObs }" style="padding: 0px">
                 <ion-item>
+                    <ion-label style="width:225px;max-width:225px;">Kilometraje en su marcador? </ion-label>
+                    <ion-input type="number" name="cantidadKM" [(ngModel)]="cantidadKM"></ion-input>
+                </ion-item>
+                <ion-item>
                     <ion-textarea type="text" name="textoObs" [(ngModel)]="textoObs" clearInput="true" rows="6" placeholder="escriba aquí sus observaciones..."></ion-textarea>
                 </ion-item>
             </ion-card-content>
         </ion-card>
-        <!-- orden de kilometraje -->
-        <ion-card style="margin: 10px;">
-            <ion-card-header (click)="toggleAccordion(3)">
-                <ion-card-title class="ion-text-left">Kilometraje
-                    <ion-icon style="margin-left: 50px" mode="ios" [name]=" (collapsedKM) ? 'arrow-forward' : 'arrow-down' "></ion-icon>
-                </ion-card-title>
-            </ion-card-header>
-            <!-- <h5 style="margin-left: 10px;"><b>Orden de Compra Cliente</b></h5> -->
-            <ion-card-content [ngClass]="{ 'collapsed': collapsedKM }" style="padding: 0px">
-                <ion-item>
-                    <ion-label style="width:225px;max-width:225px;">Cuánto indica su marcador? </ion-label>
-                    <ion-input type="number" name="cantidadKM" [(ngModel)]="cantidadKM"></ion-input>
-                </ion-item>
-            </ion-card-content>
-        </ion-card>
+
         <!-- que se graba? -->
         <ion-card style="margin: 10px;" *ngIf=" sumaCarrito() > 0 ">
             <!-- <h5 style="margin-left: 10px;"><b>Opciones de grabación</b></h5> -->
             <ion-card-header (click)="toggleAccordion(4)">
-                <ion-card-title class="ion-text-left">Opciones de grabación
+                <ion-card-title class="ion-text-left">Opción de grabación
                     <ion-icon style="margin-left: 50px" mode="ios" [name]=" (collapsedSave) ? 'arrow-forward' : 'arrow-down' "></ion-icon>
                 </ion-card-title>
             </ion-card-header>

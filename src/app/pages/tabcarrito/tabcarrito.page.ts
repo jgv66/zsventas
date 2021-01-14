@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { AlertController, ModalController, IonList, IonCardContent } from '@ionic/angular';
 import { NetworkengineService } from '../../services/networkengine.service';
 import { BuscarvendedorPage } from '../buscarvendedor/buscarvendedor.page';
+import { AvisoservicioPage } from '../avisoservicio/avisoservicio.page';
 
 @Component({
   selector: 'app-tabcarrito',
@@ -99,6 +100,19 @@ export class TabcarritoPage {
       producto.nombrevend = data.dato.nombre;
     }
     this.lista.closeSlidingItems();
+  }
+
+  async addAvisoServicio( producto ) {
+    console.log(producto);
+    const modal = await this.modalCtrl.create({
+      component: AvisoservicioPage,
+      componentProps: { producto }
+    });
+    await modal.present();
+    const { data } = await modal.onDidDismiss();
+    if ( data ) {
+      console.log( data )
+    }
   }
 
   accionDelCarrito() {

@@ -139,6 +139,7 @@ module.exports = {
             body.prodbueno + "," +
             body.preciomuybarato + "," +
             body.prodconstock + "," +
+            body.cantidad.toString() + "," +
             body.prodconquiebre + " ;";
         //
         // console.log(query);
@@ -158,7 +159,9 @@ module.exports = {
             body.usuario + "','" +
             body.codprod + "','" +
             body.nombre + "','" +
-            body.email + "'," +
+            body.email + "','" +
+            body.fono + "','" +
+            body.observaciones + "'," +
             body.cantidad.toString() + " ;";
         //
         console.log(query);
@@ -210,4 +213,26 @@ module.exports = {
             });
     },
     //
+    avisoProximoServicio: function(sql, body) {
+        //
+        var query = "exec ksp_avisoProximoServicio '" +
+            body.tipo + "','" +
+            body.sucursal + "','" +
+            body.usuario + "','" +
+            body.codprod + "','" +
+            body.nombre + "','" +
+            body.email + "','" +
+            body.fono + "','" +
+            body.observaciones + "'," +
+            body.dias.toString() + " ;";
+        //
+        console.log(query);
+        //
+        var request = new sql.Request();
+        return request.query(query)
+            .then(function(results) {
+                return results.recordset;
+            });
+    },
+    //    
 };

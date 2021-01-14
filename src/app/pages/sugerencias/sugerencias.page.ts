@@ -18,6 +18,7 @@ export class SugerenciasPage implements OnInit {
   preciomuybarato = null;
   prodconstock = null;
   prodconquiebre = null;
+  cantidad = 0;
   observaciones = '';
 
   constructor( private funciones: FuncionesService,
@@ -41,27 +42,39 @@ export class SugerenciasPage implements OnInit {
     this.preciomuybarato = null;
     this.prodconstock    = null;
     this.prodconquiebre  = null;
-    this.observaciones   = '';
+    this.observaciones   = null;
+    this.cantidad        = null;
     this.enviando        = false;
   }
 
   enviarSugerencia() {
-    this.enviando = true;
-    this.netWork.consultaEstandar(  'ksp_enviarSugerencias',
-                                    { sucursal:        this.baseLocal.user.KOSU,
-                                      usuario:         this.baseLocal.user.KOFU,
-                                      observac:        this.observaciones,
-                                      codprod:         this.sistema.codigo,
-                                      codtecnico:      this.sistema.tecnico,
-                                      descrip:         this.sistema.descrip,
-                                      prodbueno:       (this.prodbueno       === 'si') ? 1 : ((this.prodbueno       === 'no') ? 0 : null ),
-                                      preciomuybarato: (this.preciomuybarato === 'si') ? 1 : ((this.preciomuybarato === 'no') ? 0 : null ),
-                                      prodconstock:    (this.prodconstock    === 'si') ? 1 : ((this.prodconstock    === 'no') ? 0 : null ),
-                                      prodconquiebre:  (this.prodconquiebre  === 'si') ? 1 : ((this.prodconquiebre  === 'no') ? 0 : null ) },
-                                    { codigo: this.baseLocal.user.KOFU,
-                                      nombre: this.baseLocal.user.NOKOFU } )
-        .subscribe( data => { this.revisa( data );           },
-                    err  => { this.funciones.msgAlert( '', err ); });
+    //
+    if (this.prodbueno === null &&
+        this.preciomuybarato === null &&
+        this.prodconstock === null &&
+        this.prodconquiebre === null &&
+        ( this.cantidad === null || this.cantidad === 0 ) &&
+        (this.observaciones === null || this.observaciones === '' )) {
+        this.funciones.msgAlertErr('Debe completar algun dato para grabar la sugerencia.');
+      } else {
+        this.enviando = true;
+        this.netWork.consultaEstandar(  'ksp_enviarSugerencias',
+                                        { sucursal:        this.baseLocal.user.KOSU,
+                                          usuario:         this.baseLocal.user.KOFU,
+                                          observac:        this.observaciones,
+                                          cantidad:        ( (this.cantidad === null || this.cantidad === 0) ? 0 : this.cantidad ),
+                                          codprod:         this.sistema.codigo,
+                                          codtecnico:      this.sistema.tecnico,
+                                          descrip:         this.sistema.descrip,
+                                          prodbueno:       (this.prodbueno       === 'si') ? 1 : ((this.prodbueno       === 'no') ? 0 : null ),
+                                          preciomuybarato: (this.preciomuybarato === 'si') ? 1 : ((this.preciomuybarato === 'no') ? 0 : null ),
+                                          prodconstock:    (this.prodconstock    === 'si') ? 1 : ((this.prodconstock    === 'no') ? 0 : null ),
+                                          prodconquiebre:  (this.prodconquiebre  === 'si') ? 1 : ((this.prodconquiebre  === 'no') ? 0 : null ) },
+                                        { codigo: this.baseLocal.user.KOFU,
+                                          nombre: this.baseLocal.user.NOKOFU } )
+            .subscribe( data => { this.revisa( data );           },
+                        err  => { this.funciones.msgAlert( '', err ); });
+      }
   }
   revisa( data ) {
     this.enviando = false;

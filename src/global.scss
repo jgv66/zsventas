@@ -108,3 +108,24 @@ ion-toast {
 ion-content {
     --background: #fff url('assets/imgs/fondo-001.jpg') no-repeat center center / cover;
 }
+
+.alertaError {
+    // --background: #ffce00;
+    color: white; // text color for basic alerts
+    ion-button {
+        color: white !important;
+        --background: color($colors, secondary, base) !important;
+    }
+    .alert-message {
+        --background: #ffce00;
+    }
+    .alert-wrapper {
+        --background: #ffce00;
+    }
+}
+
+// Ajuste de ancho para los selects
+.popover-content {
+    min-width: fit-content;
+    width: auto !important;
+}

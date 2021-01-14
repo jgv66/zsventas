@@ -8,9 +8,20 @@
         <img src="./assets/imgs/logo-zs.png" alt="" class="navbar-img">
         <ion-title>Buscar Clientes</ion-title>
     </ion-toolbar>
-    <ion-searchbar animated (ionChange)="buscarClientes( $event )" [debounce]="1500"></ion-searchbar>
+    <ion-grid>
+        <ion-row style="max-height: 42px;margin-top:10px;">
+            <ion-col size="9" style="max-height: 40px;top:-14px;">
+                <!-- <ion-searchbar animated (ionChange)="buscarClientes( $event )" [debounce]="1500"></ion-searchbar> -->
+                <ion-searchbar mode="ios" animated search-icon="x" type="text" name="texto" [(ngModel)]="texto" showCancelButton="focus" cancelButtonText=" " placeholder="Digite aquí..."></ion-searchbar>
+            </ion-col>
+            <ion-col size="3" style="height: 32px; padding-top: 0px;">
+                <ion-button expand="block" (click)="aBuscarClientes()" style="height:32px;">
+                    Buscar
+                </ion-button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
 </ion-header>
-
 <ion-progress-bar *ngIf=" buscando " type="indeterminate"></ion-progress-bar>
 
 <ion-content>

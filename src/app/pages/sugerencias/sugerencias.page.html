@@ -58,6 +58,10 @@
                 <ion-select-option value="no">No</ion-select-option>
             </ion-select>
         </ion-item>
+        <ion-item *ngIf=" prodconquiebre ">
+            <ion-label>Cantidad recomendada :</ion-label>
+            <ion-input type="number" name="cantidad" [(ngModel)]="cantidad"></ion-input>
+        </ion-item>
         <ion-list-header mode='ios'>
             <h3 class="ion-text-center"><b>Comentarios</b></h3>
         </ion-list-header>

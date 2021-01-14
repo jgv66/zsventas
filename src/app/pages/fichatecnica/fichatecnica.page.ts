@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { BaselocalService } from '../../services/baselocal.service';
 import { NetworkengineService } from '../../services/networkengine.service';
 import { FuncionesService } from '../../services/funciones.service';
 import { ActivatedRoute } from '@angular/router';
@@ -16,8 +15,7 @@ export class FichatecnicaPage implements OnInit {
   producto: any;
   ficha: any;
 
-  constructor(private baseLocal:BaselocalService,
-              private netWork: NetworkengineService,
+  constructor(private netWork: NetworkengineService,
               private funciones: FuncionesService,
               private parametros: ActivatedRoute ) {
       this.info = JSON.parse( this.parametros.snapshot.paramMap.get('dataP') );

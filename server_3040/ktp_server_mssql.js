@@ -1,8 +1,8 @@
-// console.log("hola mundo");
+//
 var express = require('express');
 var app = express();
 var async = require("async");
-// configuracion
+//
 var dbconex = require('./conexion_mssql.js');
 var configuracion = require('./configuracion_cliente.js');
 var correos = require('./k_sendmail.js');
@@ -31,8 +31,6 @@ app.use(express.static('public'));
 
 // servidor escuchando puerto 3040
 var server = app.listen(3040, function() {
-    //var host = server.address().address;
-    //var port = server.address().port;
     console.log("Escuchando http en el puerto: %s", server.address().port);
 });
 
@@ -135,7 +133,7 @@ app.post('/krpt',
         //
         _Reportes.ventas(sql, empresa, caso, sucursal, vendedor, periodo)
             .then(function(data) {
-                console.log("krpt ", data);
+                // console.log("krpt ", data);
                 res.json({ resultado: 'ok', datos: data });
             });
     });
@@ -211,7 +209,7 @@ app.post('/soloEnviarCorreo',
                 if (coti === true) {
                     console.log('correo de cotizacion');
                     mailList.push({ cc: [xCc, x2, copiasadic], to: xTo });
-                    htmlBody = correos.primeraParte(xObs, nombreVend, undefined, undefined, undefined, "Correo de cotización", '', xOcc) + lineas + correos.segundaParte();
+                    htmlBody = correos.primeraParte(xObs, nombreVend, undefined, undefined, undefined, "Correo de cotización", '', xOcc, data[0].correo, data[0].fono) + lineas + correo.segundaParte();
                     correos.enviarCorreo(res, nodemailer, mailList, htmlBody);
                 } else {
                     console.log('correo normal');
@@ -221,7 +219,7 @@ app.post('/soloEnviarCorreo',
                             rs = data[0].rs;
                             //
                             mailList.push({ cc: [xCc, x2, copiasadic], to: xTo });
-                            htmlBody = correos.primeraParte(xObs, nombreVend, rs, carro[0].cliente, carro[0].suc_cliente, "Correo de cotizacion", '', xOcc) + lineas + correos.segundaParte();
+                            htmlBody = correos.primeraParte(xObs, nombreVend, rs, carro[0].cliente, carro[0].suc_cliente, "Correo de cotizacion", '', xOcc, data[0].correo, data[0].fono) + lineas + correo.segundaParte();
                             correos.enviarCorreo(res, nodemailer, mailList, htmlBody);
                             //
                         });
@@ -256,7 +254,7 @@ app.post('/grabadocumentos',
             neto = 0,
             iva = 0,
             bruto = 0,
-            NoB = carro[0].metodolista;
+            NoB = 'N'; // carro[0].metodolista; cambiado para leer solo data en NETO
         // 
         //console.log( carro );  
         _Activity.registra(sql, carro[0].vendedor, 'grabadocumentos', tipodoc);
@@ -347,7 +345,7 @@ app.post('/grabadocumentos',
         }
         //    
         query = query.replace('%%%%detalle%%%%', queryd);
-        console.log(query);
+        // console.log(query);
         //
         conex
             .then(function() {
@@ -357,7 +355,7 @@ app.post('/grabadocumentos',
                 // 
                 request.query(query)
                     .then(function(rs) {
-                        console.log("documento (" + tipodoc + ") grabado ", rs.recordset);
+                        // console.log("documento (" + tipodoc + ") grabado ", rs.recordset);
                         res.json({ resultado: 'ok', numero: rs.recordset[0].numero });
                         // es obligatorio que el vendedor tenga correo
                         elmail.delVendedor(sql, carro[0].vendedor)
@@ -365,6 +363,8 @@ app.post('/grabadocumentos',
                                 x2 = data[0].correo;
                                 nombreVend = data[0].nombre;
                                 copiasadic = data[0].copiasadic || '';
+                                const correoVend = data[0].correo;
+                                const fonoVend = data[0].fono;
                                 //
                                 elmail.delCliente(sql, carro[0].cliente, carro[0].suc_cliente)
                                     .then(function(data) {
@@ -416,7 +416,7 @@ app.post('/grabadocumentos',
                                                     }
                                                 });
                                                 // 
-                                                htmlBody = correos.primeraParte(xObs, nombreVend, rsocial, carro[0].cliente, carro[0].suc_cliente, rs.recordset[0].numero, tipodoc, xOcc) + lineas + correos.segundaParte();
+                                                htmlBody = correos.primeraParte(xObs, nombreVend, rsocial, carro[0].cliente, carro[0].suc_cliente, rs.recordset[0].numero, tipodoc, xOcc, correoVend, fonoVend) + lineas + correo.segundaParte();
                                                 //
                                                 mailList.push({ cc: [x2, copiasadic], to: x1 });
                                                 correos.enviarCorreo(null, nodemailer, mailList, htmlBody);
@@ -500,7 +500,7 @@ app.post('/pregraba',
                 // 
                 request.query(query)
                     .then(function(rs) {
-                        console.log("documento (" + tipodoc + ") grabado ", rs.recordset);
+                        // console.log("documento (" + tipodoc + ") grabado ", rs.recordset);
                         res.json({ resultado: 'ok', numero: rs.recordset[0].numero });
                         correos.componeBody(sql, rs.recordset[0].id)
                             .then(data => {
@@ -515,7 +515,7 @@ app.post('/pregraba',
                                     lineas += '<td align="center">' + element.subtotal.toLocaleString() + '</td>';
                                     lineas += '</tr>';
                                 });
-                                htmlBody = correos.primeraParte(xObs) + lineas + correos.segundaParte();
+                                htmlBody = correos.primeraParte(xObs) + lineas + correo.segundaParte();
                                 mailList.push({ cc: x2, to: x1 });
                                 correos.enviarCorreo(res, nodemailer, mailList, htmlBody);
                             });
@@ -825,7 +825,7 @@ app.post('/ksp_crearClientes',
         console.log(req.body);
         servicios.creacliente(sql, req.body.datos)
             .then(function(data) {
-                console.log("/ksp_crearClientes ", data);
+                // console.log("/ksp_crearClientes ", data);
                 res.json(data); /* data viene en formato correcto */
             });
     });
@@ -835,7 +835,7 @@ app.post('/ksp_modifClientes',
         console.log(req.body);
         servicios.modifCliente(sql, req.body.datos)
             .then(function(data) {
-                console.log("/ksp_crearClientes ", data);
+                // console.log("/ksp_crearClientes ", data);
                 res.json(data); /* data viene en formato correcto */
             });
     });
@@ -845,7 +845,7 @@ app.post('/ksp_crearSucursal',
         console.log(req.body);
         servicios.crearSucursal(sql, req.body.datos)
             .then(function(data) {
-                console.log("/ksp_crearSucursal ", data);
+                // console.log("/ksp_crearSucursal ", data);
                 res.json(data); /* data viene en formato correcto */
             });
     });
@@ -867,11 +867,10 @@ app.post('/ksp_enviarNotificaciones',
         //
         servicios.enviarNotificacion(sql, req.body.datos)
             .then(function(data) {
-                console.log("/ksp_enviarNotificaciones ", data);
-                // if (data[0].resultado === true) {
-                //     htmlBody = correos.sugerido(req.body.datos, req.body.user);
-                //     correos.enviarCorreo(res, nodemailer, [{ to: 'ziad@zsmotor.cl', cc: '' }], htmlBody);
-                // }
+                if (data[0].resultado === true) {
+                    htmlBody = correos.notificacion(req.body.datos);
+                    correos.enviarCorreo(res, nodemailer, [{ to: req.body.datos.email, cc: req.body.user.email }], htmlBody, 'Notificación de Stock');
+                }
                 res.json(data); /* data viene en formato correcto */
             });
     });
@@ -884,6 +883,18 @@ app.post('/ksp_rescatarMisNotificaciones',
                 res.json(data); /* data viene en formato correcto */
             });
     });
+app.post('/ksp_avisoProximoServicio',
+    function(req, res) {
+        //
+        servicios.avisoProximoServicio(sql, req.body.datos)
+            .then(async(data) => {
+                if (data[0].resultado === true) {
+                    htmlBody = await correos.proximoservicio(req.body.datos);
+                    correos.enviarCorreo(res, nodemailer, [{ to: req.body.datos.email, cc: req.body.user.email }], htmlBody, 'Aviso de Próximo Servicio');
+                }
+                res.json(data); /* data viene en formato correcto */
+            });
+    });
 
 app.post('/ksp_buscarSucursal',
     function(req, res) {
@@ -891,7 +902,7 @@ app.post('/ksp_buscarSucursal',
         console.log(req.body);
         servicios.buscaSucursal(sql, req.body.datos)
             .then(function(data) {
-                console.log("/ksp_buscarSucursal ", data);
+                // console.log("/ksp_buscarSucursal ", data);
                 res.json(data); /* data viene en formato correcto */
             });
     });
@@ -901,60 +912,7 @@ app.post('/ksp_traeFichaTecnica',
         console.log(req.body.datos);
         servicios.buscaFicha(sql, req.body.datos)
             .then(function(data) {
-                console.log("/ksp_traeFichaTecnica ", data);
+                // console.log("/ksp_traeFichaTecnica ", data);
                 res.json(data); /* data viene en formato correcto */
             });
     });
-
-
-
-
-/*
-        //
-        query  = "declare @id int = 0 ; ";
-        query += "declare @id_edo int = 0; ";
-        query += "declare @nrodoc char(10) = ''; ";
-        query += "declare @Error nvarchar(250) ; ";
-        query += "begin transaction ;";
-        query += "insert into ktp_encabezado (empresa,cliente,suc_cliente,vendedor,fechaemision,";
-        query += "monto,observacion,occ,kilometraje,modalidad,valido,fechaentrega,horainicio,horafinal) ";
-        query += "values ('" + carro[0].empresa + "','" + carro[0].cliente + "','" + carro[0].suc_cliente + "','" + carro[0].vendedor + "',getdate(),";
-        query += "0,'" + xObs.trim() + "','" + xOcc.trim() + "','" + nKm.trim() + "','" + modalidad + "','',getdate(),'" + hora + "','" + hora + "') ;";
-        query += "select @id = @@IDENTITY ; ";
-        query += "set @Error = @@ERROR ; if (@Error<>0) goto TratarError ; ";
-        //
-        for (i = 0; i < carro.length; i++) {
-            //
-            bodega_wms = carro[i].bodega;
-            //
-            query += "insert into ktp_detalle (id_preventa,linea,sucursal,bodega,codigo,descripcion,vendedor,unidad_tr,unidad1,unidad2,cantidad1,cantidad2,";
-            query += "listaprecio,metodolista,precio,";
-            query += "porcedes,descuentos,porcerec,recargos,observacion,valido)";
-            query += " values ";
-            query += "(@id," + (i + 1).toString() + ",'" + carro[i].sucursal + "','" + carro[i].bodega + "','" + carro[i].codigo.trim() + "','" + carro[i].descrip.trim() + "','" + carro[i].vendedor + "',";
-            query += "1,'',''," + carro[i].cantidad.toString() + ", 0,'" + carro[i].listapre + "','" + carro[i].metodolista + "'," + carro[i].precio.toString() + ",";
-            query += carro[i].descuentomax.toString() + "," + ((carro[i].precio - carro[i].preciomayor) * carro[i].cantidad).toString() + ",0,0,'', '' ) ; ";
-            query += "set @Error = @@ERROR ; if (@Error<>0) goto TratarError ; ";
-            //
-        }
-        //    
-        query += "update ktp_encabezado set monto=( select sum((d.cantidad1*d.precio)-d.descuentos) from ktp_detalle as d where d.id_preventa=ktp_encabezado.id_preventa ) ";
-        query += " where id_preventa=@id ;";
-        query += "set @Error = @@ERROR ; if (@Error<>0) goto TratarError ; ";
-        //
-        if (tipodoc == 'PRE') {
-            query += "exec ksp_grabaDocumentoPre_v1 'Pendiente', 'NVV', @id, @nrodoc output, @id_edo output ;";
-        } else if (tipodoc == 'NVV' || tipodoc == 'COV' || tipodoc == 'NVI') {
-            query += "exec ksp_grabaDocumentoDef_v1 '" + tipodoc + "', @id, @nrodoc output, @id_edo output ;";
-        }
-        //
-        query += "set @Error = @@ERROR ; if (@Error<>0) goto TratarError ; ";
-        query += "commit transaction ;";
-        query += "select @nrodoc as numero, @id as id, @id_edo as id_edo ;";
-        query += "TratarError: ";
-        query += "if @@Error<>0 ";
-        query += "    BEGIN ";
-        query += "    ROLLBACK TRANSACTION ";
-        query += "    END ;";
-
-*/

@@ -14,27 +14,20 @@ export class BuscarclientesPage {
   clientes: any[] = [];
   buscando = false;
   usuario;
+  texto;
 
   constructor( private baseLocal: BaselocalService,
                private netWork: NetworkengineService,
                private funciones: FuncionesService,
                private modalCtrl: ModalController ) { }
 
-  buscarClientes( event ) {
-    if ( event.detail.value !== '' ) {
-      this.aBuscarClientes( event.detail.value );
-    } else {
-      this.clientes = [];
-    }
-  }
-
-  aBuscarClientes( pDato ) {
-    if ( pDato === undefined || pDato === '' ) {
-      this.funciones.msgAlert('VACIO', 'Debe indicar algún dato para buscar clientes.');
+  aBuscarClientes() {
+    if ( this.texto === undefined || this.texto === '' ) {
+      this.funciones.msgAlert('', 'Debe indicar algún dato para buscar clientes.');
     } else {
       this.buscando = true;
       this.netWork.traeUnSP( 'ksp_buscarDeNuevoClientes',
-                            { dato:    pDato,
+                            { dato:    this.texto,
                               codusr:  this.baseLocal.user.KOFU,
                               empresa: this.baseLocal.user.EMPRESA,
                               solouno: false } )
